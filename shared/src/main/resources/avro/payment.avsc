@@ -1,0 +1,35 @@
+{
+  "type": "record",
+  "name": "PaymentEvent",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    {
+      "name": "paymentId",
+      "type": "string",
+      "doc": "UUID-ul unic al tranzacției"
+    },
+    {
+      "name": "amount",
+      "type": "double",
+      "doc": "Suma tranzacției"
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "doc": "Moneda (RON, EUR, USD)"
+    },
+    {
+      "name": "timestamp",
+      "type": "long",
+      "doc": "Unix timestamp la momentul inițierii"
+    },
+    {
+      "name": "status",
+      "type": {
+        "type": "enum",
+        "name": "PaymentStatus",
+        "symbols": ["PENDING", "VALIDATED", "REJECTED", "COMPLETED"]
+      }
+    }
+  ]
+}

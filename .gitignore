@@ -1,0 +1,116 @@
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.log
+*.swp
+*.swo
+*~
+
+# STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Eclipse
+.c9/
+
+# Spring Boot
+HELP.md
+.DS_Store
+
+# OS
+Thumbs.db
+.gitkeep
+
+# Docker volumes
+postgres_data/
+kafka_data/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+*.sublime-workspace
+
+# Node (optional frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python (optional scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+
+# Sensitive
+.aws/
+.credentials
+.ssh/
+*.pem
+*.key
+secrets/
+.env.secret
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Coverage
+coverage/
+.coverage
+htmlcov/
+target/site/
