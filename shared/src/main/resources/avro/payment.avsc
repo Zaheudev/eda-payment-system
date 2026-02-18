@@ -10,13 +10,18 @@
     },
     {
       "name": "amount",
-      "type": "double",
-      "doc": "Suma tranzacției"
+      "type": "com.zaheudev.shared.avro.Amount",
+      "doc": "Amount object with currency and value"
     },
     {
-      "name": "currency",
-      "type": "string",
-      "doc": "Moneda (RON, EUR, USD)"
+      "name": "cardDetails",
+      "type": ["null","com.zaheudev.shared.avro.CardDetails"],
+      "doc": "This will be removed in the future"
+    },
+    {
+      "name": "tokenRef",
+      "type": ["null","string"],
+      "doc": "This is the token for the card details"
     },
     {
       "name": "timestamp",

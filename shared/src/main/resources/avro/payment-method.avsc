@@ -1,0 +1,6 @@
+{
+  "type": "enum",
+  "name": "PaymentMethodEnum",
+  "namespace": "com.zaheudev.shared.avro",
+  "symbols": ["VISA", "MASTERCARD", "AMEX", "DISCOVER", "ACCEL", "STAR", "NYCE","PULSE", "MAESTRO"]
+}

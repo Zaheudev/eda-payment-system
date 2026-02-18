@@ -1,0 +1,32 @@
+{
+  "name": "CardDetails",
+  "type": "record",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    {
+      "name": "cardNumber",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "cardHolderName",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "expiryMonth",
+      "type": ["null","int"],
+      "default": null
+    },
+    {
+      "name": "expiryYear",
+      "type": ["null","int"],
+      "default": null
+    },
+    {
+      "name": "cvv",
+      "type": ["null","string"],
+      "default": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "record",
+  "name": "Amount",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    {
+      "name": "value",
+      "type": "long",
+      "doc": "Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)"
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "doc": "Moneda (RON, EUR, USD)"
+    }
+  ]
+}
