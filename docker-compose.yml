@@ -54,13 +54,13 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
       KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081
 
-  # Opțional: Baza de date (dacă te hotărăști să o folosești)
+  # Baza de date
   postgres:
     image: postgres:16
     container_name: payment-postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: demo
+      POSTGRES_USER: zaheu
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: payment-gateway
     ports:
       - "5433:5432"
