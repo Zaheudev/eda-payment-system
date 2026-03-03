@@ -118,7 +118,7 @@ spring.kafka.properties.specific.avro.reader=true
 
 ### ✅ DemoApplication - Rulare Successfully
 ```
-2026-02-18T19:09:28.800+02:00  INFO com.zaheudev.demo.DemoApplication : 
+2026-02-18T19:09:28.800+02:00  INFO com.zaheudev.gateway.DemoApplication : 
 Started DemoApplication in 2.001 seconds
 ```
 

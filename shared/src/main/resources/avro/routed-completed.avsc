@@ -1,0 +1,32 @@
+{
+  "type": "record",
+  "name": "RoutedCompletedEvent",
+  "fields": [
+    { "name": "paymentId",
+      "type": "string"
+    },
+    {
+      "name": "selectedPaymentMethod",
+      "type": "com.zaheudev.shared.avro.PaymentMethodEnum"
+    },
+    {
+      "name": "estimatedCost",
+      "type": "string"
+    },
+    {
+      "name": "useToken",
+      "type": "boolean"
+    },
+    {
+      "name": "timestamp",
+      "type": "long"
+    },
+    {
+      "name": "availableNetworks",
+      "type": {
+        "type": "array",
+        "items": "com.zaheudev.shared.avro.PaymentMethodEnum"
+      }
+    }
+  ]
+}

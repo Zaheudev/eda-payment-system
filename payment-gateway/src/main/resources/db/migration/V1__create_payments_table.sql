@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS payments (
     status VARCHAR(50) NOT NULL,
     token_ref VARCHAR(255),
     timestamp BIGINT,
-    amount BIGINT,
+    amount numeric(38,2) NOT NULL,
     currency VARCHAR(10)
 );
 

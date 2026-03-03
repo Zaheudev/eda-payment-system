@@ -16,6 +16,7 @@
     <modules>
         <module>shared</module>
         <module>payment-gateway</module>
+        <module>payment-routing</module>
     </modules>
 
     <properties>
