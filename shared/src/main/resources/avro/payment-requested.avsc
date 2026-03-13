@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "PaymentEvent",
+  "name": "PaymentRequestedEvent",
   "namespace": "com.zaheudev.shared.avro",
   "fields": [
     {

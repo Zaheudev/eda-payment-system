@@ -3,6 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
+package com.zaheudev.shared.avro;
 
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.util.Utf8;
@@ -12,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -302268813838016474L;
+  private static final long serialVersionUID = 6213366769668265021L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RoutedCompletedEvent\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\"},{\"name\":\"selectedPaymentMethod\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"namespace\":\"com.zaheudev.shared.avro\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}},{\"name\":\"estimatedCost\",\"type\":\"string\"},{\"name\":\"useToken\",\"type\":\"boolean\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"availableNetworks\",\"type\":{\"type\":\"array\",\"items\":\"com.zaheudev.shared.avro.PaymentMethodEnum\"}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RoutedCompletedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\"},{\"name\":\"selectedPaymentMethod\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}},{\"name\":\"estimatedCost\",\"type\":\"string\"},{\"name\":\"useToken\",\"type\":\"boolean\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"availableNetworks\",\"type\":{\"type\":\"array\",\"items\":\"PaymentMethodEnum\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -244,8 +245,8 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
    * Creates a new RoutedCompletedEvent RecordBuilder.
    * @return A new RoutedCompletedEvent RecordBuilder
    */
-  public static RoutedCompletedEvent.Builder newBuilder() {
-    return new RoutedCompletedEvent.Builder();
+  public static com.zaheudev.shared.avro.RoutedCompletedEvent.Builder newBuilder() {
+    return new com.zaheudev.shared.avro.RoutedCompletedEvent.Builder();
   }
 
   /**
@@ -253,11 +254,11 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
    * @param other The existing builder to copy.
    * @return A new RoutedCompletedEvent RecordBuilder
    */
-  public static RoutedCompletedEvent.Builder newBuilder(RoutedCompletedEvent.Builder other) {
+  public static com.zaheudev.shared.avro.RoutedCompletedEvent.Builder newBuilder(com.zaheudev.shared.avro.RoutedCompletedEvent.Builder other) {
     if (other == null) {
-      return new RoutedCompletedEvent.Builder();
+      return new com.zaheudev.shared.avro.RoutedCompletedEvent.Builder();
     } else {
-      return new RoutedCompletedEvent.Builder(other);
+      return new com.zaheudev.shared.avro.RoutedCompletedEvent.Builder(other);
     }
   }
 
@@ -266,11 +267,11 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
    * @param other The existing instance to copy.
    * @return A new RoutedCompletedEvent RecordBuilder
    */
-  public static RoutedCompletedEvent.Builder newBuilder(RoutedCompletedEvent other) {
+  public static com.zaheudev.shared.avro.RoutedCompletedEvent.Builder newBuilder(com.zaheudev.shared.avro.RoutedCompletedEvent other) {
     if (other == null) {
-      return new RoutedCompletedEvent.Builder();
+      return new com.zaheudev.shared.avro.RoutedCompletedEvent.Builder();
     } else {
-      return new RoutedCompletedEvent.Builder(other);
+      return new com.zaheudev.shared.avro.RoutedCompletedEvent.Builder(other);
     }
   }
 
@@ -297,7 +298,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(RoutedCompletedEvent.Builder other) {
+    private Builder(com.zaheudev.shared.avro.RoutedCompletedEvent.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.paymentId)) {
         this.paymentId = data().deepCopy(fields()[0].schema(), other.paymentId);
@@ -329,7 +330,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
      * Creates a Builder by copying an existing RoutedCompletedEvent instance
      * @param other The existing instance to copy.
      */
-    private Builder(RoutedCompletedEvent other) {
+    private Builder(com.zaheudev.shared.avro.RoutedCompletedEvent other) {
       super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.paymentId)) {
         this.paymentId = data().deepCopy(fields()[0].schema(), other.paymentId);
@@ -371,7 +372,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'paymentId'.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder setPaymentId(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setPaymentId(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.paymentId = value;
       fieldSetFlags()[0] = true;
@@ -391,7 +392,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'paymentId' field.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder clearPaymentId() {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearPaymentId() {
       paymentId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -411,7 +412,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'selectedPaymentMethod'.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder setSelectedPaymentMethod(com.zaheudev.shared.avro.PaymentMethodEnum value) {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setSelectedPaymentMethod(com.zaheudev.shared.avro.PaymentMethodEnum value) {
       validate(fields()[1], value);
       this.selectedPaymentMethod = value;
       fieldSetFlags()[1] = true;
@@ -431,7 +432,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'selectedPaymentMethod' field.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder clearSelectedPaymentMethod() {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearSelectedPaymentMethod() {
       selectedPaymentMethod = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -451,7 +452,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'estimatedCost'.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder setEstimatedCost(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setEstimatedCost(java.lang.CharSequence value) {
       validate(fields()[2], value);
       this.estimatedCost = value;
       fieldSetFlags()[2] = true;
@@ -471,7 +472,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'estimatedCost' field.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder clearEstimatedCost() {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearEstimatedCost() {
       estimatedCost = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -491,7 +492,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'useToken'.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder setUseToken(boolean value) {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setUseToken(boolean value) {
       validate(fields()[3], value);
       this.useToken = value;
       fieldSetFlags()[3] = true;
@@ -511,7 +512,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'useToken' field.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder clearUseToken() {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearUseToken() {
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -530,7 +531,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder setTimestamp(long value) {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setTimestamp(long value) {
       validate(fields()[4], value);
       this.timestamp = value;
       fieldSetFlags()[4] = true;
@@ -550,7 +551,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'timestamp' field.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder clearTimestamp() {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearTimestamp() {
       fieldSetFlags()[4] = false;
       return this;
     }
@@ -569,7 +570,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'availableNetworks'.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder setAvailableNetworks(java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum> value) {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setAvailableNetworks(java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum> value) {
       validate(fields()[5], value);
       this.availableNetworks = value;
       fieldSetFlags()[5] = true;
@@ -589,7 +590,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * Clears the value of the 'availableNetworks' field.
       * @return This builder.
       */
-    public RoutedCompletedEvent.Builder clearAvailableNetworks() {
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearAvailableNetworks() {
       availableNetworks = null;
       fieldSetFlags()[5] = false;
       return this;

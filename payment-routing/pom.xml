@@ -23,6 +23,7 @@
         </dependency>
 
         <!-- Spring Boot — NU are Web (e doar consumer/producer Kafka) -->
+        <!-- Spring Boot Starters -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>

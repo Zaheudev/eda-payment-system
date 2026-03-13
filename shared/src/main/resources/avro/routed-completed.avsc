@@ -1,6 +1,7 @@
 {
   "type": "record",
   "name": "RoutedCompletedEvent",
+  "namespace": "com.zaheudev.shared.avro",
   "fields": [
     { "name": "paymentId",
       "type": "string"

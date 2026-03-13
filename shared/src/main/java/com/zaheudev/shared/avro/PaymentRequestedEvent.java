@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -3846583639065281801L;
+  private static final long serialVersionUID = 5520355938449274113L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PaymentEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\",\"doc\":\"UUID-ul unic al tranzacției\"},{\"name\":\"amount\",\"type\":{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]},\"doc\":\"Amount object with currency and value\"},{\"name\":\"cardDetails\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"CardDetails\",\"fields\":[{\"name\":\"cardNumber\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"cardHolderName\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"expiryMonth\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"expiryYear\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"cvv\",\"type\":[\"null\",\"string\"],\"default\":null}]}],\"doc\":\"This will be removed in the future\"},{\"name\":\"tokenRef\",\"type\":[\"null\",\"string\"],\"doc\":\"This is the token for the card details\"},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"Unix timestamp la momentul inițierii\"},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentStatus\",\"symbols\":[\"PENDING\",\"VALIDATED\",\"REJECTED\",\"COMPLETED\"]}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PaymentRequestedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\",\"doc\":\"UUID-ul unic al tranzacției\"},{\"name\":\"amount\",\"type\":{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]},\"doc\":\"Amount object with currency and value\"},{\"name\":\"cardDetails\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"CardDetails\",\"fields\":[{\"name\":\"cardNumber\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"cardHolderName\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"expiryMonth\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"expiryYear\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"cvv\",\"type\":[\"null\",\"string\"],\"default\":null}]}],\"doc\":\"This will be removed in the future\"},{\"name\":\"tokenRef\",\"type\":[\"null\",\"string\"],\"doc\":\"This is the token for the card details\"},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"Unix timestamp la momentul inițierii\"},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentStatus\",\"symbols\":[\"PENDING\",\"VALIDATED\",\"REJECTED\",\"COMPLETED\"]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -53,7 +53,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
   }
 
   /**
-   * Serializes this PaymentEvent to a ByteBuffer.
+   * Serializes this PaymentRequestedEvent to a ByteBuffer.
    * @return a buffer holding the serialized data for this instance
    * @throws java.io.IOException if this instance could not be serialized
    */
@@ -62,9 +62,9 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
   }
 
   /**
-   * Deserializes a PaymentEvent from a ByteBuffer.
+   * Deserializes a PaymentRequestedEvent from a ByteBuffer.
    * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a PaymentEvent instance decoded from the given buffer
+   * @return a PaymentRequestedEvent instance decoded from the given buffer
    * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
    */
   public static PaymentRequestedEvent fromByteBuffer(
@@ -252,41 +252,41 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
   }
 
   /**
-   * Creates a new PaymentEvent RecordBuilder.
-   * @return A new PaymentEvent RecordBuilder
+   * Creates a new PaymentRequestedEvent RecordBuilder.
+   * @return A new PaymentRequestedEvent RecordBuilder
    */
-  public static PaymentRequestedEvent.Builder newBuilder() {
-    return new PaymentRequestedEvent.Builder();
+  public static com.zaheudev.shared.avro.PaymentRequestedEvent.Builder newBuilder() {
+    return new com.zaheudev.shared.avro.PaymentRequestedEvent.Builder();
   }
 
   /**
-   * Creates a new PaymentEvent RecordBuilder by copying an existing Builder.
+   * Creates a new PaymentRequestedEvent RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new PaymentEvent RecordBuilder
+   * @return A new PaymentRequestedEvent RecordBuilder
    */
-  public static PaymentRequestedEvent.Builder newBuilder(PaymentRequestedEvent.Builder other) {
+  public static com.zaheudev.shared.avro.PaymentRequestedEvent.Builder newBuilder(com.zaheudev.shared.avro.PaymentRequestedEvent.Builder other) {
     if (other == null) {
-      return new PaymentRequestedEvent.Builder();
+      return new com.zaheudev.shared.avro.PaymentRequestedEvent.Builder();
     } else {
-      return new PaymentRequestedEvent.Builder(other);
+      return new com.zaheudev.shared.avro.PaymentRequestedEvent.Builder(other);
     }
   }
 
   /**
-   * Creates a new PaymentEvent RecordBuilder by copying an existing PaymentEvent instance.
+   * Creates a new PaymentRequestedEvent RecordBuilder by copying an existing PaymentRequestedEvent instance.
    * @param other The existing instance to copy.
-   * @return A new PaymentEvent RecordBuilder
+   * @return A new PaymentRequestedEvent RecordBuilder
    */
-  public static PaymentRequestedEvent.Builder newBuilder(PaymentRequestedEvent other) {
+  public static com.zaheudev.shared.avro.PaymentRequestedEvent.Builder newBuilder(com.zaheudev.shared.avro.PaymentRequestedEvent other) {
     if (other == null) {
-      return new PaymentRequestedEvent.Builder();
+      return new com.zaheudev.shared.avro.PaymentRequestedEvent.Builder();
     } else {
-      return new PaymentRequestedEvent.Builder(other);
+      return new com.zaheudev.shared.avro.PaymentRequestedEvent.Builder(other);
     }
   }
 
   /**
-   * RecordBuilder for PaymentEvent instances.
+   * RecordBuilder for PaymentRequestedEvent instances.
    */
   @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<PaymentRequestedEvent>
@@ -315,7 +315,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(PaymentRequestedEvent.Builder other) {
+    private Builder(com.zaheudev.shared.avro.PaymentRequestedEvent.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.paymentId)) {
         this.paymentId = data().deepCopy(fields()[0].schema(), other.paymentId);
@@ -350,10 +350,10 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
     }
 
     /**
-     * Creates a Builder by copying an existing PaymentEvent instance
+     * Creates a Builder by copying an existing PaymentRequestedEvent instance
      * @param other The existing instance to copy.
      */
-    private Builder(PaymentRequestedEvent other) {
+    private Builder(com.zaheudev.shared.avro.PaymentRequestedEvent other) {
       super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.paymentId)) {
         this.paymentId = data().deepCopy(fields()[0].schema(), other.paymentId);
@@ -399,7 +399,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @param value The value of 'paymentId'.
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder setPaymentId(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setPaymentId(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.paymentId = value;
       fieldSetFlags()[0] = true;
@@ -421,7 +421,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * UUID-ul unic al tranzacției
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder clearPaymentId() {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearPaymentId() {
       paymentId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -443,7 +443,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @param value The value of 'amount'.
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder setAmount(com.zaheudev.shared.avro.Amount value) {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setAmount(com.zaheudev.shared.avro.Amount value) {
       validate(fields()[1], value);
       this.amountBuilder = null;
       this.amount = value;
@@ -483,7 +483,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
      * @return This builder.
      */
 
-    public PaymentRequestedEvent.Builder setAmountBuilder(com.zaheudev.shared.avro.Amount.Builder value) {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setAmountBuilder(com.zaheudev.shared.avro.Amount.Builder value) {
       clearAmount();
       amountBuilder = value;
       return this;
@@ -503,7 +503,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * Amount object with currency and value
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder clearAmount() {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearAmount() {
       amount = null;
       amountBuilder = null;
       fieldSetFlags()[1] = false;
@@ -526,7 +526,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @param value The value of 'cardDetails'.
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder setCardDetails(com.zaheudev.shared.avro.CardDetails value) {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setCardDetails(com.zaheudev.shared.avro.CardDetails value) {
       validate(fields()[2], value);
       this.cardDetailsBuilder = null;
       this.cardDetails = value;
@@ -566,7 +566,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
      * @return This builder.
      */
 
-    public PaymentRequestedEvent.Builder setCardDetailsBuilder(com.zaheudev.shared.avro.CardDetails.Builder value) {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setCardDetailsBuilder(com.zaheudev.shared.avro.CardDetails.Builder value) {
       clearCardDetails();
       cardDetailsBuilder = value;
       return this;
@@ -586,7 +586,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * This will be removed in the future
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder clearCardDetails() {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearCardDetails() {
       cardDetails = null;
       cardDetailsBuilder = null;
       fieldSetFlags()[2] = false;
@@ -609,7 +609,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @param value The value of 'tokenRef'.
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder setTokenRef(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setTokenRef(java.lang.CharSequence value) {
       validate(fields()[3], value);
       this.tokenRef = value;
       fieldSetFlags()[3] = true;
@@ -631,7 +631,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * This is the token for the card details
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder clearTokenRef() {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearTokenRef() {
       tokenRef = null;
       fieldSetFlags()[3] = false;
       return this;
@@ -653,7 +653,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder setTimestamp(long value) {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setTimestamp(long value) {
       validate(fields()[4], value);
       this.timestamp = value;
       fieldSetFlags()[4] = true;
@@ -675,7 +675,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * Unix timestamp la momentul inițierii
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder clearTimestamp() {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearTimestamp() {
       fieldSetFlags()[4] = false;
       return this;
     }
@@ -694,7 +694,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @param value The value of 'status'.
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder setStatus(com.zaheudev.shared.avro.PaymentStatus value) {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setStatus(com.zaheudev.shared.avro.PaymentStatus value) {
       validate(fields()[5], value);
       this.status = value;
       fieldSetFlags()[5] = true;
@@ -714,7 +714,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * Clears the value of the 'status' field.
       * @return This builder.
       */
-    public PaymentRequestedEvent.Builder clearStatus() {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearStatus() {
       status = null;
       fieldSetFlags()[5] = false;
       return this;

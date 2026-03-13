@@ -20,7 +20,7 @@ public class PaymentServiceImpl implements PaymentService{
     private PaymentRepository paymentRepository;
 
     @Autowired
-    PaymentEventProducer producer;
+    private PaymentEventProducer producer;
 
     // momentna stocam peste tot detaliile cardului netokenizate pentru debugging. In viitor o sa existe
     // un modul special care va tokeniza cardul.
