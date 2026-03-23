@@ -9,12 +9,14 @@ import com.zaheudev.gateway.model.Payment;
 import com.zaheudev.gateway.model.PaymentStatus;
 import com.zaheudev.gateway.repository.PaymentRepository;
 import com.zaheudev.shared.avro.PaymentRequestedEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
+@Slf4j
 public class PaymentServiceImpl implements PaymentService{
     @Autowired
     private PaymentRepository paymentRepository;
@@ -33,7 +35,7 @@ public class PaymentServiceImpl implements PaymentService{
         );
         PaymentEntity entity = PaymentEntity.fromPayment(payment);
         paymentRepository.save(entity);
-        System.out.println("payment saved in db");
+        log.info("payment saved in db");
 
         PaymentRequestedEvent paymentRequestedEvent = PaymentRequestedEvent.newBuilder()
                 .setPaymentId(payment.getPaymentId())
@@ -53,7 +55,7 @@ public class PaymentServiceImpl implements PaymentService{
                 .build();
 
         producer.publishPaymentRequestedEvent(paymentRequestedEvent);
-        System.out.println("payment requested event published");
+        log.info("payment requested event published");
         return PaymentResponse.create(payment);
     }
 
