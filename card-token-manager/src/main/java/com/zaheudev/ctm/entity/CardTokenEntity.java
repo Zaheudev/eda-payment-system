@@ -1,6 +1,6 @@
 package com.zaheudev.ctm.entity;
 
-import com.zaheudev.ctm.dto.TokenStatus;
+import com.zaheudev.shared.dto.TokenStatus;
 import com.zaheudev.shared.avro.PaymentMethodEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,7 +10,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter @Builder @Entity @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @Builder
+@Entity @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class CardTokenEntity {
     @Id

@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 
 @Table(name = "payments")
 @Data @Builder
-@Entity @NoArgsConstructor @AllArgsConstructor
+@Entity @NoArgsConstructor
+@AllArgsConstructor
 public class PaymentEntity {
     @Id @Getter
     private String paymentId;
@@ -38,6 +39,7 @@ public class PaymentEntity {
                 .updatedAt(payment.getUpdatedAt())
                 .amount(BigDecimal.valueOf(payment.getAmount().getAmount()).divide(BigDecimal.valueOf(100)))
                 .currency(payment.getAmount().getCurrency())
+                .tokenRef(payment.getTokenRef())
                 .build();
     }
 }

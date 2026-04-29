@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 5520355938449274113L;
+  private static final long serialVersionUID = 4848581326124544038L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PaymentRequestedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\",\"doc\":\"UUID-ul unic al tranzacției\"},{\"name\":\"amount\",\"type\":{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]},\"doc\":\"Amount object with currency and value\"},{\"name\":\"cardDetails\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"CardDetails\",\"fields\":[{\"name\":\"cardNumber\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"cardHolderName\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"expiryMonth\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"expiryYear\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"cvv\",\"type\":[\"null\",\"string\"],\"default\":null}]}],\"doc\":\"This will be removed in the future\"},{\"name\":\"tokenRef\",\"type\":[\"null\",\"string\"],\"doc\":\"This is the token for the card details\"},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"Unix timestamp la momentul inițierii\"},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentStatus\",\"symbols\":[\"PENDING\",\"VALIDATED\",\"REJECTED\",\"COMPLETED\"]}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PaymentRequestedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\",\"doc\":\"UUID-ul unic al tranzacției\"},{\"name\":\"amount\",\"type\":{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]},\"doc\":\"Amount object with currency and value\"},{\"name\":\"cardRecord\",\"type\":{\"type\":\"record\",\"name\":\"CardRecord\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"}]},\"doc\":\"This is the token for the card details\"},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"Unix timestamp la momentul inițierii\"},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentStatus\",\"symbols\":[\"PENDING\",\"VALIDATED\",\"REJECTED\",\"COMPLETED\"]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -76,10 +76,8 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
   private java.lang.CharSequence paymentId;
   /** Amount object with currency and value */
   private com.zaheudev.shared.avro.Amount amount;
-  /** This will be removed in the future */
-  private com.zaheudev.shared.avro.CardDetails cardDetails;
   /** This is the token for the card details */
-  private java.lang.CharSequence tokenRef;
+  private com.zaheudev.shared.avro.CardRecord cardRecord;
   /** Unix timestamp la momentul inițierii */
   private long timestamp;
   private com.zaheudev.shared.avro.PaymentStatus status;
@@ -95,16 +93,14 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
    * All-args constructor.
    * @param paymentId UUID-ul unic al tranzacției
    * @param amount Amount object with currency and value
-   * @param cardDetails This will be removed in the future
-   * @param tokenRef This is the token for the card details
+   * @param cardRecord This is the token for the card details
    * @param timestamp Unix timestamp la momentul inițierii
    * @param status The new value for status
    */
-  public PaymentRequestedEvent(java.lang.CharSequence paymentId, com.zaheudev.shared.avro.Amount amount, com.zaheudev.shared.avro.CardDetails cardDetails, java.lang.CharSequence tokenRef, java.lang.Long timestamp, com.zaheudev.shared.avro.PaymentStatus status) {
+  public PaymentRequestedEvent(java.lang.CharSequence paymentId, com.zaheudev.shared.avro.Amount amount, com.zaheudev.shared.avro.CardRecord cardRecord, java.lang.Long timestamp, com.zaheudev.shared.avro.PaymentStatus status) {
     this.paymentId = paymentId;
     this.amount = amount;
-    this.cardDetails = cardDetails;
-    this.tokenRef = tokenRef;
+    this.cardRecord = cardRecord;
     this.timestamp = timestamp;
     this.status = status;
   }
@@ -121,10 +117,9 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
     switch (field$) {
     case 0: return paymentId;
     case 1: return amount;
-    case 2: return cardDetails;
-    case 3: return tokenRef;
-    case 4: return timestamp;
-    case 5: return status;
+    case 2: return cardRecord;
+    case 3: return timestamp;
+    case 4: return status;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -136,10 +131,9 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
     switch (field$) {
     case 0: paymentId = (java.lang.CharSequence)value$; break;
     case 1: amount = (com.zaheudev.shared.avro.Amount)value$; break;
-    case 2: cardDetails = (com.zaheudev.shared.avro.CardDetails)value$; break;
-    case 3: tokenRef = (java.lang.CharSequence)value$; break;
-    case 4: timestamp = (java.lang.Long)value$; break;
-    case 5: status = (com.zaheudev.shared.avro.PaymentStatus)value$; break;
+    case 2: cardRecord = (com.zaheudev.shared.avro.CardRecord)value$; break;
+    case 3: timestamp = (java.lang.Long)value$; break;
+    case 4: status = (com.zaheudev.shared.avro.PaymentStatus)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -181,39 +175,21 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
   }
 
   /**
-   * Gets the value of the 'cardDetails' field.
-   * @return This will be removed in the future
-   */
-  public com.zaheudev.shared.avro.CardDetails getCardDetails() {
-    return cardDetails;
-  }
-
-
-  /**
-   * Sets the value of the 'cardDetails' field.
-   * This will be removed in the future
-   * @param value the value to set.
-   */
-  public void setCardDetails(com.zaheudev.shared.avro.CardDetails value) {
-    this.cardDetails = value;
-  }
-
-  /**
-   * Gets the value of the 'tokenRef' field.
+   * Gets the value of the 'cardRecord' field.
    * @return This is the token for the card details
    */
-  public java.lang.CharSequence getTokenRef() {
-    return tokenRef;
+  public com.zaheudev.shared.avro.CardRecord getCardRecord() {
+    return cardRecord;
   }
 
 
   /**
-   * Sets the value of the 'tokenRef' field.
+   * Sets the value of the 'cardRecord' field.
    * This is the token for the card details
    * @param value the value to set.
    */
-  public void setTokenRef(java.lang.CharSequence value) {
-    this.tokenRef = value;
+  public void setCardRecord(com.zaheudev.shared.avro.CardRecord value) {
+    this.cardRecord = value;
   }
 
   /**
@@ -297,11 +273,9 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
     /** Amount object with currency and value */
     private com.zaheudev.shared.avro.Amount amount;
     private com.zaheudev.shared.avro.Amount.Builder amountBuilder;
-    /** This will be removed in the future */
-    private com.zaheudev.shared.avro.CardDetails cardDetails;
-    private com.zaheudev.shared.avro.CardDetails.Builder cardDetailsBuilder;
     /** This is the token for the card details */
-    private java.lang.CharSequence tokenRef;
+    private com.zaheudev.shared.avro.CardRecord cardRecord;
+    private com.zaheudev.shared.avro.CardRecord.Builder cardRecordBuilder;
     /** Unix timestamp la momentul inițierii */
     private long timestamp;
     private com.zaheudev.shared.avro.PaymentStatus status;
@@ -328,24 +302,20 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       if (other.hasAmountBuilder()) {
         this.amountBuilder = com.zaheudev.shared.avro.Amount.newBuilder(other.getAmountBuilder());
       }
-      if (isValidValue(fields()[2], other.cardDetails)) {
-        this.cardDetails = data().deepCopy(fields()[2].schema(), other.cardDetails);
+      if (isValidValue(fields()[2], other.cardRecord)) {
+        this.cardRecord = data().deepCopy(fields()[2].schema(), other.cardRecord);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (other.hasCardDetailsBuilder()) {
-        this.cardDetailsBuilder = com.zaheudev.shared.avro.CardDetails.newBuilder(other.getCardDetailsBuilder());
+      if (other.hasCardRecordBuilder()) {
+        this.cardRecordBuilder = com.zaheudev.shared.avro.CardRecord.newBuilder(other.getCardRecordBuilder());
       }
-      if (isValidValue(fields()[3], other.tokenRef)) {
-        this.tokenRef = data().deepCopy(fields()[3].schema(), other.tokenRef);
+      if (isValidValue(fields()[3], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
+      if (isValidValue(fields()[4], other.status)) {
+        this.status = data().deepCopy(fields()[4].schema(), other.status);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
-      }
-      if (isValidValue(fields()[5], other.status)) {
-        this.status = data().deepCopy(fields()[5].schema(), other.status);
-        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
     }
 
@@ -364,22 +334,18 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
         fieldSetFlags()[1] = true;
       }
       this.amountBuilder = null;
-      if (isValidValue(fields()[2], other.cardDetails)) {
-        this.cardDetails = data().deepCopy(fields()[2].schema(), other.cardDetails);
+      if (isValidValue(fields()[2], other.cardRecord)) {
+        this.cardRecord = data().deepCopy(fields()[2].schema(), other.cardRecord);
         fieldSetFlags()[2] = true;
       }
-      this.cardDetailsBuilder = null;
-      if (isValidValue(fields()[3], other.tokenRef)) {
-        this.tokenRef = data().deepCopy(fields()[3].schema(), other.tokenRef);
+      this.cardRecordBuilder = null;
+      if (isValidValue(fields()[3], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[3].schema(), other.timestamp);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
+      if (isValidValue(fields()[4], other.status)) {
+        this.status = data().deepCopy(fields()[4].schema(), other.status);
         fieldSetFlags()[4] = true;
-      }
-      if (isValidValue(fields()[5], other.status)) {
-        this.status = data().deepCopy(fields()[5].schema(), other.status);
-        fieldSetFlags()[5] = true;
       }
     }
 
@@ -511,129 +477,85 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
     }
 
     /**
-      * Gets the value of the 'cardDetails' field.
-      * This will be removed in the future
+      * Gets the value of the 'cardRecord' field.
+      * This is the token for the card details
       * @return The value.
       */
-    public com.zaheudev.shared.avro.CardDetails getCardDetails() {
-      return cardDetails;
+    public com.zaheudev.shared.avro.CardRecord getCardRecord() {
+      return cardRecord;
     }
 
 
     /**
-      * Sets the value of the 'cardDetails' field.
-      * This will be removed in the future
-      * @param value The value of 'cardDetails'.
+      * Sets the value of the 'cardRecord' field.
+      * This is the token for the card details
+      * @param value The value of 'cardRecord'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setCardDetails(com.zaheudev.shared.avro.CardDetails value) {
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setCardRecord(com.zaheudev.shared.avro.CardRecord value) {
       validate(fields()[2], value);
-      this.cardDetailsBuilder = null;
-      this.cardDetails = value;
+      this.cardRecordBuilder = null;
+      this.cardRecord = value;
       fieldSetFlags()[2] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'cardDetails' field has been set.
-      * This will be removed in the future
-      * @return True if the 'cardDetails' field has been set, false otherwise.
+      * Checks whether the 'cardRecord' field has been set.
+      * This is the token for the card details
+      * @return True if the 'cardRecord' field has been set, false otherwise.
       */
-    public boolean hasCardDetails() {
+    public boolean hasCardRecord() {
       return fieldSetFlags()[2];
     }
 
     /**
-     * Gets the Builder instance for the 'cardDetails' field and creates one if it doesn't exist yet.
-     * This will be removed in the future
+     * Gets the Builder instance for the 'cardRecord' field and creates one if it doesn't exist yet.
+     * This is the token for the card details
      * @return This builder.
      */
-    public com.zaheudev.shared.avro.CardDetails.Builder getCardDetailsBuilder() {
-      if (cardDetailsBuilder == null) {
-        if (hasCardDetails()) {
-          setCardDetailsBuilder(com.zaheudev.shared.avro.CardDetails.newBuilder(cardDetails));
+    public com.zaheudev.shared.avro.CardRecord.Builder getCardRecordBuilder() {
+      if (cardRecordBuilder == null) {
+        if (hasCardRecord()) {
+          setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.newBuilder(cardRecord));
         } else {
-          setCardDetailsBuilder(com.zaheudev.shared.avro.CardDetails.newBuilder());
+          setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.newBuilder());
         }
       }
-      return cardDetailsBuilder;
+      return cardRecordBuilder;
     }
 
     /**
-     * Sets the Builder instance for the 'cardDetails' field
-     * This will be removed in the future
+     * Sets the Builder instance for the 'cardRecord' field
+     * This is the token for the card details
      * @param value The builder instance that must be set.
      * @return This builder.
      */
 
-    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setCardDetailsBuilder(com.zaheudev.shared.avro.CardDetails.Builder value) {
-      clearCardDetails();
-      cardDetailsBuilder = value;
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.Builder value) {
+      clearCardRecord();
+      cardRecordBuilder = value;
       return this;
     }
 
     /**
-     * Checks whether the 'cardDetails' field has an active Builder instance
-     * This will be removed in the future
-     * @return True if the 'cardDetails' field has an active Builder instance
+     * Checks whether the 'cardRecord' field has an active Builder instance
+     * This is the token for the card details
+     * @return True if the 'cardRecord' field has an active Builder instance
      */
-    public boolean hasCardDetailsBuilder() {
-      return cardDetailsBuilder != null;
+    public boolean hasCardRecordBuilder() {
+      return cardRecordBuilder != null;
     }
 
     /**
-      * Clears the value of the 'cardDetails' field.
-      * This will be removed in the future
+      * Clears the value of the 'cardRecord' field.
+      * This is the token for the card details
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearCardDetails() {
-      cardDetails = null;
-      cardDetailsBuilder = null;
+    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearCardRecord() {
+      cardRecord = null;
+      cardRecordBuilder = null;
       fieldSetFlags()[2] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'tokenRef' field.
-      * This is the token for the card details
-      * @return The value.
-      */
-    public java.lang.CharSequence getTokenRef() {
-      return tokenRef;
-    }
-
-
-    /**
-      * Sets the value of the 'tokenRef' field.
-      * This is the token for the card details
-      * @param value The value of 'tokenRef'.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setTokenRef(java.lang.CharSequence value) {
-      validate(fields()[3], value);
-      this.tokenRef = value;
-      fieldSetFlags()[3] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'tokenRef' field has been set.
-      * This is the token for the card details
-      * @return True if the 'tokenRef' field has been set, false otherwise.
-      */
-    public boolean hasTokenRef() {
-      return fieldSetFlags()[3];
-    }
-
-
-    /**
-      * Clears the value of the 'tokenRef' field.
-      * This is the token for the card details
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearTokenRef() {
-      tokenRef = null;
-      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -654,9 +576,9 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setTimestamp(long value) {
-      validate(fields()[4], value);
+      validate(fields()[3], value);
       this.timestamp = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -666,7 +588,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @return True if the 'timestamp' field has been set, false otherwise.
       */
     public boolean hasTimestamp() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[3];
     }
 
 
@@ -676,7 +598,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearTimestamp() {
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -695,9 +617,9 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @return This builder.
       */
     public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder setStatus(com.zaheudev.shared.avro.PaymentStatus value) {
-      validate(fields()[5], value);
+      validate(fields()[4], value);
       this.status = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -706,7 +628,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       * @return True if the 'status' field has been set, false otherwise.
       */
     public boolean hasStatus() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[4];
     }
 
 
@@ -716,7 +638,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       */
     public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearStatus() {
       status = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -736,19 +658,18 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
         } else {
           record.amount = fieldSetFlags()[1] ? this.amount : (com.zaheudev.shared.avro.Amount) defaultValue(fields()[1]);
         }
-        if (cardDetailsBuilder != null) {
+        if (cardRecordBuilder != null) {
           try {
-            record.cardDetails = this.cardDetailsBuilder.build();
+            record.cardRecord = this.cardRecordBuilder.build();
           } catch (org.apache.avro.AvroMissingFieldException e) {
-            e.addParentField(record.getSchema().getField("cardDetails"));
+            e.addParentField(record.getSchema().getField("cardRecord"));
             throw e;
           }
         } else {
-          record.cardDetails = fieldSetFlags()[2] ? this.cardDetails : (com.zaheudev.shared.avro.CardDetails) defaultValue(fields()[2]);
+          record.cardRecord = fieldSetFlags()[2] ? this.cardRecord : (com.zaheudev.shared.avro.CardRecord) defaultValue(fields()[2]);
         }
-        record.tokenRef = fieldSetFlags()[3] ? this.tokenRef : (java.lang.CharSequence) defaultValue(fields()[3]);
-        record.timestamp = fieldSetFlags()[4] ? this.timestamp : (java.lang.Long) defaultValue(fields()[4]);
-        record.status = fieldSetFlags()[5] ? this.status : (com.zaheudev.shared.avro.PaymentStatus) defaultValue(fields()[5]);
+        record.timestamp = fieldSetFlags()[3] ? this.timestamp : (java.lang.Long) defaultValue(fields()[3]);
+        record.status = fieldSetFlags()[4] ? this.status : (com.zaheudev.shared.avro.PaymentStatus) defaultValue(fields()[4]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -785,21 +706,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     this.amount.customEncode(out);
 
-    if (this.cardDetails == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      this.cardDetails.customEncode(out);
-    }
-
-    if (this.tokenRef == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.tokenRef);
-    }
+    this.cardRecord.customEncode(out);
 
     out.writeLong(this.timestamp);
 
@@ -819,29 +726,17 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
       }
       this.amount.customDecode(in);
 
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.cardDetails = null;
-      } else {
-        if (this.cardDetails == null) {
-          this.cardDetails = new com.zaheudev.shared.avro.CardDetails();
-        }
-        this.cardDetails.customDecode(in);
+      if (this.cardRecord == null) {
+        this.cardRecord = new com.zaheudev.shared.avro.CardRecord();
       }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.tokenRef = null;
-      } else {
-        this.tokenRef = in.readString(this.tokenRef instanceof Utf8 ? (Utf8)this.tokenRef : null);
-      }
+      this.cardRecord.customDecode(in);
 
       this.timestamp = in.readLong();
 
       this.status = com.zaheudev.shared.avro.PaymentStatus.values()[in.readEnum()];
 
     } else {
-      for (int i = 0; i < 6; i++) {
+      for (int i = 0; i < 5; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.paymentId = in.readString(this.paymentId instanceof Utf8 ? (Utf8)this.paymentId : null);
@@ -855,31 +750,17 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
           break;
 
         case 2:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.cardDetails = null;
-          } else {
-            if (this.cardDetails == null) {
-              this.cardDetails = new com.zaheudev.shared.avro.CardDetails();
-            }
-            this.cardDetails.customDecode(in);
+          if (this.cardRecord == null) {
+            this.cardRecord = new com.zaheudev.shared.avro.CardRecord();
           }
+          this.cardRecord.customDecode(in);
           break;
 
         case 3:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.tokenRef = null;
-          } else {
-            this.tokenRef = in.readString(this.tokenRef instanceof Utf8 ? (Utf8)this.tokenRef : null);
-          }
-          break;
-
-        case 4:
           this.timestamp = in.readLong();
           break;
 
-        case 5:
+        case 4:
           this.status = com.zaheudev.shared.avro.PaymentStatus.values()[in.readEnum()];
           break;
 
@@ -895,8 +776,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
     int result = 1;
     result = 31 * result + (paymentId == null ? 0 : paymentId.hashCode());
     result = 31 * result + (amount == null ? 0 : amount.hashCode());
-    result = 31 * result + (cardDetails == null ? 0 : cardDetails.hashCode());
-    result = 31 * result + (tokenRef == null ? 0 : tokenRef.hashCode());
+    result = 31 * result + (cardRecord == null ? 0 : cardRecord.hashCode());
     result = 31 * result + Long.hashCode(timestamp);
     result = 31 * result + (status == null ? 0 : ((java.lang.Enum) status).ordinal());
     return result;
@@ -917,10 +797,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
     if (!java.util.Objects.equals(this.amount, other.amount)) {
       return false;
     }
-    if (!java.util.Objects.equals(this.cardDetails, other.cardDetails)) {
-      return false;
-    }
-    if (Utf8.compareSequences(this.tokenRef, other.tokenRef) != 0) {
+    if (!java.util.Objects.equals(this.cardRecord, other.cardRecord)) {
       return false;
     }
     if (this.timestamp != other.timestamp) {

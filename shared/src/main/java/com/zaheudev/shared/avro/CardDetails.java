@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class CardDetails extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 4970236675112430083L;
+  private static final long serialVersionUID = 8103031620504169284L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CardDetails\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"cardNumber\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"cardHolderName\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"expiryMonth\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"expiryYear\",\"type\":[\"null\",\"int\"],\"default\":null},{\"name\":\"cvv\",\"type\":[\"null\",\"string\"],\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CardDetails\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"bin\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"cardHolderName\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"expiryMonth\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"expiryYear\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"cvv\",\"type\":[\"null\",\"string\"],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -72,10 +72,10 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
     return DECODER.decode(b);
   }
 
-  private java.lang.CharSequence cardNumber;
+  private java.lang.CharSequence bin;
   private java.lang.CharSequence cardHolderName;
-  private java.lang.Integer expiryMonth;
-  private java.lang.Integer expiryYear;
+  private java.lang.CharSequence expiryMonth;
+  private java.lang.CharSequence expiryYear;
   private java.lang.CharSequence cvv;
 
   /**
@@ -87,14 +87,14 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
 
   /**
    * All-args constructor.
-   * @param cardNumber The new value for cardNumber
+   * @param bin The new value for bin
    * @param cardHolderName The new value for cardHolderName
    * @param expiryMonth The new value for expiryMonth
    * @param expiryYear The new value for expiryYear
    * @param cvv The new value for cvv
    */
-  public CardDetails(java.lang.CharSequence cardNumber, java.lang.CharSequence cardHolderName, java.lang.Integer expiryMonth, java.lang.Integer expiryYear, java.lang.CharSequence cvv) {
-    this.cardNumber = cardNumber;
+  public CardDetails(java.lang.CharSequence bin, java.lang.CharSequence cardHolderName, java.lang.CharSequence expiryMonth, java.lang.CharSequence expiryYear, java.lang.CharSequence cvv) {
+    this.bin = bin;
     this.cardHolderName = cardHolderName;
     this.expiryMonth = expiryMonth;
     this.expiryYear = expiryYear;
@@ -111,7 +111,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
   @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return cardNumber;
+    case 0: return bin;
     case 1: return cardHolderName;
     case 2: return expiryMonth;
     case 3: return expiryYear;
@@ -125,30 +125,30 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: cardNumber = (java.lang.CharSequence)value$; break;
+    case 0: bin = (java.lang.CharSequence)value$; break;
     case 1: cardHolderName = (java.lang.CharSequence)value$; break;
-    case 2: expiryMonth = (java.lang.Integer)value$; break;
-    case 3: expiryYear = (java.lang.Integer)value$; break;
+    case 2: expiryMonth = (java.lang.CharSequence)value$; break;
+    case 3: expiryYear = (java.lang.CharSequence)value$; break;
     case 4: cvv = (java.lang.CharSequence)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
   /**
-   * Gets the value of the 'cardNumber' field.
-   * @return The value of the 'cardNumber' field.
+   * Gets the value of the 'bin' field.
+   * @return The value of the 'bin' field.
    */
-  public java.lang.CharSequence getCardNumber() {
-    return cardNumber;
+  public java.lang.CharSequence getBin() {
+    return bin;
   }
 
 
   /**
-   * Sets the value of the 'cardNumber' field.
+   * Sets the value of the 'bin' field.
    * @param value the value to set.
    */
-  public void setCardNumber(java.lang.CharSequence value) {
-    this.cardNumber = value;
+  public void setBin(java.lang.CharSequence value) {
+    this.bin = value;
   }
 
   /**
@@ -172,7 +172,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
    * Gets the value of the 'expiryMonth' field.
    * @return The value of the 'expiryMonth' field.
    */
-  public java.lang.Integer getExpiryMonth() {
+  public java.lang.CharSequence getExpiryMonth() {
     return expiryMonth;
   }
 
@@ -181,7 +181,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
    * Sets the value of the 'expiryMonth' field.
    * @param value the value to set.
    */
-  public void setExpiryMonth(java.lang.Integer value) {
+  public void setExpiryMonth(java.lang.CharSequence value) {
     this.expiryMonth = value;
   }
 
@@ -189,7 +189,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
    * Gets the value of the 'expiryYear' field.
    * @return The value of the 'expiryYear' field.
    */
-  public java.lang.Integer getExpiryYear() {
+  public java.lang.CharSequence getExpiryYear() {
     return expiryYear;
   }
 
@@ -198,7 +198,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
    * Sets the value of the 'expiryYear' field.
    * @param value the value to set.
    */
-  public void setExpiryYear(java.lang.Integer value) {
+  public void setExpiryYear(java.lang.CharSequence value) {
     this.expiryYear = value;
   }
 
@@ -260,10 +260,10 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<CardDetails>
     implements org.apache.avro.data.RecordBuilder<CardDetails> {
 
-    private java.lang.CharSequence cardNumber;
+    private java.lang.CharSequence bin;
     private java.lang.CharSequence cardHolderName;
-    private java.lang.Integer expiryMonth;
-    private java.lang.Integer expiryYear;
+    private java.lang.CharSequence expiryMonth;
+    private java.lang.CharSequence expiryYear;
     private java.lang.CharSequence cvv;
 
     /** Creates a new Builder */
@@ -277,8 +277,8 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
      */
     private Builder(com.zaheudev.shared.avro.CardDetails.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.cardNumber)) {
-        this.cardNumber = data().deepCopy(fields()[0].schema(), other.cardNumber);
+      if (isValidValue(fields()[0], other.bin)) {
+        this.bin = data().deepCopy(fields()[0].schema(), other.bin);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.cardHolderName)) {
@@ -305,8 +305,8 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
      */
     private Builder(com.zaheudev.shared.avro.CardDetails other) {
       super(SCHEMA$, MODEL$);
-      if (isValidValue(fields()[0], other.cardNumber)) {
-        this.cardNumber = data().deepCopy(fields()[0].schema(), other.cardNumber);
+      if (isValidValue(fields()[0], other.bin)) {
+        this.bin = data().deepCopy(fields()[0].schema(), other.bin);
         fieldSetFlags()[0] = true;
       }
       if (isValidValue(fields()[1], other.cardHolderName)) {
@@ -328,41 +328,41 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
     }
 
     /**
-      * Gets the value of the 'cardNumber' field.
+      * Gets the value of the 'bin' field.
       * @return The value.
       */
-    public java.lang.CharSequence getCardNumber() {
-      return cardNumber;
+    public java.lang.CharSequence getBin() {
+      return bin;
     }
 
 
     /**
-      * Sets the value of the 'cardNumber' field.
-      * @param value The value of 'cardNumber'.
+      * Sets the value of the 'bin' field.
+      * @param value The value of 'bin'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.CardDetails.Builder setCardNumber(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.CardDetails.Builder setBin(java.lang.CharSequence value) {
       validate(fields()[0], value);
-      this.cardNumber = value;
+      this.bin = value;
       fieldSetFlags()[0] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'cardNumber' field has been set.
-      * @return True if the 'cardNumber' field has been set, false otherwise.
+      * Checks whether the 'bin' field has been set.
+      * @return True if the 'bin' field has been set, false otherwise.
       */
-    public boolean hasCardNumber() {
+    public boolean hasBin() {
       return fieldSetFlags()[0];
     }
 
 
     /**
-      * Clears the value of the 'cardNumber' field.
+      * Clears the value of the 'bin' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.CardDetails.Builder clearCardNumber() {
-      cardNumber = null;
+    public com.zaheudev.shared.avro.CardDetails.Builder clearBin() {
+      bin = null;
       fieldSetFlags()[0] = false;
       return this;
     }
@@ -411,7 +411,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
       * Gets the value of the 'expiryMonth' field.
       * @return The value.
       */
-    public java.lang.Integer getExpiryMonth() {
+    public java.lang.CharSequence getExpiryMonth() {
       return expiryMonth;
     }
 
@@ -421,7 +421,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
       * @param value The value of 'expiryMonth'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.CardDetails.Builder setExpiryMonth(java.lang.Integer value) {
+    public com.zaheudev.shared.avro.CardDetails.Builder setExpiryMonth(java.lang.CharSequence value) {
       validate(fields()[2], value);
       this.expiryMonth = value;
       fieldSetFlags()[2] = true;
@@ -451,7 +451,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
       * Gets the value of the 'expiryYear' field.
       * @return The value.
       */
-    public java.lang.Integer getExpiryYear() {
+    public java.lang.CharSequence getExpiryYear() {
       return expiryYear;
     }
 
@@ -461,7 +461,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
       * @param value The value of 'expiryYear'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.CardDetails.Builder setExpiryYear(java.lang.Integer value) {
+    public com.zaheudev.shared.avro.CardDetails.Builder setExpiryYear(java.lang.CharSequence value) {
       validate(fields()[3], value);
       this.expiryYear = value;
       fieldSetFlags()[3] = true;
@@ -532,10 +532,10 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
     public CardDetails build() {
       try {
         CardDetails record = new CardDetails();
-        record.cardNumber = fieldSetFlags()[0] ? this.cardNumber : (java.lang.CharSequence) defaultValue(fields()[0]);
+        record.bin = fieldSetFlags()[0] ? this.bin : (java.lang.CharSequence) defaultValue(fields()[0]);
         record.cardHolderName = fieldSetFlags()[1] ? this.cardHolderName : (java.lang.CharSequence) defaultValue(fields()[1]);
-        record.expiryMonth = fieldSetFlags()[2] ? this.expiryMonth : (java.lang.Integer) defaultValue(fields()[2]);
-        record.expiryYear = fieldSetFlags()[3] ? this.expiryYear : (java.lang.Integer) defaultValue(fields()[3]);
+        record.expiryMonth = fieldSetFlags()[2] ? this.expiryMonth : (java.lang.CharSequence) defaultValue(fields()[2]);
+        record.expiryYear = fieldSetFlags()[3] ? this.expiryYear : (java.lang.CharSequence) defaultValue(fields()[3]);
         record.cvv = fieldSetFlags()[4] ? this.cvv : (java.lang.CharSequence) defaultValue(fields()[4]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
@@ -569,12 +569,12 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
   @Override public void customEncode(org.apache.avro.io.Encoder out)
     throws java.io.IOException
   {
-    if (this.cardNumber == null) {
+    if (this.bin == null) {
       out.writeIndex(0);
       out.writeNull();
     } else {
       out.writeIndex(1);
-      out.writeString(this.cardNumber);
+      out.writeString(this.bin);
     }
 
     if (this.cardHolderName == null) {
@@ -590,7 +590,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
       out.writeNull();
     } else {
       out.writeIndex(1);
-      out.writeInt(this.expiryMonth);
+      out.writeString(this.expiryMonth);
     }
 
     if (this.expiryYear == null) {
@@ -598,7 +598,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
       out.writeNull();
     } else {
       out.writeIndex(1);
-      out.writeInt(this.expiryYear);
+      out.writeString(this.expiryYear);
     }
 
     if (this.cvv == null) {
@@ -618,9 +618,9 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
     if (fieldOrder == null) {
       if (in.readIndex() != 1) {
         in.readNull();
-        this.cardNumber = null;
+        this.bin = null;
       } else {
-        this.cardNumber = in.readString(this.cardNumber instanceof Utf8 ? (Utf8)this.cardNumber : null);
+        this.bin = in.readString(this.bin instanceof Utf8 ? (Utf8)this.bin : null);
       }
 
       if (in.readIndex() != 1) {
@@ -634,14 +634,14 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
         in.readNull();
         this.expiryMonth = null;
       } else {
-        this.expiryMonth = in.readInt();
+        this.expiryMonth = in.readString(this.expiryMonth instanceof Utf8 ? (Utf8)this.expiryMonth : null);
       }
 
       if (in.readIndex() != 1) {
         in.readNull();
         this.expiryYear = null;
       } else {
-        this.expiryYear = in.readInt();
+        this.expiryYear = in.readString(this.expiryYear instanceof Utf8 ? (Utf8)this.expiryYear : null);
       }
 
       if (in.readIndex() != 1) {
@@ -657,9 +657,9 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
         case 0:
           if (in.readIndex() != 1) {
             in.readNull();
-            this.cardNumber = null;
+            this.bin = null;
           } else {
-            this.cardNumber = in.readString(this.cardNumber instanceof Utf8 ? (Utf8)this.cardNumber : null);
+            this.bin = in.readString(this.bin instanceof Utf8 ? (Utf8)this.bin : null);
           }
           break;
 
@@ -677,7 +677,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
             in.readNull();
             this.expiryMonth = null;
           } else {
-            this.expiryMonth = in.readInt();
+            this.expiryMonth = in.readString(this.expiryMonth instanceof Utf8 ? (Utf8)this.expiryMonth : null);
           }
           break;
 
@@ -686,7 +686,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
             in.readNull();
             this.expiryYear = null;
           } else {
-            this.expiryYear = in.readInt();
+            this.expiryYear = in.readString(this.expiryYear instanceof Utf8 ? (Utf8)this.expiryYear : null);
           }
           break;
 
@@ -709,7 +709,7 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
   @Override
   public int hashCode() {
     int result = 1;
-    result = 31 * result + (cardNumber == null ? 0 : cardNumber.hashCode());
+    result = 31 * result + (bin == null ? 0 : bin.hashCode());
     result = 31 * result + (cardHolderName == null ? 0 : cardHolderName.hashCode());
     result = 31 * result + (expiryMonth == null ? 0 : expiryMonth.hashCode());
     result = 31 * result + (expiryYear == null ? 0 : expiryYear.hashCode());
@@ -726,16 +726,16 @@ public class CardDetails extends org.apache.avro.specific.SpecificRecordBase imp
       return false;
     }
     CardDetails other = (CardDetails) o;
-    if (Utf8.compareSequences(this.cardNumber, other.cardNumber) != 0) {
+    if (Utf8.compareSequences(this.bin, other.bin) != 0) {
       return false;
     }
     if (Utf8.compareSequences(this.cardHolderName, other.cardHolderName) != 0) {
       return false;
     }
-    if (!java.util.Objects.equals(this.expiryMonth, other.expiryMonth)) {
+    if (Utf8.compareSequences(this.expiryMonth, other.expiryMonth) != 0) {
       return false;
     }
-    if (!java.util.Objects.equals(this.expiryYear, other.expiryYear)) {
+    if (Utf8.compareSequences(this.expiryYear, other.expiryYear) != 0) {
       return false;
     }
     if (Utf8.compareSequences(this.cvv, other.cvv) != 0) {

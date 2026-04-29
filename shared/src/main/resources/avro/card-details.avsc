@@ -4,7 +4,7 @@
   "namespace": "com.zaheudev.shared.avro",
   "fields": [
     {
-      "name": "cardNumber",
+      "name": "bin",
       "type": ["null","string"],
       "default": null
     },
@@ -15,12 +15,12 @@
     },
     {
       "name": "expiryMonth",
-      "type": ["null","int"],
+      "type": ["null","string"],
       "default": null
     },
     {
       "name": "expiryYear",
-      "type": ["null","int"],
+      "type": ["null","string"],
       "default": null
     },
     {

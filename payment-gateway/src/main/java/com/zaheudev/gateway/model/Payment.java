@@ -23,7 +23,7 @@ public class Payment {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static Payment createPayment(String merchantRef, Amount amount, CardDetails cardDetails){
+    public static Payment createPayment(String merchantRef, Amount amount, CardDetails cardDetails, String tokenRef){
         LocalDateTime now = LocalDateTime.now();
         return Payment.builder()
                 .paymentId(generatePaymentId())
@@ -33,6 +33,7 @@ public class Payment {
                 .cardDetails(cardDetails)
                 .createdAt(now)
                 .updatedAt(now)
+                .tokenRef(tokenRef)
                 .build();
     }
 

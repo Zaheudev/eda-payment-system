@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "name": "CardRecord",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    {
+      "name": "tokenRef",
+      "type": "string",
+      "doc": "This is the token for the card details"
+    },
+    {
+      "name": "bin",
+      "type": "string",
+      "doc": "The first 6 digits of the card number"
+    },
+    {
+      "name": "lastFour",
+      "type": "string"
+    }
+  ]
+}

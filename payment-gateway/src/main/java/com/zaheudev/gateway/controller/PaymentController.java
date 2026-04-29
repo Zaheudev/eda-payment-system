@@ -15,7 +15,7 @@ public class PaymentController {
     @Autowired
     PaymentServiceImpl paymentService;
 
-    @PostMapping("/api/v1/payments")
+        @PostMapping("/api/v1/payments")
     public ResponseEntity<PaymentResponse> createPayment(@RequestBody CreatePaymentRequest request){
         PaymentResponse response = paymentService.createPayment(request);
         return new ResponseEntity<>(response, null, 201);

@@ -1,8 +1,6 @@
 package com.zaheudev.ctm.service;
 
-import com.zaheudev.ctm.dto.DetokenizeResponse;
-import com.zaheudev.ctm.dto.TokenStatus;
-import com.zaheudev.ctm.dto.TokenizeResponse;
+import com.zaheudev.shared.dto.*;
 import com.zaheudev.ctm.entity.CardTokenEntity;
 import com.zaheudev.ctm.repository.CardTokenRepository;
 import com.zaheudev.shared.avro.CardDetails;
@@ -23,7 +21,6 @@ public class CardTokenService {
     private CardTokenRepository cardTokenRepository;
     private Generator generator;
 
-    private SecretKeySpec secretKey;
     @Value("${ctm.encryption.secret-key}")
     private String secretKeyString;
     private static final int EXPIRY_MONTHS = 12;
@@ -34,7 +31,7 @@ public class CardTokenService {
         this.generator = generator;
     }
 
-    public TokenizeResponse tokenize(CardDetails cardDetails, String expiryMonth, String expiryYear) throws Exception {
+    public TokenizeResponse tokenize(TokenizeRequest cardDetails) throws Exception {
         String tokenRef = "TKN-" + UUID.randomUUID().toString();
         String tokenValue = generator.generatePAN(12);
         String encryptedPan = generator.encryptPAN(cardDetails.getCardNumber().toString(),getSecretKey());
@@ -44,13 +41,13 @@ public class CardTokenService {
                 .tokenRef(tokenRef)
                 .tokenValue(tokenValue)
                 .encryptedPan(encryptedPan)
-                .bin(cardDetails.getCardNumber().toString().substring(0, 6))
-                .lastFour(cardDetails.getCardNumber().toString().substring(cardDetails.getCardNumber().toString().length() - 4))
+                .bin(cardDetails.getCardNumber().substring(0, 6))
+                .lastFour(cardDetails.getCardNumber().substring(cardDetails.getCardNumber().length() - 4))
                 .cardNetwork(PaymentMethodEnum.VISA) // This should be determined by the card number pattern
                 .cardType("CREDIT") // This should also be determined by the card number pattern
-                .expiryMonth(expiryMonth)
-                .expiryYear(expiryYear)
-                .cardholderName(cardDetails.getCardHolderName().toString())
+                .expiryMonth(cardDetails.getExpiryMonth())
+                .expiryYear(cardDetails.getExpiryYear())
+                .cardholderName(cardDetails.getCardHolderName())
                 .createdAt(LocalDateTime.now())
                 .status(TokenStatus.ACTIVE)
                 .build();
@@ -81,6 +78,21 @@ public class CardTokenService {
                 .cardNumber(decryptedPan)
                 .expiryYear(entity.getExpiryYear())
                 .expiryMonth(entity.getExpiryMonth())
+                .build();
+    }
+
+    public CardTokenMetadata getMetadata(String tokenRef){
+        CardTokenEntity entity = cardTokenRepository.findByTokenRef(tokenRef)
+                .orElseThrow(() -> new RuntimeException("Token not found"));
+        return CardTokenMetadata.builder()
+                .bin(entity.getBin())
+                .lastFour(entity.getLastFour())
+                .cardType(entity.getCardType())
+                .cardNetwork(entity.getCardNetwork().name())
+                .cardholderName(entity.getCardholderName())
+                .expiryMonth(entity.getExpiryMonth())
+                .expiryYear(entity.getExpiryYear())
+                .status(entity.getStatus())
                 .build();
     }
 

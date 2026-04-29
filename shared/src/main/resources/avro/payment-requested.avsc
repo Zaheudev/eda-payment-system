@@ -14,13 +14,8 @@
       "doc": "Amount object with currency and value"
     },
     {
-      "name": "cardDetails",
-      "type": ["null","com.zaheudev.shared.avro.CardDetails"],
-      "doc": "This will be removed in the future"
-    },
-    {
-      "name": "tokenRef",
-      "type": ["null","string"],
+      "name": "cardRecord",
+      "type": "com.zaheudev.shared.avro.CardRecord",
       "doc": "This is the token for the card details"
     },
     {

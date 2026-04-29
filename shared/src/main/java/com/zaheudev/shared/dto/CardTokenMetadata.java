@@ -1,9 +1,9 @@
-package com.zaheudev.ctm.dto;
+package com.zaheudev.shared.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.AllArgsConstructor;import lombok.Builder;
+import lombok.Data;import lombok.NoArgsConstructor;
 
-@Data @Builder
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class CardTokenMetadata {
     private String bin;
     private String lastFour;

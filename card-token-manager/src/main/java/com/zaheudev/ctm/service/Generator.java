@@ -16,7 +16,7 @@ public class Generator {
         With this system we can generate many raw PAN for testing diverse payemnts, but needs the generating
         logic modificated to match the pattern regex for determinating card network, debit or credit card etc.
      */
-    public String generatePAN(Integer length) {
+    public String generatePAN(Integer length) { 
         Integer[] pan = new Integer[length];
         pan[length-1] = 0;
         for(int i = 0; i < length-1; i++){

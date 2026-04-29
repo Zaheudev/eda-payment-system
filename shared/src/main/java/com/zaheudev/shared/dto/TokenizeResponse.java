@@ -1,4 +1,4 @@
-package com.zaheudev.ctm.dto;
+package com.zaheudev.shared.dto;
 
 import com.zaheudev.shared.avro.PaymentMethodEnum;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @Builder
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class TokenizeResponse {
     private String tokenRef;
     private String bin;

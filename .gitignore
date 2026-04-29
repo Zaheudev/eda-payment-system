@@ -114,3 +114,5 @@ coverage/
 .coverage
 htmlcov/
 target/site/
+
+.factory

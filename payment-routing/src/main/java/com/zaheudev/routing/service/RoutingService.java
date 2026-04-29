@@ -20,8 +20,9 @@ public class RoutingService {
 
     public RoutingResult calculateOptimalRouting(PaymentRequestedEvent event){
         Long value = event.getAmount().getValue();
-        System.out.println(event);
+        log.info("Calculating optimal routing for event: {}", event);
         Set<PaymentMethodEnum> availableNetworks = determineAvailableNetworks(event);
+        log.info("Available networks: {}", availableNetworks);
         // in this map we store the total cost for every available network
         // we use TreeSet to insert them decreasing by the cost
         // For now a good approach is to use a TreeMap, but in future I will implement risk and other criteria to comporator which best is TreeSet
@@ -68,8 +69,7 @@ public class RoutingService {
     public Set<PaymentMethodEnum> determineAvailableNetworks(PaymentRequestedEvent event) {
         Set<PaymentMethodEnum> networks = new HashSet<>();
 
-        String bin = extractBin(event);
-
+        String bin = event.getCardRecord().getBin().toString();
         PaymentMethodEnum primaryNetwork = determinePrimaryNetwork(bin);
         networks.add(primaryNetwork);
 
@@ -78,14 +78,6 @@ public class RoutingService {
         }
 
         return networks;
-    }
-
-    private String extractBin(PaymentRequestedEvent event) {
-        if (event.getCardDetails() != null) {
-            String cardNumber = event.getCardDetails().getCardNumber().toString();
-            return cardNumber.substring(0, 6);
-        }
-        return null;
     }
 
     private PaymentMethodEnum determinePrimaryNetwork(String bin) {
@@ -113,13 +105,11 @@ public class RoutingService {
 
         Set<PaymentMethodEnum> debitNetworks = new HashSet<>();
 
-        // example: Bank of America cards supports ACCEL
         if (bin.startsWith("453")) {
             debitNetworks.add(PaymentMethodEnum.ACCEL);
             debitNetworks.add(PaymentMethodEnum.STAR);
         }
 
-        // Chase cards support NYCE
         if (bin.startsWith("520")) {
             debitNetworks.add(PaymentMethodEnum.NYCE);
             debitNetworks.add(PaymentMethodEnum.PULSE);
