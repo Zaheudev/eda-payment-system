@@ -68,50 +68,33 @@ public class RoutingService {
      */
     public Set<PaymentMethodEnum> determineAvailableNetworks(PaymentRequestedEvent event) {
         Set<PaymentMethodEnum> networks = new HashSet<>();
-
-        String bin = event.getCardRecord().getBin().toString();
-        PaymentMethodEnum primaryNetwork = determinePrimaryNetwork(bin);
+        PaymentMethodEnum primaryNetwork = event.getCardRecord().getPrimaryNetwork();
         networks.add(primaryNetwork);
 
-        if (isDebitCard(bin)) {
-            networks.addAll(getDebitNetworksForBin(bin));
+        if (event.getCardRecord().getCardType().equals("DEBIT")) {
+            networks.addAll(getDebitNetworksForNetwork(primaryNetwork));
         }
 
         return networks;
     }
 
-    private PaymentMethodEnum determinePrimaryNetwork(String bin) {
-        if (bin.startsWith("4")) {
-            return PaymentMethodEnum.VISA;
-        } else if (bin.matches("^5[1-5].*")) {
-            return PaymentMethodEnum.MASTERCARD;
-        } else if (bin.startsWith("34") || bin.startsWith("37")) {
-            return PaymentMethodEnum.AMEX;
-        } else if (bin.startsWith("6")) {
-            return PaymentMethodEnum.DISCOVER;
-        }
-        return PaymentMethodEnum.VISA;
-    }
-
-    private boolean isDebitCard(String bin) {
-        // in reality, this would come from a BIN database, but i am still figuring it out
-        // for demo purposes: assume BINs 453xxx and 520xxx are debit
-        return bin.startsWith("453") || bin.startsWith("520");
-    }
-
-    private Set<PaymentMethodEnum> getDebitNetworksForBin(String bin) {
+        private Set<PaymentMethodEnum> getDebitNetworksForNetwork(PaymentMethodEnum network) {
         // in reality this would come from a bin database,
         // but for demo purposes I hardcode some rules
 
         Set<PaymentMethodEnum> debitNetworks = new HashSet<>();
 
-        if (bin.startsWith("453")) {
+        if (network.equals(PaymentMethodEnum.VISA)) {
             debitNetworks.add(PaymentMethodEnum.ACCEL);
             debitNetworks.add(PaymentMethodEnum.STAR);
         }
 
-        if (bin.startsWith("520")) {
+        if (network.equals(PaymentMethodEnum.MASTERCARD)) {
             debitNetworks.add(PaymentMethodEnum.NYCE);
+            debitNetworks.add(PaymentMethodEnum.PULSE);
+        }
+
+        if(network.equals(PaymentMethodEnum.DISCOVER)){
             debitNetworks.add(PaymentMethodEnum.PULSE);
         }
 

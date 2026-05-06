@@ -56,6 +56,8 @@ public class PaymentServiceImpl implements PaymentService{
                         .setBin(tokenResponse.getBin())
                         .setLastFour(tokenResponse.getLastFour())
                         .setTokenRef(tokenResponse.getTokenRef())
+                        .setPrimaryNetwork(tokenResponse.getCardNetwork())
+                        .setCardType(tokenResponse.getCardType())
                         .build())
                 .build();
 

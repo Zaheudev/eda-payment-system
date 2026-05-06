@@ -16,6 +16,14 @@
     {
       "name": "lastFour",
       "type": "string"
+    },
+    {
+     "name": "primaryNetwork",
+      "type": "com.zaheudev.shared.avro.PaymentMethodEnum"
+    },
+    {
+      "name": "cardType",
+      "type": "string"
     }
   ]
 }

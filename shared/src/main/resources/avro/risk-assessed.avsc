@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "name": "RiskAssessed",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    {"name": "paymentId", "type": "string"},
+    {"name": "riskScore", "type": "double"},
+    {"name": "riskLevel", "type": "enum", "symbols": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+    {"name": "approved", "type": "boolean"},
+    {"name": "reason", "type": "string"},
+    {"name":  "assessmentId", "type": "string"},
+    {"name": "timestamp", "type": "long"}
+  ]
+}

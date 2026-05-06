@@ -43,8 +43,8 @@ public class CardTokenService {
                 .encryptedPan(encryptedPan)
                 .bin(cardDetails.getCardNumber().substring(0, 6))
                 .lastFour(cardDetails.getCardNumber().substring(cardDetails.getCardNumber().length() - 4))
-                .cardNetwork(PaymentMethodEnum.VISA) // This should be determined by the card number pattern
-                .cardType("CREDIT") // This should also be determined by the card number pattern
+                .cardNetwork(determinePrimaryNetwork(cardDetails.getCardNumber())) // This should be determined by the card number pattern
+                .cardType(determineCardType(cardDetails.getCardNumber())) // This should also be determined by the card number pattern
                 .expiryMonth(cardDetails.getExpiryMonth())
                 .expiryYear(cardDetails.getExpiryYear())
                 .cardholderName(cardDetails.getCardHolderName())
@@ -94,6 +94,26 @@ public class CardTokenService {
                 .expiryYear(entity.getExpiryYear())
                 .status(entity.getStatus())
                 .build();
+    }
+
+    private PaymentMethodEnum determinePrimaryNetwork(String number) {
+        if (number.startsWith("4")) {
+            return PaymentMethodEnum.VISA;
+        } else if (number.matches("^5[1-5].*")) {
+            return PaymentMethodEnum.MASTERCARD;
+        } else if (number.startsWith("34") || number.startsWith("37")) {
+            return PaymentMethodEnum.AMEX;
+        } else if (number.startsWith("6")) {
+            return PaymentMethodEnum.DISCOVER;
+        }
+        return PaymentMethodEnum.VISA;
+    }
+
+    private String determineCardType(String number) {
+        // in reality, this would come from a BIN database, but i am still figuring it out
+        // for demo purposes: assume BINs 453xxx and 520xxx are debit
+
+        return number.startsWith("453") || number.startsWith("520") ? "DEBIT" : "CREDIT";
     }
 
     private SecretKey getSecretKey(){

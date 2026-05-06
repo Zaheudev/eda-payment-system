@@ -18,6 +18,7 @@
         <module>payment-gateway</module>
         <module>payment-routing</module>
         <module>card-token-manager</module>
+        <module>risk-fraud</module>
     </modules>
 
     <properties>
