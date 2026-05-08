@@ -14,19 +14,21 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Slf4j
 @Component
 public class PaymentRequestedConsumer {
     @Autowired
-    RiskService riskService;
+    private RiskService riskService;
 
     @Autowired
-    RiskAssessmentRepository riskAssessmentRepository;
+    private RiskAssessmentRepository riskAssessmentRepository;
 
     @Autowired
-    RiskAssessProducer riskAssessProducer;
+    private RiskAssessProducer riskAssessProducer;
 
-    @KafkaListener(topics = "payment-requested")
+    @KafkaListener(topics = "payment-requests")
     public void consume(ConsumerRecord<String, PaymentRequestedEvent> record, Acknowledgment ack){
         String paymentId = record.key();
         PaymentRequestedEvent event  = record.value();
@@ -34,24 +36,30 @@ public class PaymentRequestedConsumer {
         try{
             RiskLevel riskLevel = riskService.assessRisk(paymentId);
             RiskAssessmentEntity riskEntity = RiskAssessmentEntity.builder()
+                    .assessmentId(UUID.randomUUID().toString())
                     .paymentId(paymentId)
                     .riskLevel(riskLevel)
                     .riskReason("Risk calculated based on transaction history and card details")
                     .approved(riskLevel == RiskLevel.MEDIUM)
+                    .assessmentDate(java.time.LocalDate.now())
                     .build();
             riskAssessmentRepository.save(riskEntity);
             log.info("Risk assessment saved in db");
             ack.acknowledge();
             log.info("Publishing risk to kafka");
             riskAssessProducer.publishRiskAssessmentEvent(RiskAssessed.newBuilder()
+                    .setAssessmentId(riskEntity.getAssessmentId())
                     .setPaymentId(paymentId)
-                    .setRiskLevel(riskLevel.name())
+                    .setRiskLevel(com.zaheudev.shared.avro.RiskLevel.valueOf(riskLevel.name()))
                     .setReason(riskEntity.getRiskReason())
                     .setApproved(riskEntity.isApproved())
                     .setTimestamp(System.currentTimeMillis())
+                    .setCardRecord(event.getCardRecord())
+                    .setAmount(event.getAmount())
                     .build());
         }catch(Exception e){
             log.error("Error while calculating risk for payment: {}", paymentId);
+            log.error("Error: {}", e.getMessage());
         }
     }
 }

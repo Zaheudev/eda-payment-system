@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 8681846726463660957L;
+  private static final long serialVersionUID = -8368188189912124342L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RiskAssessed\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\"},{\"name\":\"riskScore\",\"type\":\"double\"},{\"name\":\"riskLevel\",\"type\":\"string\"},{\"name\":\"approved\",\"type\":\"boolean\"},{\"name\":\"reason\",\"type\":\"string\"},{\"name\":\"assessmentId\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"long\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RiskAssessed\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\"},{\"name\":\"riskLevel\",\"type\":{\"type\":\"enum\",\"name\":\"RiskLevel\",\"symbols\":[\"LOW\",\"MEDIUM\",\"HIGH\",\"CRITICAL\"]}},{\"name\":\"approved\",\"type\":\"boolean\"},{\"name\":\"reason\",\"type\":\"string\"},{\"name\":\"assessmentId\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"cardRecord\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"CardRecord\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"},{\"name\":\"primaryNetwork\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}],\"default\":null},{\"name\":\"cardType\",\"type\":[\"null\",\"string\"],\"default\":null}]}],\"default\":null},{\"name\":\"amount\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -73,12 +73,13 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   private java.lang.CharSequence paymentId;
-  private double riskScore;
-  private java.lang.CharSequence riskLevel;
+  private com.zaheudev.shared.avro.RiskLevel riskLevel;
   private boolean approved;
   private java.lang.CharSequence reason;
   private java.lang.CharSequence assessmentId;
   private long timestamp;
+  private com.zaheudev.shared.avro.CardRecord cardRecord;
+  private com.zaheudev.shared.avro.Amount amount;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -90,21 +91,23 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * All-args constructor.
    * @param paymentId The new value for paymentId
-   * @param riskScore The new value for riskScore
    * @param riskLevel The new value for riskLevel
    * @param approved The new value for approved
    * @param reason The new value for reason
    * @param assessmentId The new value for assessmentId
    * @param timestamp The new value for timestamp
+   * @param cardRecord The new value for cardRecord
+   * @param amount The new value for amount
    */
-  public RiskAssessed(java.lang.CharSequence paymentId, java.lang.Double riskScore, java.lang.CharSequence riskLevel, java.lang.Boolean approved, java.lang.CharSequence reason, java.lang.CharSequence assessmentId, java.lang.Long timestamp) {
+  public RiskAssessed(java.lang.CharSequence paymentId, com.zaheudev.shared.avro.RiskLevel riskLevel, java.lang.Boolean approved, java.lang.CharSequence reason, java.lang.CharSequence assessmentId, java.lang.Long timestamp, com.zaheudev.shared.avro.CardRecord cardRecord, com.zaheudev.shared.avro.Amount amount) {
     this.paymentId = paymentId;
-    this.riskScore = riskScore;
     this.riskLevel = riskLevel;
     this.approved = approved;
     this.reason = reason;
     this.assessmentId = assessmentId;
     this.timestamp = timestamp;
+    this.cardRecord = cardRecord;
+    this.amount = amount;
   }
 
   @Override
@@ -118,12 +121,13 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return paymentId;
-    case 1: return riskScore;
-    case 2: return riskLevel;
-    case 3: return approved;
-    case 4: return reason;
-    case 5: return assessmentId;
-    case 6: return timestamp;
+    case 1: return riskLevel;
+    case 2: return approved;
+    case 3: return reason;
+    case 4: return assessmentId;
+    case 5: return timestamp;
+    case 6: return cardRecord;
+    case 7: return amount;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -134,12 +138,13 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: paymentId = (java.lang.CharSequence)value$; break;
-    case 1: riskScore = (java.lang.Double)value$; break;
-    case 2: riskLevel = (java.lang.CharSequence)value$; break;
-    case 3: approved = (java.lang.Boolean)value$; break;
-    case 4: reason = (java.lang.CharSequence)value$; break;
-    case 5: assessmentId = (java.lang.CharSequence)value$; break;
-    case 6: timestamp = (java.lang.Long)value$; break;
+    case 1: riskLevel = (com.zaheudev.shared.avro.RiskLevel)value$; break;
+    case 2: approved = (java.lang.Boolean)value$; break;
+    case 3: reason = (java.lang.CharSequence)value$; break;
+    case 4: assessmentId = (java.lang.CharSequence)value$; break;
+    case 5: timestamp = (java.lang.Long)value$; break;
+    case 6: cardRecord = (com.zaheudev.shared.avro.CardRecord)value$; break;
+    case 7: amount = (com.zaheudev.shared.avro.Amount)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -162,27 +167,10 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   /**
-   * Gets the value of the 'riskScore' field.
-   * @return The value of the 'riskScore' field.
-   */
-  public double getRiskScore() {
-    return riskScore;
-  }
-
-
-  /**
-   * Sets the value of the 'riskScore' field.
-   * @param value the value to set.
-   */
-  public void setRiskScore(double value) {
-    this.riskScore = value;
-  }
-
-  /**
    * Gets the value of the 'riskLevel' field.
    * @return The value of the 'riskLevel' field.
    */
-  public java.lang.CharSequence getRiskLevel() {
+  public com.zaheudev.shared.avro.RiskLevel getRiskLevel() {
     return riskLevel;
   }
 
@@ -191,7 +179,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'riskLevel' field.
    * @param value the value to set.
    */
-  public void setRiskLevel(java.lang.CharSequence value) {
+  public void setRiskLevel(com.zaheudev.shared.avro.RiskLevel value) {
     this.riskLevel = value;
   }
 
@@ -264,6 +252,40 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   /**
+   * Gets the value of the 'cardRecord' field.
+   * @return The value of the 'cardRecord' field.
+   */
+  public com.zaheudev.shared.avro.CardRecord getCardRecord() {
+    return cardRecord;
+  }
+
+
+  /**
+   * Sets the value of the 'cardRecord' field.
+   * @param value the value to set.
+   */
+  public void setCardRecord(com.zaheudev.shared.avro.CardRecord value) {
+    this.cardRecord = value;
+  }
+
+  /**
+   * Gets the value of the 'amount' field.
+   * @return The value of the 'amount' field.
+   */
+  public com.zaheudev.shared.avro.Amount getAmount() {
+    return amount;
+  }
+
+
+  /**
+   * Sets the value of the 'amount' field.
+   * @param value the value to set.
+   */
+  public void setAmount(com.zaheudev.shared.avro.Amount value) {
+    this.amount = value;
+  }
+
+  /**
    * Creates a new RiskAssessed RecordBuilder.
    * @return A new RiskAssessed RecordBuilder
    */
@@ -305,12 +327,15 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
     implements org.apache.avro.data.RecordBuilder<RiskAssessed> {
 
     private java.lang.CharSequence paymentId;
-    private double riskScore;
-    private java.lang.CharSequence riskLevel;
+    private com.zaheudev.shared.avro.RiskLevel riskLevel;
     private boolean approved;
     private java.lang.CharSequence reason;
     private java.lang.CharSequence assessmentId;
     private long timestamp;
+    private com.zaheudev.shared.avro.CardRecord cardRecord;
+    private com.zaheudev.shared.avro.CardRecord.Builder cardRecordBuilder;
+    private com.zaheudev.shared.avro.Amount amount;
+    private com.zaheudev.shared.avro.Amount.Builder amountBuilder;
 
     /** Creates a new Builder */
     private Builder() {
@@ -327,29 +352,39 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
         this.paymentId = data().deepCopy(fields()[0].schema(), other.paymentId);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.riskScore)) {
-        this.riskScore = data().deepCopy(fields()[1].schema(), other.riskScore);
+      if (isValidValue(fields()[1], other.riskLevel)) {
+        this.riskLevel = data().deepCopy(fields()[1].schema(), other.riskLevel);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.riskLevel)) {
-        this.riskLevel = data().deepCopy(fields()[2].schema(), other.riskLevel);
+      if (isValidValue(fields()[2], other.approved)) {
+        this.approved = data().deepCopy(fields()[2].schema(), other.approved);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.approved)) {
-        this.approved = data().deepCopy(fields()[3].schema(), other.approved);
+      if (isValidValue(fields()[3], other.reason)) {
+        this.reason = data().deepCopy(fields()[3].schema(), other.reason);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.reason)) {
-        this.reason = data().deepCopy(fields()[4].schema(), other.reason);
+      if (isValidValue(fields()[4], other.assessmentId)) {
+        this.assessmentId = data().deepCopy(fields()[4].schema(), other.assessmentId);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.assessmentId)) {
-        this.assessmentId = data().deepCopy(fields()[5].schema(), other.assessmentId);
+      if (isValidValue(fields()[5], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[5].schema(), other.timestamp);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[6].schema(), other.timestamp);
+      if (isValidValue(fields()[6], other.cardRecord)) {
+        this.cardRecord = data().deepCopy(fields()[6].schema(), other.cardRecord);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
+      }
+      if (other.hasCardRecordBuilder()) {
+        this.cardRecordBuilder = com.zaheudev.shared.avro.CardRecord.newBuilder(other.getCardRecordBuilder());
+      }
+      if (isValidValue(fields()[7], other.amount)) {
+        this.amount = data().deepCopy(fields()[7].schema(), other.amount);
+        fieldSetFlags()[7] = other.fieldSetFlags()[7];
+      }
+      if (other.hasAmountBuilder()) {
+        this.amountBuilder = com.zaheudev.shared.avro.Amount.newBuilder(other.getAmountBuilder());
       }
     }
 
@@ -363,30 +398,36 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
         this.paymentId = data().deepCopy(fields()[0].schema(), other.paymentId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.riskScore)) {
-        this.riskScore = data().deepCopy(fields()[1].schema(), other.riskScore);
+      if (isValidValue(fields()[1], other.riskLevel)) {
+        this.riskLevel = data().deepCopy(fields()[1].schema(), other.riskLevel);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.riskLevel)) {
-        this.riskLevel = data().deepCopy(fields()[2].schema(), other.riskLevel);
+      if (isValidValue(fields()[2], other.approved)) {
+        this.approved = data().deepCopy(fields()[2].schema(), other.approved);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.approved)) {
-        this.approved = data().deepCopy(fields()[3].schema(), other.approved);
+      if (isValidValue(fields()[3], other.reason)) {
+        this.reason = data().deepCopy(fields()[3].schema(), other.reason);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.reason)) {
-        this.reason = data().deepCopy(fields()[4].schema(), other.reason);
+      if (isValidValue(fields()[4], other.assessmentId)) {
+        this.assessmentId = data().deepCopy(fields()[4].schema(), other.assessmentId);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.assessmentId)) {
-        this.assessmentId = data().deepCopy(fields()[5].schema(), other.assessmentId);
+      if (isValidValue(fields()[5], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[5].schema(), other.timestamp);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[6].schema(), other.timestamp);
+      if (isValidValue(fields()[6], other.cardRecord)) {
+        this.cardRecord = data().deepCopy(fields()[6].schema(), other.cardRecord);
         fieldSetFlags()[6] = true;
       }
+      this.cardRecordBuilder = null;
+      if (isValidValue(fields()[7], other.amount)) {
+        this.amount = data().deepCopy(fields()[7].schema(), other.amount);
+        fieldSetFlags()[7] = true;
+      }
+      this.amountBuilder = null;
     }
 
     /**
@@ -430,49 +471,10 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /**
-      * Gets the value of the 'riskScore' field.
-      * @return The value.
-      */
-    public double getRiskScore() {
-      return riskScore;
-    }
-
-
-    /**
-      * Sets the value of the 'riskScore' field.
-      * @param value The value of 'riskScore'.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setRiskScore(double value) {
-      validate(fields()[1], value);
-      this.riskScore = value;
-      fieldSetFlags()[1] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'riskScore' field has been set.
-      * @return True if the 'riskScore' field has been set, false otherwise.
-      */
-    public boolean hasRiskScore() {
-      return fieldSetFlags()[1];
-    }
-
-
-    /**
-      * Clears the value of the 'riskScore' field.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder clearRiskScore() {
-      fieldSetFlags()[1] = false;
-      return this;
-    }
-
-    /**
       * Gets the value of the 'riskLevel' field.
       * @return The value.
       */
-    public java.lang.CharSequence getRiskLevel() {
+    public com.zaheudev.shared.avro.RiskLevel getRiskLevel() {
       return riskLevel;
     }
 
@@ -482,10 +484,10 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'riskLevel'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setRiskLevel(java.lang.CharSequence value) {
-      validate(fields()[2], value);
+    public com.zaheudev.shared.avro.RiskAssessed.Builder setRiskLevel(com.zaheudev.shared.avro.RiskLevel value) {
+      validate(fields()[1], value);
       this.riskLevel = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[1] = true;
       return this;
     }
 
@@ -494,7 +496,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return True if the 'riskLevel' field has been set, false otherwise.
       */
     public boolean hasRiskLevel() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[1];
     }
 
 
@@ -504,7 +506,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       */
     public com.zaheudev.shared.avro.RiskAssessed.Builder clearRiskLevel() {
       riskLevel = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[1] = false;
       return this;
     }
 
@@ -523,9 +525,9 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RiskAssessed.Builder setApproved(boolean value) {
-      validate(fields()[3], value);
+      validate(fields()[2], value);
       this.approved = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -534,7 +536,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return True if the 'approved' field has been set, false otherwise.
       */
     public boolean hasApproved() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[2];
     }
 
 
@@ -543,7 +545,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RiskAssessed.Builder clearApproved() {
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -562,9 +564,9 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RiskAssessed.Builder setReason(java.lang.CharSequence value) {
-      validate(fields()[4], value);
+      validate(fields()[3], value);
       this.reason = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -573,7 +575,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return True if the 'reason' field has been set, false otherwise.
       */
     public boolean hasReason() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[3];
     }
 
 
@@ -583,7 +585,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       */
     public com.zaheudev.shared.avro.RiskAssessed.Builder clearReason() {
       reason = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -602,9 +604,9 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RiskAssessed.Builder setAssessmentId(java.lang.CharSequence value) {
-      validate(fields()[5], value);
+      validate(fields()[4], value);
       this.assessmentId = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -613,7 +615,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return True if the 'assessmentId' field has been set, false otherwise.
       */
     public boolean hasAssessmentId() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[4];
     }
 
 
@@ -623,7 +625,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       */
     public com.zaheudev.shared.avro.RiskAssessed.Builder clearAssessmentId() {
       assessmentId = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -642,9 +644,9 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RiskAssessed.Builder setTimestamp(long value) {
-      validate(fields()[6], value);
+      validate(fields()[5], value);
       this.timestamp = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -653,7 +655,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return True if the 'timestamp' field has been set, false otherwise.
       */
     public boolean hasTimestamp() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[5];
     }
 
 
@@ -662,7 +664,159 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RiskAssessed.Builder clearTimestamp() {
+      fieldSetFlags()[5] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'cardRecord' field.
+      * @return The value.
+      */
+    public com.zaheudev.shared.avro.CardRecord getCardRecord() {
+      return cardRecord;
+    }
+
+
+    /**
+      * Sets the value of the 'cardRecord' field.
+      * @param value The value of 'cardRecord'.
+      * @return This builder.
+      */
+    public com.zaheudev.shared.avro.RiskAssessed.Builder setCardRecord(com.zaheudev.shared.avro.CardRecord value) {
+      validate(fields()[6], value);
+      this.cardRecordBuilder = null;
+      this.cardRecord = value;
+      fieldSetFlags()[6] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'cardRecord' field has been set.
+      * @return True if the 'cardRecord' field has been set, false otherwise.
+      */
+    public boolean hasCardRecord() {
+      return fieldSetFlags()[6];
+    }
+
+    /**
+     * Gets the Builder instance for the 'cardRecord' field and creates one if it doesn't exist yet.
+     * @return This builder.
+     */
+    public com.zaheudev.shared.avro.CardRecord.Builder getCardRecordBuilder() {
+      if (cardRecordBuilder == null) {
+        if (hasCardRecord()) {
+          setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.newBuilder(cardRecord));
+        } else {
+          setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.newBuilder());
+        }
+      }
+      return cardRecordBuilder;
+    }
+
+    /**
+     * Sets the Builder instance for the 'cardRecord' field
+     * @param value The builder instance that must be set.
+     * @return This builder.
+     */
+
+    public com.zaheudev.shared.avro.RiskAssessed.Builder setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.Builder value) {
+      clearCardRecord();
+      cardRecordBuilder = value;
+      return this;
+    }
+
+    /**
+     * Checks whether the 'cardRecord' field has an active Builder instance
+     * @return True if the 'cardRecord' field has an active Builder instance
+     */
+    public boolean hasCardRecordBuilder() {
+      return cardRecordBuilder != null;
+    }
+
+    /**
+      * Clears the value of the 'cardRecord' field.
+      * @return This builder.
+      */
+    public com.zaheudev.shared.avro.RiskAssessed.Builder clearCardRecord() {
+      cardRecord = null;
+      cardRecordBuilder = null;
       fieldSetFlags()[6] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'amount' field.
+      * @return The value.
+      */
+    public com.zaheudev.shared.avro.Amount getAmount() {
+      return amount;
+    }
+
+
+    /**
+      * Sets the value of the 'amount' field.
+      * @param value The value of 'amount'.
+      * @return This builder.
+      */
+    public com.zaheudev.shared.avro.RiskAssessed.Builder setAmount(com.zaheudev.shared.avro.Amount value) {
+      validate(fields()[7], value);
+      this.amountBuilder = null;
+      this.amount = value;
+      fieldSetFlags()[7] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'amount' field has been set.
+      * @return True if the 'amount' field has been set, false otherwise.
+      */
+    public boolean hasAmount() {
+      return fieldSetFlags()[7];
+    }
+
+    /**
+     * Gets the Builder instance for the 'amount' field and creates one if it doesn't exist yet.
+     * @return This builder.
+     */
+    public com.zaheudev.shared.avro.Amount.Builder getAmountBuilder() {
+      if (amountBuilder == null) {
+        if (hasAmount()) {
+          setAmountBuilder(com.zaheudev.shared.avro.Amount.newBuilder(amount));
+        } else {
+          setAmountBuilder(com.zaheudev.shared.avro.Amount.newBuilder());
+        }
+      }
+      return amountBuilder;
+    }
+
+    /**
+     * Sets the Builder instance for the 'amount' field
+     * @param value The builder instance that must be set.
+     * @return This builder.
+     */
+
+    public com.zaheudev.shared.avro.RiskAssessed.Builder setAmountBuilder(com.zaheudev.shared.avro.Amount.Builder value) {
+      clearAmount();
+      amountBuilder = value;
+      return this;
+    }
+
+    /**
+     * Checks whether the 'amount' field has an active Builder instance
+     * @return True if the 'amount' field has an active Builder instance
+     */
+    public boolean hasAmountBuilder() {
+      return amountBuilder != null;
+    }
+
+    /**
+      * Clears the value of the 'amount' field.
+      * @return This builder.
+      */
+    public com.zaheudev.shared.avro.RiskAssessed.Builder clearAmount() {
+      amount = null;
+      amountBuilder = null;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -672,12 +826,31 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       try {
         RiskAssessed record = new RiskAssessed();
         record.paymentId = fieldSetFlags()[0] ? this.paymentId : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.riskScore = fieldSetFlags()[1] ? this.riskScore : (java.lang.Double) defaultValue(fields()[1]);
-        record.riskLevel = fieldSetFlags()[2] ? this.riskLevel : (java.lang.CharSequence) defaultValue(fields()[2]);
-        record.approved = fieldSetFlags()[3] ? this.approved : (java.lang.Boolean) defaultValue(fields()[3]);
-        record.reason = fieldSetFlags()[4] ? this.reason : (java.lang.CharSequence) defaultValue(fields()[4]);
-        record.assessmentId = fieldSetFlags()[5] ? this.assessmentId : (java.lang.CharSequence) defaultValue(fields()[5]);
-        record.timestamp = fieldSetFlags()[6] ? this.timestamp : (java.lang.Long) defaultValue(fields()[6]);
+        record.riskLevel = fieldSetFlags()[1] ? this.riskLevel : (com.zaheudev.shared.avro.RiskLevel) defaultValue(fields()[1]);
+        record.approved = fieldSetFlags()[2] ? this.approved : (java.lang.Boolean) defaultValue(fields()[2]);
+        record.reason = fieldSetFlags()[3] ? this.reason : (java.lang.CharSequence) defaultValue(fields()[3]);
+        record.assessmentId = fieldSetFlags()[4] ? this.assessmentId : (java.lang.CharSequence) defaultValue(fields()[4]);
+        record.timestamp = fieldSetFlags()[5] ? this.timestamp : (java.lang.Long) defaultValue(fields()[5]);
+        if (cardRecordBuilder != null) {
+          try {
+            record.cardRecord = this.cardRecordBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("cardRecord"));
+            throw e;
+          }
+        } else {
+          record.cardRecord = fieldSetFlags()[6] ? this.cardRecord : (com.zaheudev.shared.avro.CardRecord) defaultValue(fields()[6]);
+        }
+        if (amountBuilder != null) {
+          try {
+            record.amount = this.amountBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("amount"));
+            throw e;
+          }
+        } else {
+          record.amount = fieldSetFlags()[7] ? this.amount : (com.zaheudev.shared.avro.Amount) defaultValue(fields()[7]);
+        }
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -712,9 +885,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   {
     out.writeString(this.paymentId);
 
-    out.writeDouble(this.riskScore);
-
-    out.writeString(this.riskLevel);
+    out.writeEnum(this.riskLevel.ordinal());
 
     out.writeBoolean(this.approved);
 
@@ -723,6 +894,22 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
     out.writeString(this.assessmentId);
 
     out.writeLong(this.timestamp);
+
+    if (this.cardRecord == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.cardRecord.customEncode(out);
+    }
+
+    if (this.amount == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.amount.customEncode(out);
+    }
 
   }
 
@@ -733,9 +920,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
     if (fieldOrder == null) {
       this.paymentId = in.readString(this.paymentId instanceof Utf8 ? (Utf8)this.paymentId : null);
 
-      this.riskScore = in.readDouble();
-
-      this.riskLevel = in.readString(this.riskLevel instanceof Utf8 ? (Utf8)this.riskLevel : null);
+      this.riskLevel = com.zaheudev.shared.avro.RiskLevel.values()[in.readEnum()];
 
       this.approved = in.readBoolean();
 
@@ -745,35 +930,75 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
 
       this.timestamp = in.readLong();
 
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.cardRecord = null;
+      } else {
+        if (this.cardRecord == null) {
+          this.cardRecord = new com.zaheudev.shared.avro.CardRecord();
+        }
+        this.cardRecord.customDecode(in);
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.amount = null;
+      } else {
+        if (this.amount == null) {
+          this.amount = new com.zaheudev.shared.avro.Amount();
+        }
+        this.amount.customDecode(in);
+      }
+
     } else {
-      for (int i = 0; i < 7; i++) {
+      for (int i = 0; i < 8; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.paymentId = in.readString(this.paymentId instanceof Utf8 ? (Utf8)this.paymentId : null);
           break;
 
         case 1:
-          this.riskScore = in.readDouble();
+          this.riskLevel = com.zaheudev.shared.avro.RiskLevel.values()[in.readEnum()];
           break;
 
         case 2:
-          this.riskLevel = in.readString(this.riskLevel instanceof Utf8 ? (Utf8)this.riskLevel : null);
-          break;
-
-        case 3:
           this.approved = in.readBoolean();
           break;
 
-        case 4:
+        case 3:
           this.reason = in.readString(this.reason instanceof Utf8 ? (Utf8)this.reason : null);
           break;
 
-        case 5:
+        case 4:
           this.assessmentId = in.readString(this.assessmentId instanceof Utf8 ? (Utf8)this.assessmentId : null);
           break;
 
-        case 6:
+        case 5:
           this.timestamp = in.readLong();
+          break;
+
+        case 6:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.cardRecord = null;
+          } else {
+            if (this.cardRecord == null) {
+              this.cardRecord = new com.zaheudev.shared.avro.CardRecord();
+            }
+            this.cardRecord.customDecode(in);
+          }
+          break;
+
+        case 7:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.amount = null;
+          } else {
+            if (this.amount == null) {
+              this.amount = new com.zaheudev.shared.avro.Amount();
+            }
+            this.amount.customDecode(in);
+          }
           break;
 
         default:
@@ -787,12 +1012,13 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   public int hashCode() {
     int result = 1;
     result = 31 * result + (paymentId == null ? 0 : paymentId.hashCode());
-    result = 31 * result + Double.hashCode(riskScore);
-    result = 31 * result + (riskLevel == null ? 0 : riskLevel.hashCode());
+    result = 31 * result + (riskLevel == null ? 0 : ((java.lang.Enum) riskLevel).ordinal());
     result = 31 * result + Boolean.hashCode(approved);
     result = 31 * result + (reason == null ? 0 : reason.hashCode());
     result = 31 * result + (assessmentId == null ? 0 : assessmentId.hashCode());
     result = 31 * result + Long.hashCode(timestamp);
+    result = 31 * result + (cardRecord == null ? 0 : cardRecord.hashCode());
+    result = 31 * result + (amount == null ? 0 : amount.hashCode());
     return result;
   }
 
@@ -808,10 +1034,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
     if (Utf8.compareSequences(this.paymentId, other.paymentId) != 0) {
       return false;
     }
-    if (this.riskScore != other.riskScore) {
-      return false;
-    }
-    if (Utf8.compareSequences(this.riskLevel, other.riskLevel) != 0) {
+    if (!java.util.Objects.equals(this.riskLevel, other.riskLevel)) {
       return false;
     }
     if (this.approved != other.approved) {
@@ -824,6 +1047,12 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       return false;
     }
     if (this.timestamp != other.timestamp) {
+      return false;
+    }
+    if (!java.util.Objects.equals(this.cardRecord, other.cardRecord)) {
+      return false;
+    }
+    if (!java.util.Objects.equals(this.amount, other.amount)) {
       return false;
     }
     return true;

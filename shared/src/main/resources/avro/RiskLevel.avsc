@@ -1,0 +1,6 @@
+{
+  "type": "enum",
+  "name": "RiskLevel",
+  "namespace": "com.zaheudev.shared.avro",
+  "symbols": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+}

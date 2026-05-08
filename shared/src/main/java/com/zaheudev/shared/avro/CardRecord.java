@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class CardRecord extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -5351555926144517249L;
+  private static final long serialVersionUID = -510912380651722738L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CardRecord\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"},{\"name\":\"primaryNetwork\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}},{\"name\":\"cardType\",\"type\":\"string\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CardRecord\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"},{\"name\":\"primaryNetwork\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}],\"default\":null},{\"name\":\"cardType\",\"type\":[\"null\",\"string\"],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -589,9 +589,21 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
 
     out.writeString(this.lastFour);
 
-    out.writeEnum(this.primaryNetwork.ordinal());
+    if (this.primaryNetwork == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeEnum(this.primaryNetwork.ordinal());
+    }
 
-    out.writeString(this.cardType);
+    if (this.cardType == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.cardType);
+    }
 
   }
 
@@ -606,9 +618,19 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
 
       this.lastFour = in.readString(this.lastFour instanceof Utf8 ? (Utf8)this.lastFour : null);
 
-      this.primaryNetwork = com.zaheudev.shared.avro.PaymentMethodEnum.values()[in.readEnum()];
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.primaryNetwork = null;
+      } else {
+        this.primaryNetwork = com.zaheudev.shared.avro.PaymentMethodEnum.values()[in.readEnum()];
+      }
 
-      this.cardType = in.readString(this.cardType instanceof Utf8 ? (Utf8)this.cardType : null);
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.cardType = null;
+      } else {
+        this.cardType = in.readString(this.cardType instanceof Utf8 ? (Utf8)this.cardType : null);
+      }
 
     } else {
       for (int i = 0; i < 5; i++) {
@@ -626,11 +648,21 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
           break;
 
         case 3:
-          this.primaryNetwork = com.zaheudev.shared.avro.PaymentMethodEnum.values()[in.readEnum()];
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.primaryNetwork = null;
+          } else {
+            this.primaryNetwork = com.zaheudev.shared.avro.PaymentMethodEnum.values()[in.readEnum()];
+          }
           break;
 
         case 4:
-          this.cardType = in.readString(this.cardType instanceof Utf8 ? (Utf8)this.cardType : null);
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.cardType = null;
+          } else {
+            this.cardType = in.readString(this.cardType instanceof Utf8 ? (Utf8)this.cardType : null);
+          }
           break;
 
         default:

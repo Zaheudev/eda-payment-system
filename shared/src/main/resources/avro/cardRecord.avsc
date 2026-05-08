@@ -19,11 +19,13 @@
     },
     {
      "name": "primaryNetwork",
-      "type": "com.zaheudev.shared.avro.PaymentMethodEnum"
+      "type": ["null", "com.zaheudev.shared.avro.PaymentMethodEnum"],
+      "default": null
     },
     {
       "name": "cardType",
-      "type": "string"
+      "type": ["null","string"],
+      "default": null
     }
   ]
 }

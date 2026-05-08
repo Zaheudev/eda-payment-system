@@ -4,11 +4,14 @@
   "namespace": "com.zaheudev.shared.avro",
   "fields": [
     {"name": "paymentId", "type": "string"},
-    {"name": "riskScore", "type": "double"},
-    {"name": "riskLevel", "type": "enum", "symbols": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+    {"name": "riskLevel", "type": "com.zaheudev.shared.avro.RiskLevel"},
     {"name": "approved", "type": "boolean"},
     {"name": "reason", "type": "string"},
     {"name":  "assessmentId", "type": "string"},
-    {"name": "timestamp", "type": "long"}
+    {"name": "timestamp", "type": "long"},
+    {"name": "cardRecord", "type": ["null","com.zaheudev.shared.avro.CardRecord"],
+      "default": null
+    },
+    {"name": "amount", "type": ["null","com.zaheudev.shared.avro.Amount"],"default": null}
   ]
 }

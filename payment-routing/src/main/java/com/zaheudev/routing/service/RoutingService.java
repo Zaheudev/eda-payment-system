@@ -4,6 +4,7 @@ import com.zaheudev.routing.dto.RoutingResult;
 import com.zaheudev.routing.repository.RoutingCostRepository;
 import com.zaheudev.shared.avro.PaymentMethodEnum;
 import com.zaheudev.shared.avro.PaymentRequestedEvent;
+import com.zaheudev.shared.avro.RiskAssessed;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class RoutingService {
     @Autowired
     private RoutingCostRepository routingCostRepository;
 
-    public RoutingResult calculateOptimalRouting(PaymentRequestedEvent event){
+    public RoutingResult calculateOptimalRouting(RiskAssessed event){
         Long value = event.getAmount().getValue();
         log.info("Calculating optimal routing for event: {}", event);
         Set<PaymentMethodEnum> availableNetworks = determineAvailableNetworks(event);
@@ -66,12 +67,12 @@ public class RoutingService {
        * this would likely involve looking up the BIN in a database to determine the card type and supported networks.
      * @return a set of available payment networks for the given payment request
      */
-    public Set<PaymentMethodEnum> determineAvailableNetworks(PaymentRequestedEvent event) {
+    public Set<PaymentMethodEnum> determineAvailableNetworks(RiskAssessed event) {
         Set<PaymentMethodEnum> networks = new HashSet<>();
         PaymentMethodEnum primaryNetwork = event.getCardRecord().getPrimaryNetwork();
         networks.add(primaryNetwork);
 
-        if (event.getCardRecord().getCardType().equals("DEBIT")) {
+        if (event.getCardRecord().getCardType().toString().equals("DEBIT")) {
             networks.addAll(getDebitNetworksForNetwork(primaryNetwork));
         }
 
@@ -83,7 +84,6 @@ public class RoutingService {
         // but for demo purposes I hardcode some rules
 
         Set<PaymentMethodEnum> debitNetworks = new HashSet<>();
-
         if (network.equals(PaymentMethodEnum.VISA)) {
             debitNetworks.add(PaymentMethodEnum.ACCEL);
             debitNetworks.add(PaymentMethodEnum.STAR);

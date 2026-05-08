@@ -7,6 +7,7 @@ import com.zaheudev.routing.repository.RoutingDecisionRepository;
 import com.zaheudev.routing.service.RoutingService;
 import com.zaheudev.shared.avro.PaymentMethodEnum;
 import com.zaheudev.shared.avro.PaymentRequestedEvent;
+import com.zaheudev.shared.avro.RiskAssessed;
 import com.zaheudev.shared.avro.RoutedCompletedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -31,12 +32,13 @@ public class PaymentRequestedConsumer {
     @Autowired
     private RoutingEventProducer routingEventProducer;
 
-    @KafkaListener(topics = "payment-requests")
-    public void consume(ConsumerRecord<String, PaymentRequestedEvent> record, Acknowledgment ack) {
+    @KafkaListener(topics = "risk-assessed")
+    public void consume(ConsumerRecord<String, RiskAssessed> record, Acknowledgment ack) {
         String paymentId = record.key();
-        PaymentRequestedEvent event = record.value();
+        RiskAssessed event = record.value();
 
         log.info("Processing Routing for payment: {}", paymentId);
+        System.out.println("Received risk assessment for payment: " + paymentId + " with risk level: " + event.getRiskLevel());
 
         try {
             RoutingResult result = routingService.calculateOptimalRouting(event);
@@ -51,8 +53,8 @@ public class PaymentRequestedConsumer {
                     .selectedPaymentMethod(result.getSelectedPaymentMethod())
                     .calculatedFee(result.getCalculatedFee())
                     .useToken(result.getUseToken())
+                    .availableNetworks(String.valueOf(availableNetworks))
                     .createdAt(LocalDateTime.now()).build();
-
             routingDecisionRepository.save(routingDecision);
             log.info("Routing decision saved in db: {}", routingDecision);
 
