@@ -1,10 +1,8 @@
 package com.zaheudev.gateway.entity;
 
 import com.zaheudev.gateway.model.Payment;
-import com.zaheudev.gateway.model.PaymentStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.zaheudev.shared.dto.PaymentStatus;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -15,19 +13,19 @@ import java.time.LocalDateTime;
 @Entity @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentEntity {
-    @Id @Getter
+    @Id
     private String paymentId;
-    @Getter
+    @Enumerated(EnumType.STRING)
     private PaymentStatus status;
-    @Getter
+    private String rrn;
+    private String authCode;
+    private String errorMessage;
+    private String processorTransactionId;
+    private String merchantRef;
     private String tokenRef;
-    @Getter
     private LocalDateTime createdAt;
-    @Getter
     private LocalDateTime updatedAt;
-    @Getter
     private BigDecimal amount;
-    @Getter
     private String currency;
 
     public static PaymentEntity fromPayment(Payment payment){

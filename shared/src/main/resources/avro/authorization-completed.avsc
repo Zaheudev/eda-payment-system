@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "AuthorizationCompleted",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    { "name": "paymentId", "type": ["null", "string"], "default": null },
+    { "name": "success", "type": ["null", "boolean"], "default": null },
+    { "name": "authCode", "type": ["null", "string"], "default": null },
+    { "name": "rrn", "type": ["null", "string"], "default": null },
+    { "name": "processorTransactionId", "type": ["null", "string"], "default": null },
+    { "name": "selectedPaymentMethod", "type": ["null", "com.zaheudev.shared.avro.PaymentMethodEnum"], "default": null },
+    { "name": "errorMessage", "type": ["null", "string"], "default": null },
+    { "name": "timestamp", "type": ["null", "long"], "default": null }
+  ]
+}

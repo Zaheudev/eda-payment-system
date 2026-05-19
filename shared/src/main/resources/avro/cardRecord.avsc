@@ -9,6 +9,12 @@
       "doc": "This is the token for the card details"
     },
     {
+      "name": "tokenValue",
+      "type": ["null","string"],
+      "doc": "This is the network token value",
+      "default": null
+    },
+    {
       "name": "bin",
       "type": "string",
       "doc": "The first 6 digits of the card number"

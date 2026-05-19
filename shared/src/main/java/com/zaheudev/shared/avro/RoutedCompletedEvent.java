@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6213366769668265021L;
+  private static final long serialVersionUID = -6481575469369986311L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RoutedCompletedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\"},{\"name\":\"selectedPaymentMethod\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}},{\"name\":\"estimatedCost\",\"type\":\"string\"},{\"name\":\"useToken\",\"type\":\"boolean\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"availableNetworks\",\"type\":{\"type\":\"array\",\"items\":\"PaymentMethodEnum\"}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RoutedCompletedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\"},{\"name\":\"selectedPaymentMethod\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}},{\"name\":\"Amount\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]}],\"default\":null},{\"name\":\"estimatedCost\",\"type\":\"string\"},{\"name\":\"useToken\",\"type\":\"boolean\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"cardRecord\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"CardRecord\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"tokenValue\",\"type\":[\"null\",\"string\"],\"doc\":\"This is the network token value\",\"default\":null},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"},{\"name\":\"primaryNetwork\",\"type\":[\"null\",\"PaymentMethodEnum\"],\"default\":null},{\"name\":\"cardType\",\"type\":[\"null\",\"string\"],\"default\":null}]}],\"default\":null},{\"name\":\"availableNetworks\",\"type\":{\"type\":\"array\",\"items\":\"PaymentMethodEnum\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -74,9 +74,11 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
 
   private java.lang.CharSequence paymentId;
   private com.zaheudev.shared.avro.PaymentMethodEnum selectedPaymentMethod;
+  private com.zaheudev.shared.avro.Amount Amount;
   private java.lang.CharSequence estimatedCost;
   private boolean useToken;
   private long timestamp;
+  private com.zaheudev.shared.avro.CardRecord cardRecord;
   private java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum> availableNetworks;
 
   /**
@@ -90,17 +92,21 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
    * All-args constructor.
    * @param paymentId The new value for paymentId
    * @param selectedPaymentMethod The new value for selectedPaymentMethod
+   * @param Amount The new value for Amount
    * @param estimatedCost The new value for estimatedCost
    * @param useToken The new value for useToken
    * @param timestamp The new value for timestamp
+   * @param cardRecord The new value for cardRecord
    * @param availableNetworks The new value for availableNetworks
    */
-  public RoutedCompletedEvent(java.lang.CharSequence paymentId, com.zaheudev.shared.avro.PaymentMethodEnum selectedPaymentMethod, java.lang.CharSequence estimatedCost, java.lang.Boolean useToken, java.lang.Long timestamp, java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum> availableNetworks) {
+  public RoutedCompletedEvent(java.lang.CharSequence paymentId, com.zaheudev.shared.avro.PaymentMethodEnum selectedPaymentMethod, com.zaheudev.shared.avro.Amount Amount, java.lang.CharSequence estimatedCost, java.lang.Boolean useToken, java.lang.Long timestamp, com.zaheudev.shared.avro.CardRecord cardRecord, java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum> availableNetworks) {
     this.paymentId = paymentId;
     this.selectedPaymentMethod = selectedPaymentMethod;
+    this.Amount = Amount;
     this.estimatedCost = estimatedCost;
     this.useToken = useToken;
     this.timestamp = timestamp;
+    this.cardRecord = cardRecord;
     this.availableNetworks = availableNetworks;
   }
 
@@ -116,10 +122,12 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
     switch (field$) {
     case 0: return paymentId;
     case 1: return selectedPaymentMethod;
-    case 2: return estimatedCost;
-    case 3: return useToken;
-    case 4: return timestamp;
-    case 5: return availableNetworks;
+    case 2: return Amount;
+    case 3: return estimatedCost;
+    case 4: return useToken;
+    case 5: return timestamp;
+    case 6: return cardRecord;
+    case 7: return availableNetworks;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -131,10 +139,12 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
     switch (field$) {
     case 0: paymentId = (java.lang.CharSequence)value$; break;
     case 1: selectedPaymentMethod = (com.zaheudev.shared.avro.PaymentMethodEnum)value$; break;
-    case 2: estimatedCost = (java.lang.CharSequence)value$; break;
-    case 3: useToken = (java.lang.Boolean)value$; break;
-    case 4: timestamp = (java.lang.Long)value$; break;
-    case 5: availableNetworks = (java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum>)value$; break;
+    case 2: Amount = (com.zaheudev.shared.avro.Amount)value$; break;
+    case 3: estimatedCost = (java.lang.CharSequence)value$; break;
+    case 4: useToken = (java.lang.Boolean)value$; break;
+    case 5: timestamp = (java.lang.Long)value$; break;
+    case 6: cardRecord = (com.zaheudev.shared.avro.CardRecord)value$; break;
+    case 7: availableNetworks = (java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum>)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -171,6 +181,23 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
    */
   public void setSelectedPaymentMethod(com.zaheudev.shared.avro.PaymentMethodEnum value) {
     this.selectedPaymentMethod = value;
+  }
+
+  /**
+   * Gets the value of the 'Amount' field.
+   * @return The value of the 'Amount' field.
+   */
+  public com.zaheudev.shared.avro.Amount getAmount() {
+    return Amount;
+  }
+
+
+  /**
+   * Sets the value of the 'Amount' field.
+   * @param value the value to set.
+   */
+  public void setAmount(com.zaheudev.shared.avro.Amount value) {
+    this.Amount = value;
   }
 
   /**
@@ -222,6 +249,23 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
    */
   public void setTimestamp(long value) {
     this.timestamp = value;
+  }
+
+  /**
+   * Gets the value of the 'cardRecord' field.
+   * @return The value of the 'cardRecord' field.
+   */
+  public com.zaheudev.shared.avro.CardRecord getCardRecord() {
+    return cardRecord;
+  }
+
+
+  /**
+   * Sets the value of the 'cardRecord' field.
+   * @param value the value to set.
+   */
+  public void setCardRecord(com.zaheudev.shared.avro.CardRecord value) {
+    this.cardRecord = value;
   }
 
   /**
@@ -284,9 +328,13 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
 
     private java.lang.CharSequence paymentId;
     private com.zaheudev.shared.avro.PaymentMethodEnum selectedPaymentMethod;
+    private com.zaheudev.shared.avro.Amount Amount;
+    private com.zaheudev.shared.avro.Amount.Builder AmountBuilder;
     private java.lang.CharSequence estimatedCost;
     private boolean useToken;
     private long timestamp;
+    private com.zaheudev.shared.avro.CardRecord cardRecord;
+    private com.zaheudev.shared.avro.CardRecord.Builder cardRecordBuilder;
     private java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum> availableNetworks;
 
     /** Creates a new Builder */
@@ -308,21 +356,35 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
         this.selectedPaymentMethod = data().deepCopy(fields()[1].schema(), other.selectedPaymentMethod);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.estimatedCost)) {
-        this.estimatedCost = data().deepCopy(fields()[2].schema(), other.estimatedCost);
+      if (isValidValue(fields()[2], other.Amount)) {
+        this.Amount = data().deepCopy(fields()[2].schema(), other.Amount);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.useToken)) {
-        this.useToken = data().deepCopy(fields()[3].schema(), other.useToken);
+      if (other.hasAmountBuilder()) {
+        this.AmountBuilder = com.zaheudev.shared.avro.Amount.newBuilder(other.getAmountBuilder());
+      }
+      if (isValidValue(fields()[3], other.estimatedCost)) {
+        this.estimatedCost = data().deepCopy(fields()[3].schema(), other.estimatedCost);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
+      if (isValidValue(fields()[4], other.useToken)) {
+        this.useToken = data().deepCopy(fields()[4].schema(), other.useToken);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.availableNetworks)) {
-        this.availableNetworks = data().deepCopy(fields()[5].schema(), other.availableNetworks);
+      if (isValidValue(fields()[5], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[5].schema(), other.timestamp);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
+      }
+      if (isValidValue(fields()[6], other.cardRecord)) {
+        this.cardRecord = data().deepCopy(fields()[6].schema(), other.cardRecord);
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
+      }
+      if (other.hasCardRecordBuilder()) {
+        this.cardRecordBuilder = com.zaheudev.shared.avro.CardRecord.newBuilder(other.getCardRecordBuilder());
+      }
+      if (isValidValue(fields()[7], other.availableNetworks)) {
+        this.availableNetworks = data().deepCopy(fields()[7].schema(), other.availableNetworks);
+        fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
     }
 
@@ -340,21 +402,31 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
         this.selectedPaymentMethod = data().deepCopy(fields()[1].schema(), other.selectedPaymentMethod);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.estimatedCost)) {
-        this.estimatedCost = data().deepCopy(fields()[2].schema(), other.estimatedCost);
+      if (isValidValue(fields()[2], other.Amount)) {
+        this.Amount = data().deepCopy(fields()[2].schema(), other.Amount);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.useToken)) {
-        this.useToken = data().deepCopy(fields()[3].schema(), other.useToken);
+      this.AmountBuilder = null;
+      if (isValidValue(fields()[3], other.estimatedCost)) {
+        this.estimatedCost = data().deepCopy(fields()[3].schema(), other.estimatedCost);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[4].schema(), other.timestamp);
+      if (isValidValue(fields()[4], other.useToken)) {
+        this.useToken = data().deepCopy(fields()[4].schema(), other.useToken);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.availableNetworks)) {
-        this.availableNetworks = data().deepCopy(fields()[5].schema(), other.availableNetworks);
+      if (isValidValue(fields()[5], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[5].schema(), other.timestamp);
         fieldSetFlags()[5] = true;
+      }
+      if (isValidValue(fields()[6], other.cardRecord)) {
+        this.cardRecord = data().deepCopy(fields()[6].schema(), other.cardRecord);
+        fieldSetFlags()[6] = true;
+      }
+      this.cardRecordBuilder = null;
+      if (isValidValue(fields()[7], other.availableNetworks)) {
+        this.availableNetworks = data().deepCopy(fields()[7].schema(), other.availableNetworks);
+        fieldSetFlags()[7] = true;
       }
     }
 
@@ -439,6 +511,82 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
     }
 
     /**
+      * Gets the value of the 'Amount' field.
+      * @return The value.
+      */
+    public com.zaheudev.shared.avro.Amount getAmount() {
+      return Amount;
+    }
+
+
+    /**
+      * Sets the value of the 'Amount' field.
+      * @param value The value of 'Amount'.
+      * @return This builder.
+      */
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setAmount(com.zaheudev.shared.avro.Amount value) {
+      validate(fields()[2], value);
+      this.AmountBuilder = null;
+      this.Amount = value;
+      fieldSetFlags()[2] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'Amount' field has been set.
+      * @return True if the 'Amount' field has been set, false otherwise.
+      */
+    public boolean hasAmount() {
+      return fieldSetFlags()[2];
+    }
+
+    /**
+     * Gets the Builder instance for the 'Amount' field and creates one if it doesn't exist yet.
+     * @return This builder.
+     */
+    public com.zaheudev.shared.avro.Amount.Builder getAmountBuilder() {
+      if (AmountBuilder == null) {
+        if (hasAmount()) {
+          setAmountBuilder(com.zaheudev.shared.avro.Amount.newBuilder(Amount));
+        } else {
+          setAmountBuilder(com.zaheudev.shared.avro.Amount.newBuilder());
+        }
+      }
+      return AmountBuilder;
+    }
+
+    /**
+     * Sets the Builder instance for the 'Amount' field
+     * @param value The builder instance that must be set.
+     * @return This builder.
+     */
+
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setAmountBuilder(com.zaheudev.shared.avro.Amount.Builder value) {
+      clearAmount();
+      AmountBuilder = value;
+      return this;
+    }
+
+    /**
+     * Checks whether the 'Amount' field has an active Builder instance
+     * @return True if the 'Amount' field has an active Builder instance
+     */
+    public boolean hasAmountBuilder() {
+      return AmountBuilder != null;
+    }
+
+    /**
+      * Clears the value of the 'Amount' field.
+      * @return This builder.
+      */
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearAmount() {
+      Amount = null;
+      AmountBuilder = null;
+      fieldSetFlags()[2] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'estimatedCost' field.
       * @return The value.
       */
@@ -453,9 +601,9 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setEstimatedCost(java.lang.CharSequence value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.estimatedCost = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -464,7 +612,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @return True if the 'estimatedCost' field has been set, false otherwise.
       */
     public boolean hasEstimatedCost() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -474,7 +622,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       */
     public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearEstimatedCost() {
       estimatedCost = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -493,9 +641,9 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setUseToken(boolean value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.useToken = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -504,7 +652,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @return True if the 'useToken' field has been set, false otherwise.
       */
     public boolean hasUseToken() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -513,7 +661,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearUseToken() {
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -532,9 +680,9 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setTimestamp(long value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.timestamp = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -543,7 +691,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @return True if the 'timestamp' field has been set, false otherwise.
       */
     public boolean hasTimestamp() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -552,7 +700,83 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearTimestamp() {
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'cardRecord' field.
+      * @return The value.
+      */
+    public com.zaheudev.shared.avro.CardRecord getCardRecord() {
+      return cardRecord;
+    }
+
+
+    /**
+      * Sets the value of the 'cardRecord' field.
+      * @param value The value of 'cardRecord'.
+      * @return This builder.
+      */
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setCardRecord(com.zaheudev.shared.avro.CardRecord value) {
+      validate(fields()[6], value);
+      this.cardRecordBuilder = null;
+      this.cardRecord = value;
+      fieldSetFlags()[6] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'cardRecord' field has been set.
+      * @return True if the 'cardRecord' field has been set, false otherwise.
+      */
+    public boolean hasCardRecord() {
+      return fieldSetFlags()[6];
+    }
+
+    /**
+     * Gets the Builder instance for the 'cardRecord' field and creates one if it doesn't exist yet.
+     * @return This builder.
+     */
+    public com.zaheudev.shared.avro.CardRecord.Builder getCardRecordBuilder() {
+      if (cardRecordBuilder == null) {
+        if (hasCardRecord()) {
+          setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.newBuilder(cardRecord));
+        } else {
+          setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.newBuilder());
+        }
+      }
+      return cardRecordBuilder;
+    }
+
+    /**
+     * Sets the Builder instance for the 'cardRecord' field
+     * @param value The builder instance that must be set.
+     * @return This builder.
+     */
+
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.Builder value) {
+      clearCardRecord();
+      cardRecordBuilder = value;
+      return this;
+    }
+
+    /**
+     * Checks whether the 'cardRecord' field has an active Builder instance
+     * @return True if the 'cardRecord' field has an active Builder instance
+     */
+    public boolean hasCardRecordBuilder() {
+      return cardRecordBuilder != null;
+    }
+
+    /**
+      * Clears the value of the 'cardRecord' field.
+      * @return This builder.
+      */
+    public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearCardRecord() {
+      cardRecord = null;
+      cardRecordBuilder = null;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -571,9 +795,9 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @return This builder.
       */
     public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder setAvailableNetworks(java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum> value) {
-      validate(fields()[5], value);
+      validate(fields()[7], value);
       this.availableNetworks = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[7] = true;
       return this;
     }
 
@@ -582,7 +806,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       * @return True if the 'availableNetworks' field has been set, false otherwise.
       */
     public boolean hasAvailableNetworks() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[7];
     }
 
 
@@ -592,7 +816,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       */
     public com.zaheudev.shared.avro.RoutedCompletedEvent.Builder clearAvailableNetworks() {
       availableNetworks = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -603,10 +827,30 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
         RoutedCompletedEvent record = new RoutedCompletedEvent();
         record.paymentId = fieldSetFlags()[0] ? this.paymentId : (java.lang.CharSequence) defaultValue(fields()[0]);
         record.selectedPaymentMethod = fieldSetFlags()[1] ? this.selectedPaymentMethod : (com.zaheudev.shared.avro.PaymentMethodEnum) defaultValue(fields()[1]);
-        record.estimatedCost = fieldSetFlags()[2] ? this.estimatedCost : (java.lang.CharSequence) defaultValue(fields()[2]);
-        record.useToken = fieldSetFlags()[3] ? this.useToken : (java.lang.Boolean) defaultValue(fields()[3]);
-        record.timestamp = fieldSetFlags()[4] ? this.timestamp : (java.lang.Long) defaultValue(fields()[4]);
-        record.availableNetworks = fieldSetFlags()[5] ? this.availableNetworks : (java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum>) defaultValue(fields()[5]);
+        if (AmountBuilder != null) {
+          try {
+            record.Amount = this.AmountBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("Amount"));
+            throw e;
+          }
+        } else {
+          record.Amount = fieldSetFlags()[2] ? this.Amount : (com.zaheudev.shared.avro.Amount) defaultValue(fields()[2]);
+        }
+        record.estimatedCost = fieldSetFlags()[3] ? this.estimatedCost : (java.lang.CharSequence) defaultValue(fields()[3]);
+        record.useToken = fieldSetFlags()[4] ? this.useToken : (java.lang.Boolean) defaultValue(fields()[4]);
+        record.timestamp = fieldSetFlags()[5] ? this.timestamp : (java.lang.Long) defaultValue(fields()[5]);
+        if (cardRecordBuilder != null) {
+          try {
+            record.cardRecord = this.cardRecordBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("cardRecord"));
+            throw e;
+          }
+        } else {
+          record.cardRecord = fieldSetFlags()[6] ? this.cardRecord : (com.zaheudev.shared.avro.CardRecord) defaultValue(fields()[6]);
+        }
+        record.availableNetworks = fieldSetFlags()[7] ? this.availableNetworks : (java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum>) defaultValue(fields()[7]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -643,11 +887,27 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
 
     out.writeEnum(this.selectedPaymentMethod.ordinal());
 
+    if (this.Amount == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.Amount.customEncode(out);
+    }
+
     out.writeString(this.estimatedCost);
 
     out.writeBoolean(this.useToken);
 
     out.writeLong(this.timestamp);
+
+    if (this.cardRecord == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.cardRecord.customEncode(out);
+    }
 
     long size0 = this.availableNetworks.size();
     out.writeArrayStart();
@@ -673,11 +933,31 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
 
       this.selectedPaymentMethod = com.zaheudev.shared.avro.PaymentMethodEnum.values()[in.readEnum()];
 
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.Amount = null;
+      } else {
+        if (this.Amount == null) {
+          this.Amount = new com.zaheudev.shared.avro.Amount();
+        }
+        this.Amount.customDecode(in);
+      }
+
       this.estimatedCost = in.readString(this.estimatedCost instanceof Utf8 ? (Utf8)this.estimatedCost : null);
 
       this.useToken = in.readBoolean();
 
       this.timestamp = in.readLong();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.cardRecord = null;
+      } else {
+        if (this.cardRecord == null) {
+          this.cardRecord = new com.zaheudev.shared.avro.CardRecord();
+        }
+        this.cardRecord.customDecode(in);
+      }
 
       long size0 = in.readArrayStart();
       java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum> a0 = this.availableNetworks;
@@ -695,7 +975,7 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       }
 
     } else {
-      for (int i = 0; i < 6; i++) {
+      for (int i = 0; i < 8; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.paymentId = in.readString(this.paymentId instanceof Utf8 ? (Utf8)this.paymentId : null);
@@ -706,18 +986,42 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
           break;
 
         case 2:
-          this.estimatedCost = in.readString(this.estimatedCost instanceof Utf8 ? (Utf8)this.estimatedCost : null);
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.Amount = null;
+          } else {
+            if (this.Amount == null) {
+              this.Amount = new com.zaheudev.shared.avro.Amount();
+            }
+            this.Amount.customDecode(in);
+          }
           break;
 
         case 3:
-          this.useToken = in.readBoolean();
+          this.estimatedCost = in.readString(this.estimatedCost instanceof Utf8 ? (Utf8)this.estimatedCost : null);
           break;
 
         case 4:
-          this.timestamp = in.readLong();
+          this.useToken = in.readBoolean();
           break;
 
         case 5:
+          this.timestamp = in.readLong();
+          break;
+
+        case 6:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.cardRecord = null;
+          } else {
+            if (this.cardRecord == null) {
+              this.cardRecord = new com.zaheudev.shared.avro.CardRecord();
+            }
+            this.cardRecord.customDecode(in);
+          }
+          break;
+
+        case 7:
           long size0 = in.readArrayStart();
           java.util.List<com.zaheudev.shared.avro.PaymentMethodEnum> a0 = this.availableNetworks;
           if (a0 == null) {
@@ -746,9 +1050,11 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
     int result = 1;
     result = 31 * result + (paymentId == null ? 0 : paymentId.hashCode());
     result = 31 * result + (selectedPaymentMethod == null ? 0 : ((java.lang.Enum) selectedPaymentMethod).ordinal());
+    result = 31 * result + (Amount == null ? 0 : Amount.hashCode());
     result = 31 * result + (estimatedCost == null ? 0 : estimatedCost.hashCode());
     result = 31 * result + Boolean.hashCode(useToken);
     result = 31 * result + Long.hashCode(timestamp);
+    result = 31 * result + (cardRecord == null ? 0 : cardRecord.hashCode());
     result = 31 * result + (availableNetworks == null ? 0 : availableNetworks.hashCode());
     return result;
   }
@@ -768,6 +1074,9 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
     if (!java.util.Objects.equals(this.selectedPaymentMethod, other.selectedPaymentMethod)) {
       return false;
     }
+    if (!java.util.Objects.equals(this.Amount, other.Amount)) {
+      return false;
+    }
     if (Utf8.compareSequences(this.estimatedCost, other.estimatedCost) != 0) {
       return false;
     }
@@ -775,6 +1084,9 @@ public class RoutedCompletedEvent extends org.apache.avro.specific.SpecificRecor
       return false;
     }
     if (this.timestamp != other.timestamp) {
+      return false;
+    }
+    if (!java.util.Objects.equals(this.cardRecord, other.cardRecord)) {
       return false;
     }
     if (!java.util.Objects.equals(this.availableNetworks, other.availableNetworks)) {

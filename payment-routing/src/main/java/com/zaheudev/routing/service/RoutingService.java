@@ -42,9 +42,9 @@ public class RoutingService {
             // based on the event data and the tokenization status of the card.
             routingCostRepository.findByPaymentMethodAndIsToken(network, false).forEach(cost -> {
                 BigDecimal calculatedFee = cost.calculateTotalCost(value);
-                log.warn("Calculated fee for {}: {}", network, calculatedFee);
-                log.warn("Value: " + value);
-                log.warn("variables: " + cost);
+                log.info("Calculated fee for {}: {}", network, calculatedFee);
+                log.info("Value: " + value);
+                log.info("variables: " + cost);
                 options.add(new OptimalNetwork<>(network, calculatedFee));
             });
         }

@@ -40,7 +40,7 @@ public class PaymentRequestedConsumer {
                     .paymentId(paymentId)
                     .riskLevel(riskLevel)
                     .riskReason("Risk calculated based on transaction history and card details")
-                    .approved(riskLevel == RiskLevel.MEDIUM)
+                    .approved(riskLevel == RiskLevel.LOW || riskLevel == RiskLevel.MEDIUM)
                     .assessmentDate(java.time.LocalDate.now())
                     .build();
             riskAssessmentRepository.save(riskEntity);

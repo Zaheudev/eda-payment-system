@@ -1,6 +1,7 @@
 package com.zaheudev.gateway.model;
 
 import com.zaheudev.gateway.dto.CardDetails;
+import com.zaheudev.shared.dto.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,13 +42,13 @@ public class Payment {
         return "PMT" + UUID.randomUUID().toString().substring(0,9);
     }
 
-    public void updateStatus(PaymentStatus status) {
+    public void updateStatus(com.zaheudev.shared.dto.PaymentStatus status) {
         this.status = status;
         this.updatedAt = LocalDateTime.now();
     }
 
     public void authorize() {
-        this.status = PaymentStatus.AUTHORIZED;
+        this.status = com.zaheudev.shared.dto.PaymentStatus.AUTHORIZED;
         this.updatedAt = LocalDateTime.now();
     }
 }

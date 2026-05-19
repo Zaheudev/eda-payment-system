@@ -1,4 +1,4 @@
-package com.zaheudev.gateway.model;
+package com.zaheudev.shared.dto;
 
 //i will come later with docs, just want to have the code in place for now
 public enum PaymentStatus {

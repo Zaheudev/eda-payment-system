@@ -2,7 +2,7 @@ package com.zaheudev.gateway.dto;
 
 import com.zaheudev.gateway.model.Amount;
 import com.zaheudev.gateway.model.Payment;
-import com.zaheudev.gateway.model.PaymentStatus;
+import com.zaheudev.shared.dto.PaymentStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,15 +10,13 @@ import java.time.LocalDateTime;
 @Data @NoArgsConstructor @AllArgsConstructor
 @Builder
 public class PaymentResponse {
-    @Getter @Setter
     private String paymentId;
-    @Getter @Setter
     private PaymentStatus paymentStatus;
-    @Getter @Setter
+    private String rrn;
+    private String authCode;
+    private String processorTransactionId;
     private Amount amount;
-    @Getter @Setter
     private LocalDateTime createdAt;
-    @Getter @Setter
     private String message;
 
     public static PaymentResponse create(Payment payment){

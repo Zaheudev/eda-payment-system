@@ -4,10 +4,12 @@ import com.zaheudev.gateway.client.TokenizerClient;
 import com.zaheudev.gateway.dto.CreatePaymentRequest;
 import com.zaheudev.gateway.dto.PaymentResponse;
 import com.zaheudev.gateway.entity.PaymentEntity;
+import com.zaheudev.gateway.exception.PaymentFailedException;
 import com.zaheudev.gateway.kafka.producer.PaymentEventProducer;
 import com.zaheudev.gateway.model.Amount;
 import com.zaheudev.gateway.model.Payment;
-import com.zaheudev.gateway.model.PaymentStatus;
+import com.zaheudev.shared.avro.AuthorizationCompleted;
+import com.zaheudev.shared.dto.PaymentStatus;
 import com.zaheudev.gateway.repository.PaymentRepository;
 import com.zaheudev.shared.avro.PaymentRequestedEvent;
 import com.zaheudev.shared.dto.TokenizeResponse;
@@ -56,6 +58,7 @@ public class PaymentServiceImpl implements PaymentService{
                         .setBin(tokenResponse.getBin())
                         .setLastFour(tokenResponse.getLastFour())
                         .setTokenRef(tokenResponse.getTokenRef())
+                        .setTokenValue(tokenResponse.getTokenValue())
                         .setPrimaryNetwork(tokenResponse.getCardNetwork())
                         .setCardType(tokenResponse.getCardType())
                         .build())
@@ -67,7 +70,18 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public PaymentResponse authorizePayment(String paymentId) {
+    public PaymentResponse capturePayment(String paymentID) {
+        paymentRepository.findByPaymentId(paymentID).ifPresent(paymentEntity -> {
+            if(paymentEntity.getStatus() == PaymentStatus.AUTHORIZED){
+                // here will produce another event to capture the payment
+                // and update the status to captured once we receive the response from the card network emulator
+                paymentEntity.setStatus(PaymentStatus.CAPTURED);
+                paymentRepository.save(paymentEntity);
+            }else{
+                log.error("The payment {} cant be captured, it isn't authorized yet", paymentID);
+                throw new PaymentFailedException(paymentEntity, "Payment is not authorized");
+            }
+        });
         return null;
     }
 
@@ -88,11 +102,6 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public PaymentResponse refundPayment(String paymentId) {
-        return null;
-    }
-
-    @Override
-    public PaymentResponse capturePayment(String paymentId) {
         return null;
     }
 

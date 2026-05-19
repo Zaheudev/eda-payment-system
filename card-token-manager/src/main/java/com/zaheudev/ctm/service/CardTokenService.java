@@ -57,6 +57,7 @@ public class CardTokenService {
 
         return TokenizeResponse.builder()
                 .tokenRef(tokenRef)
+                .tokenValue(tokenValue)
                 .bin(tokenEntity.getBin())
                 .lastFour(tokenEntity.getLastFour())
                 .cardNetwork(tokenEntity.getCardNetwork())

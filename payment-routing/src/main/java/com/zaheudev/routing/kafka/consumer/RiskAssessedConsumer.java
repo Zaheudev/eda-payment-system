@@ -6,13 +6,11 @@ import com.zaheudev.routing.kafka.producer.RoutingEventProducer;
 import com.zaheudev.routing.repository.RoutingDecisionRepository;
 import com.zaheudev.routing.service.RoutingService;
 import com.zaheudev.shared.avro.PaymentMethodEnum;
-import com.zaheudev.shared.avro.PaymentRequestedEvent;
 import com.zaheudev.shared.avro.RiskAssessed;
 import com.zaheudev.shared.avro.RoutedCompletedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
@@ -23,7 +21,7 @@ import java.util.Set;
 
 @Slf4j
 @Component
-public class PaymentRequestedConsumer {
+public class RiskAssessedConsumer {
     @Autowired
     private RoutingService routingService;
 
@@ -61,6 +59,8 @@ public class PaymentRequestedConsumer {
             RoutedCompletedEvent routedCompletedEvent = RoutedCompletedEvent.newBuilder()
                     .setPaymentId(paymentId)
                     .setSelectedPaymentMethod(result.getSelectedPaymentMethod())
+                    .setAmount(event.getAmount())
+                    .setCardRecord(event.getCardRecord())
                     .setEstimatedCost(result.getCalculatedFee().toString())
                     .setUseToken(result.getUseToken())
                     .setTimestamp(System.currentTimeMillis())

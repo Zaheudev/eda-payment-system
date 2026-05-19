@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class CardRecord extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -510912380651722738L;
+  private static final long serialVersionUID = 4067931743598082230L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CardRecord\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"},{\"name\":\"primaryNetwork\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}],\"default\":null},{\"name\":\"cardType\",\"type\":[\"null\",\"string\"],\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CardRecord\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"tokenValue\",\"type\":[\"null\",\"string\"],\"doc\":\"This is the network token value\",\"default\":null},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"},{\"name\":\"primaryNetwork\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}],\"default\":null},{\"name\":\"cardType\",\"type\":[\"null\",\"string\"],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -74,6 +74,8 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
 
   /** This is the token for the card details */
   private java.lang.CharSequence tokenRef;
+  /** This is the network token value */
+  private java.lang.CharSequence tokenValue;
   /** The first 6 digits of the card number */
   private java.lang.CharSequence bin;
   private java.lang.CharSequence lastFour;
@@ -90,13 +92,15 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
   /**
    * All-args constructor.
    * @param tokenRef This is the token for the card details
+   * @param tokenValue This is the network token value
    * @param bin The first 6 digits of the card number
    * @param lastFour The new value for lastFour
    * @param primaryNetwork The new value for primaryNetwork
    * @param cardType The new value for cardType
    */
-  public CardRecord(java.lang.CharSequence tokenRef, java.lang.CharSequence bin, java.lang.CharSequence lastFour, com.zaheudev.shared.avro.PaymentMethodEnum primaryNetwork, java.lang.CharSequence cardType) {
+  public CardRecord(java.lang.CharSequence tokenRef, java.lang.CharSequence tokenValue, java.lang.CharSequence bin, java.lang.CharSequence lastFour, com.zaheudev.shared.avro.PaymentMethodEnum primaryNetwork, java.lang.CharSequence cardType) {
     this.tokenRef = tokenRef;
+    this.tokenValue = tokenValue;
     this.bin = bin;
     this.lastFour = lastFour;
     this.primaryNetwork = primaryNetwork;
@@ -114,10 +118,11 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return tokenRef;
-    case 1: return bin;
-    case 2: return lastFour;
-    case 3: return primaryNetwork;
-    case 4: return cardType;
+    case 1: return tokenValue;
+    case 2: return bin;
+    case 3: return lastFour;
+    case 4: return primaryNetwork;
+    case 5: return cardType;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -128,10 +133,11 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: tokenRef = (java.lang.CharSequence)value$; break;
-    case 1: bin = (java.lang.CharSequence)value$; break;
-    case 2: lastFour = (java.lang.CharSequence)value$; break;
-    case 3: primaryNetwork = (com.zaheudev.shared.avro.PaymentMethodEnum)value$; break;
-    case 4: cardType = (java.lang.CharSequence)value$; break;
+    case 1: tokenValue = (java.lang.CharSequence)value$; break;
+    case 2: bin = (java.lang.CharSequence)value$; break;
+    case 3: lastFour = (java.lang.CharSequence)value$; break;
+    case 4: primaryNetwork = (com.zaheudev.shared.avro.PaymentMethodEnum)value$; break;
+    case 5: cardType = (java.lang.CharSequence)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -152,6 +158,24 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
    */
   public void setTokenRef(java.lang.CharSequence value) {
     this.tokenRef = value;
+  }
+
+  /**
+   * Gets the value of the 'tokenValue' field.
+   * @return This is the network token value
+   */
+  public java.lang.CharSequence getTokenValue() {
+    return tokenValue;
+  }
+
+
+  /**
+   * Sets the value of the 'tokenValue' field.
+   * This is the network token value
+   * @param value the value to set.
+   */
+  public void setTokenValue(java.lang.CharSequence value) {
+    this.tokenValue = value;
   }
 
   /**
@@ -266,6 +290,8 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
 
     /** This is the token for the card details */
     private java.lang.CharSequence tokenRef;
+    /** This is the network token value */
+    private java.lang.CharSequence tokenValue;
     /** The first 6 digits of the card number */
     private java.lang.CharSequence bin;
     private java.lang.CharSequence lastFour;
@@ -287,21 +313,25 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
         this.tokenRef = data().deepCopy(fields()[0].schema(), other.tokenRef);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.bin)) {
-        this.bin = data().deepCopy(fields()[1].schema(), other.bin);
+      if (isValidValue(fields()[1], other.tokenValue)) {
+        this.tokenValue = data().deepCopy(fields()[1].schema(), other.tokenValue);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
-      if (isValidValue(fields()[2], other.lastFour)) {
-        this.lastFour = data().deepCopy(fields()[2].schema(), other.lastFour);
+      if (isValidValue(fields()[2], other.bin)) {
+        this.bin = data().deepCopy(fields()[2].schema(), other.bin);
         fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
-      if (isValidValue(fields()[3], other.primaryNetwork)) {
-        this.primaryNetwork = data().deepCopy(fields()[3].schema(), other.primaryNetwork);
+      if (isValidValue(fields()[3], other.lastFour)) {
+        this.lastFour = data().deepCopy(fields()[3].schema(), other.lastFour);
         fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
-      if (isValidValue(fields()[4], other.cardType)) {
-        this.cardType = data().deepCopy(fields()[4].schema(), other.cardType);
+      if (isValidValue(fields()[4], other.primaryNetwork)) {
+        this.primaryNetwork = data().deepCopy(fields()[4].schema(), other.primaryNetwork);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
+      }
+      if (isValidValue(fields()[5], other.cardType)) {
+        this.cardType = data().deepCopy(fields()[5].schema(), other.cardType);
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
     }
 
@@ -315,21 +345,25 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
         this.tokenRef = data().deepCopy(fields()[0].schema(), other.tokenRef);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.bin)) {
-        this.bin = data().deepCopy(fields()[1].schema(), other.bin);
+      if (isValidValue(fields()[1], other.tokenValue)) {
+        this.tokenValue = data().deepCopy(fields()[1].schema(), other.tokenValue);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.lastFour)) {
-        this.lastFour = data().deepCopy(fields()[2].schema(), other.lastFour);
+      if (isValidValue(fields()[2], other.bin)) {
+        this.bin = data().deepCopy(fields()[2].schema(), other.bin);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.primaryNetwork)) {
-        this.primaryNetwork = data().deepCopy(fields()[3].schema(), other.primaryNetwork);
+      if (isValidValue(fields()[3], other.lastFour)) {
+        this.lastFour = data().deepCopy(fields()[3].schema(), other.lastFour);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.cardType)) {
-        this.cardType = data().deepCopy(fields()[4].schema(), other.cardType);
+      if (isValidValue(fields()[4], other.primaryNetwork)) {
+        this.primaryNetwork = data().deepCopy(fields()[4].schema(), other.primaryNetwork);
         fieldSetFlags()[4] = true;
+      }
+      if (isValidValue(fields()[5], other.cardType)) {
+        this.cardType = data().deepCopy(fields()[5].schema(), other.cardType);
+        fieldSetFlags()[5] = true;
       }
     }
 
@@ -378,6 +412,50 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
     }
 
     /**
+      * Gets the value of the 'tokenValue' field.
+      * This is the network token value
+      * @return The value.
+      */
+    public java.lang.CharSequence getTokenValue() {
+      return tokenValue;
+    }
+
+
+    /**
+      * Sets the value of the 'tokenValue' field.
+      * This is the network token value
+      * @param value The value of 'tokenValue'.
+      * @return This builder.
+      */
+    public com.zaheudev.shared.avro.CardRecord.Builder setTokenValue(java.lang.CharSequence value) {
+      validate(fields()[1], value);
+      this.tokenValue = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'tokenValue' field has been set.
+      * This is the network token value
+      * @return True if the 'tokenValue' field has been set, false otherwise.
+      */
+    public boolean hasTokenValue() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'tokenValue' field.
+      * This is the network token value
+      * @return This builder.
+      */
+    public com.zaheudev.shared.avro.CardRecord.Builder clearTokenValue() {
+      tokenValue = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'bin' field.
       * The first 6 digits of the card number
       * @return The value.
@@ -394,9 +472,9 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public com.zaheudev.shared.avro.CardRecord.Builder setBin(java.lang.CharSequence value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.bin = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -406,7 +484,7 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'bin' field has been set, false otherwise.
       */
     public boolean hasBin() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
 
 
@@ -417,7 +495,7 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public com.zaheudev.shared.avro.CardRecord.Builder clearBin() {
       bin = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -436,9 +514,9 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public com.zaheudev.shared.avro.CardRecord.Builder setLastFour(java.lang.CharSequence value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.lastFour = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -447,7 +525,7 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'lastFour' field has been set, false otherwise.
       */
     public boolean hasLastFour() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
 
 
@@ -457,7 +535,7 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public com.zaheudev.shared.avro.CardRecord.Builder clearLastFour() {
       lastFour = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -476,9 +554,9 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public com.zaheudev.shared.avro.CardRecord.Builder setPrimaryNetwork(com.zaheudev.shared.avro.PaymentMethodEnum value) {
-      validate(fields()[3], value);
+      validate(fields()[4], value);
       this.primaryNetwork = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -487,7 +565,7 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'primaryNetwork' field has been set, false otherwise.
       */
     public boolean hasPrimaryNetwork() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[4];
     }
 
 
@@ -497,7 +575,7 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public com.zaheudev.shared.avro.CardRecord.Builder clearPrimaryNetwork() {
       primaryNetwork = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[4] = false;
       return this;
     }
 
@@ -516,9 +594,9 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       * @return This builder.
       */
     public com.zaheudev.shared.avro.CardRecord.Builder setCardType(java.lang.CharSequence value) {
-      validate(fields()[4], value);
+      validate(fields()[5], value);
       this.cardType = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -527,7 +605,7 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       * @return True if the 'cardType' field has been set, false otherwise.
       */
     public boolean hasCardType() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[5];
     }
 
 
@@ -537,7 +615,7 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public com.zaheudev.shared.avro.CardRecord.Builder clearCardType() {
       cardType = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -547,10 +625,11 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       try {
         CardRecord record = new CardRecord();
         record.tokenRef = fieldSetFlags()[0] ? this.tokenRef : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.bin = fieldSetFlags()[1] ? this.bin : (java.lang.CharSequence) defaultValue(fields()[1]);
-        record.lastFour = fieldSetFlags()[2] ? this.lastFour : (java.lang.CharSequence) defaultValue(fields()[2]);
-        record.primaryNetwork = fieldSetFlags()[3] ? this.primaryNetwork : (com.zaheudev.shared.avro.PaymentMethodEnum) defaultValue(fields()[3]);
-        record.cardType = fieldSetFlags()[4] ? this.cardType : (java.lang.CharSequence) defaultValue(fields()[4]);
+        record.tokenValue = fieldSetFlags()[1] ? this.tokenValue : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.bin = fieldSetFlags()[2] ? this.bin : (java.lang.CharSequence) defaultValue(fields()[2]);
+        record.lastFour = fieldSetFlags()[3] ? this.lastFour : (java.lang.CharSequence) defaultValue(fields()[3]);
+        record.primaryNetwork = fieldSetFlags()[4] ? this.primaryNetwork : (com.zaheudev.shared.avro.PaymentMethodEnum) defaultValue(fields()[4]);
+        record.cardType = fieldSetFlags()[5] ? this.cardType : (java.lang.CharSequence) defaultValue(fields()[5]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -585,6 +664,14 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
   {
     out.writeString(this.tokenRef);
 
+    if (this.tokenValue == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.tokenValue);
+    }
+
     out.writeString(this.bin);
 
     out.writeString(this.lastFour);
@@ -614,6 +701,13 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
     if (fieldOrder == null) {
       this.tokenRef = in.readString(this.tokenRef instanceof Utf8 ? (Utf8)this.tokenRef : null);
 
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.tokenValue = null;
+      } else {
+        this.tokenValue = in.readString(this.tokenValue instanceof Utf8 ? (Utf8)this.tokenValue : null);
+      }
+
       this.bin = in.readString(this.bin instanceof Utf8 ? (Utf8)this.bin : null);
 
       this.lastFour = in.readString(this.lastFour instanceof Utf8 ? (Utf8)this.lastFour : null);
@@ -633,21 +727,30 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
       }
 
     } else {
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < 6; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.tokenRef = in.readString(this.tokenRef instanceof Utf8 ? (Utf8)this.tokenRef : null);
           break;
 
         case 1:
-          this.bin = in.readString(this.bin instanceof Utf8 ? (Utf8)this.bin : null);
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.tokenValue = null;
+          } else {
+            this.tokenValue = in.readString(this.tokenValue instanceof Utf8 ? (Utf8)this.tokenValue : null);
+          }
           break;
 
         case 2:
-          this.lastFour = in.readString(this.lastFour instanceof Utf8 ? (Utf8)this.lastFour : null);
+          this.bin = in.readString(this.bin instanceof Utf8 ? (Utf8)this.bin : null);
           break;
 
         case 3:
+          this.lastFour = in.readString(this.lastFour instanceof Utf8 ? (Utf8)this.lastFour : null);
+          break;
+
+        case 4:
           if (in.readIndex() != 1) {
             in.readNull();
             this.primaryNetwork = null;
@@ -656,7 +759,7 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
           }
           break;
 
-        case 4:
+        case 5:
           if (in.readIndex() != 1) {
             in.readNull();
             this.cardType = null;
@@ -676,6 +779,7 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
   public int hashCode() {
     int result = 1;
     result = 31 * result + (tokenRef == null ? 0 : tokenRef.hashCode());
+    result = 31 * result + (tokenValue == null ? 0 : tokenValue.hashCode());
     result = 31 * result + (bin == null ? 0 : bin.hashCode());
     result = 31 * result + (lastFour == null ? 0 : lastFour.hashCode());
     result = 31 * result + (primaryNetwork == null ? 0 : ((java.lang.Enum) primaryNetwork).ordinal());
@@ -693,6 +797,9 @@ public class CardRecord extends org.apache.avro.specific.SpecificRecordBase impl
     }
     CardRecord other = (CardRecord) o;
     if (Utf8.compareSequences(this.tokenRef, other.tokenRef) != 0) {
+      return false;
+    }
+    if (Utf8.compareSequences(this.tokenValue, other.tokenValue) != 0) {
       return false;
     }
     if (Utf8.compareSequences(this.bin, other.bin) != 0) {

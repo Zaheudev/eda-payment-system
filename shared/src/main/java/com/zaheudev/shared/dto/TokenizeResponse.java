@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class TokenizeResponse {
     private String tokenRef;
+    private String tokenValue;
     private String bin;
     private String lastFour;
     private String cardType;
