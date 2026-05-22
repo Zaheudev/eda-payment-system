@@ -1,7 +1,6 @@
 package com.zaheudev.emulator.entity;
 
 import com.zaheudev.emulator.model.TransactionStatus;
-import com.zaheudev.shared.avro.AuthorizationCompleted;
 import com.zaheudev.shared.avro.PaymentMethodEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,7 +11,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -22,6 +20,7 @@ public class EmulatedTransactionEntity {
     private String paymentId;
     @Id
     private String processorTransactionId;
+    private String captureId;
     private String rrn;
     private String authCode;
     @Enumerated(EnumType.STRING)
@@ -31,6 +30,7 @@ public class EmulatedTransactionEntity {
     private BigDecimal authorizedAmount;
     private BigDecimal capturedAmount;
     private BigDecimal refundedAmount;
+    private BigDecimal networkFee;
     private String currency;
     private String errorMessage;
     private LocalDateTime createdAt = LocalDateTime.now();

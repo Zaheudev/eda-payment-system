@@ -1,12 +1,13 @@
 package com.zaheudev.risk.kafka.consumer;
 
 import com.zaheudev.risk.entity.RiskAssessmentEntity;
-import com.zaheudev.risk.kafka.producer.RiskAssessProducer;
+import com.zaheudev.risk.kafka.producer.RiskFraudProducer;
 import com.zaheudev.risk.model.RiskLevel;
 import com.zaheudev.risk.repository.RiskAssessmentRepository;
 import com.zaheudev.risk.service.RiskService;
+import com.zaheudev.shared.avro.PaymentRejectedEvent;
 import com.zaheudev.shared.avro.PaymentRequestedEvent;
-import com.zaheudev.shared.avro.RiskAssessed;
+import com.zaheudev.shared.avro.RiskAssessedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class PaymentRequestedConsumer {
     private RiskAssessmentRepository riskAssessmentRepository;
 
     @Autowired
-    private RiskAssessProducer riskAssessProducer;
+    private RiskFraudProducer producer;
 
     @KafkaListener(topics = "payment-requests")
     public void consume(ConsumerRecord<String, PaymentRequestedEvent> record, Acknowledgment ack){
@@ -35,19 +36,33 @@ public class PaymentRequestedConsumer {
         log.info("Calculating the risk for the payment with id: {}", paymentId);
         try{
             RiskLevel riskLevel = riskService.assessRisk(paymentId);
+            boolean approved = riskLevel == RiskLevel.LOW || riskLevel == RiskLevel.MEDIUM || riskLevel == RiskLevel.HIGH;
             RiskAssessmentEntity riskEntity = RiskAssessmentEntity.builder()
                     .assessmentId(UUID.randomUUID().toString())
                     .paymentId(paymentId)
                     .riskLevel(riskLevel)
                     .riskReason("Risk calculated based on transaction history and card details")
-                    .approved(riskLevel == RiskLevel.LOW || riskLevel == RiskLevel.MEDIUM)
+                    .approved(approved)
                     .assessmentDate(java.time.LocalDate.now())
                     .build();
             riskAssessmentRepository.save(riskEntity);
             log.info("Risk assessment saved in db");
+
             ack.acknowledge();
-            log.info("Publishing risk to kafka");
-            riskAssessProducer.publishRiskAssessmentEvent(RiskAssessed.newBuilder()
+            if(!approved){
+                log.error("Risk Level {} is too High, rejecting payment: {}", riskLevel, paymentId);
+                log.info("Publishing payment rejected event");
+                producer.publishPaymentRejectedEvent(PaymentRejectedEvent.newBuilder()
+                        .setPaymentId(paymentId)
+                        .setRiskLevel(com.zaheudev.shared.avro.RiskLevel.valueOf(riskLevel.name()))
+                        .setReason("Risk level too high: " + riskLevel)
+                        .setTimestamp(System.currentTimeMillis())
+                        .build());
+                ack.acknowledge();
+                return;
+            }
+            log.info("Publishing risk assessed to kafka");
+            producer.publishRiskAssessmentEvent(RiskAssessedEvent.newBuilder()
                     .setAssessmentId(riskEntity.getAssessmentId())
                     .setPaymentId(paymentId)
                     .setRiskLevel(com.zaheudev.shared.avro.RiskLevel.valueOf(riskLevel.name()))
@@ -57,6 +72,7 @@ public class PaymentRequestedConsumer {
                     .setCardRecord(event.getCardRecord())
                     .setAmount(event.getAmount())
                     .build());
+            ack.acknowledge();
         }catch(Exception e){
             log.error("Error while calculating risk for payment: {}", paymentId);
             log.error("Error: {}", e.getMessage());

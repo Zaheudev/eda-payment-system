@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "AuthorizationCompleted",
+  "name": "AuthorizationCompletedEvent",
   "namespace": "com.zaheudev.shared.avro",
   "fields": [
     { "name": "paymentId", "type": ["null", "string"], "default": null },

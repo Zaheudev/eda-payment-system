@@ -1,0 +1,52 @@
+{
+  "type": "record",
+  "name": "CaptureCompletedEvent",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    { "name": "paymentId",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "success",
+      "type": ["null","boolean"],
+      "default": null
+    },
+    {
+      "name": "captureId",
+      "type": ["null","string"],
+      "default": null
+    },
+    { "name": "processorTransactionId",
+      "type": ["null","string"],
+      "default": null
+    },
+    { "name": "rrn",
+      "type": ["null","string"],
+      "default": null
+    },
+    { "name": "authCode",
+      "type": ["null","string"],
+      "default": null
+    },
+    { "name": "responseMessage",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "amount",
+      "type": ["null","com.zaheudev.shared.avro.Amount"],
+      "default": null
+    },
+    {
+      "name": "networkFee",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "timestamp",
+      "type": ["null","long"],
+      "default": null
+    }
+  ]
+}

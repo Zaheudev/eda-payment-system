@@ -1,7 +1,7 @@
 package com.zaheudev.risk.config;
 
-import com.zaheudev.shared.avro.RiskAssessed;
-import com.zaheudev.shared.avro.RoutedCompletedEvent;
+import com.zaheudev.shared.avro.PaymentRejectedEvent;
+import com.zaheudev.shared.avro.RiskAssessedEvent;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -25,7 +25,7 @@ public class KafkaProducerConfig {
     private String schemaRegistryUrl;
 
     @Bean
-    public ProducerFactory<String, RiskAssessed> producerFactory() {
+    public ProducerFactory<String, Object> producerConfigs() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -36,8 +36,22 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
+    @Bean public ProducerFactory<String, RiskAssessedEvent> riskAssessedProducerFactory() {
+        return new DefaultKafkaProducerFactory<>(producerConfigs().getConfigurationProperties());
+    }
+
     @Bean
-    public KafkaTemplate<String, RiskAssessed> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    public KafkaTemplate<String, RiskAssessedEvent> riskAssessedKafkaTemplate() {
+        return new KafkaTemplate<>(riskAssessedProducerFactory());
+    }
+
+    @Bean
+    public ProducerFactory<String, PaymentRejectedEvent> paymentRejectedProducerFactory() {
+        return new DefaultKafkaProducerFactory<>(producerConfigs().getConfigurationProperties());
+    }
+
+    @Bean
+    public KafkaTemplate<String, PaymentRejectedEvent> paymentRejectedKafkaTemplate() {
+        return new KafkaTemplate<String, PaymentRejectedEvent>(paymentRejectedProducerFactory());
     }
 }

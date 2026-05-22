@@ -3,8 +3,7 @@ package com.zaheudev.routing.service;
 import com.zaheudev.routing.dto.RoutingResult;
 import com.zaheudev.routing.repository.RoutingCostRepository;
 import com.zaheudev.shared.avro.PaymentMethodEnum;
-import com.zaheudev.shared.avro.PaymentRequestedEvent;
-import com.zaheudev.shared.avro.RiskAssessed;
+import com.zaheudev.shared.avro.RiskAssessedEvent;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class RoutingService {
     @Autowired
     private RoutingCostRepository routingCostRepository;
 
-    public RoutingResult calculateOptimalRouting(RiskAssessed event){
+    public RoutingResult calculateOptimalRouting(RiskAssessedEvent event){
         Long value = event.getAmount().getValue();
         log.info("Calculating optimal routing for event: {}", event);
         Set<PaymentMethodEnum> availableNetworks = determineAvailableNetworks(event);
@@ -67,7 +66,7 @@ public class RoutingService {
        * this would likely involve looking up the BIN in a database to determine the card type and supported networks.
      * @return a set of available payment networks for the given payment request
      */
-    public Set<PaymentMethodEnum> determineAvailableNetworks(RiskAssessed event) {
+    public Set<PaymentMethodEnum> determineAvailableNetworks(RiskAssessedEvent event) {
         Set<PaymentMethodEnum> networks = new HashSet<>();
         PaymentMethodEnum primaryNetwork = event.getCardRecord().getPrimaryNetwork();
         networks.add(primaryNetwork);

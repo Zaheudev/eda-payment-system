@@ -10,7 +10,9 @@ public enum PaymentStatus {
     ROUTING_COMPLETED,
     RISK_ASSESSED,
     CANCELLED,
+    PARTIALLY_REFUNDED,
     REFUNDED,
     SUCCESS,
-    FAILED
+    FAILED,
+    REJECTED
 }

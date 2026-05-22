@@ -1,0 +1,72 @@
+{
+  "type": "record",
+  "name": "RefundCompletedEvent",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    {
+      "name": "success",
+      "type": ["null","boolean"],
+      "default": false
+    },
+    {
+      "name": "status",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "paymentId",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "originalProcessorTransactionId",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "errorMessage",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "refundRrn",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "refundAuthCode",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "refundId",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "refundedAmount",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "currency",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "createdAt",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "updatedAt",
+      "type": ["null","string"],
+      "default": null
+    },
+    {
+      "name": "timeStamp",
+      "type": ["null","long"],
+      "default": null
+    }
+  ]
+}

@@ -1,78 +1,15 @@
--- SIGNATURE NETWORKS (credit card networks)
--- Caracteristici: fees mai mari, auth rates mai mari
-
--- VISA - PAN (Primary Account Number - cardul direct)
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('VISA', 0.10, 0.015, 0.82, false);
-
--- VISA - TOKEN (card tokenizat)
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('VISA', 0.09, 0.014, 0.85, true);
-
--- MASTERCARD - PAN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('MASTERCARD', 0.12, 0.014, 0.83, false);
-
--- MASTERCARD - TOKEN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('MASTERCARD', 0.11, 0.013, 0.86, true);
-
--- AMEX - PAN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('AMEX', 0.15, 0.022, 0.80, false);
-
--- AMEX - TOKEN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('AMEX', 0.14, 0.021, 0.83, true);
-
--- DISCOVER - PAN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('DISCOVER', 0.10, 0.016, 0.85, false);
-
--- DISCOVER - TOKEN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('DISCOVER', 0.09, 0.015, 0.87, true);
-
-
--- DEBIT NETWORKS (US PIN debit networks)
--- Caracteristici: fees mai mici, auth rates mai mici
-
--- ACCEL - PAN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('ACCEL', 0.05, 0.005, 0.80, false);
-
--- ACCEL - TOKEN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('ACCEL', 0.04, 0.0045, 0.82, true);
-
--- STAR - PAN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('STAR', 0.04, 0.004, 0.79, false);
-
--- STAR - TOKEN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('STAR', 0.03, 0.0035, 0.81, true);
-
--- NYCE - PAN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('NYCE', 0.03, 0.003, 0.77, false);
-
--- NYCE - TOKEN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('NYCE', 0.025, 0.0025, 0.79, true);
-
--- PULSE - PAN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('PULSE', 0.03, 0.0035, 0.84, false);
-
--- PULSE - TOKEN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('PULSE', 0.025, 0.003, 0.86, true);
-
--- MAESTRO - PAN (international debit)
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('MAESTRO', 0.08, 0.01, 0.83, false);
-
--- MAESTRO - TOKEN
-INSERT INTO routing_cost (payment_method, fixed_fee, percentage_fee, authorization_rate, is_token)
-VALUES ('MAESTRO', 0.07, 0.009, 0.85, true);
+INSERT INTO routing_cost (id, payment_method, fixed_fee, percentage_fee, authorization_rate, is_token) VALUES
+                                                                                                           (1,  'VISA',       0.10, 0.0150, 0.98, false),
+                                                                                                           (2,  'VISA',       0.08, 0.0130, 0.98, true),
+                                                                                                           (3,  'MASTERCARD', 0.10, 0.0155, 0.97, false),
+                                                                                                           (4,  'MASTERCARD', 0.08, 0.0135, 0.97, true),
+                                                                                                           (5,  'AMEX',       0.15, 0.0250, 0.95, false),
+                                                                                                           (6,  'AMEX',       0.12, 0.0220, 0.95, true),
+                                                                                                           (7,  'DISCOVER',   0.10, 0.0140, 0.96, false),
+                                                                                                           (8,  'DISCOVER',   0.08, 0.0120, 0.96, true),
+                                                                                                           (9,  'MAESTRO',    0.08, 0.0120, 0.96, false),
+                                                                                                           (10, 'MAESTRO',    0.06, 0.0100, 0.96, true),
+                                                                                                           (11, 'ACCEL',      0.05, 0.0080, 0.99, false),
+                                                                                                           (12, 'STAR',       0.05, 0.0080, 0.99, false),
+                                                                                                           (13, 'NYCE',       0.05, 0.0075, 0.99, false),
+                                                                                                           (14, 'PULSE',      0.05, 0.0075, 0.99, false);

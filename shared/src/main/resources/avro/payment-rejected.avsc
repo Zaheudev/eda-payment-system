@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "PaymentRejectedEvent",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    { "name": "paymentId", "type": ["null","string"], "default":"null" },
+    { "name": "reason", "type": ["null","string"], "default": "null"},
+    {"name": "riskLevel", "type": ["null","com.zaheudev.shared.avro.RiskLevel"], "default": "null"},
+    { "name": "timestamp", "type": "long"}
+  ]
+}

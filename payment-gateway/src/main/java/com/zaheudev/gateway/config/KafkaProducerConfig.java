@@ -1,6 +1,8 @@
 package com.zaheudev.gateway.config;
 
+import com.zaheudev.shared.avro.CaptureRequestedEvent;
 import com.zaheudev.shared.avro.PaymentRequestedEvent;
+import com.zaheudev.shared.avro.RefundRequestedEvent;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -24,7 +26,7 @@ public class KafkaProducerConfig {
     private String schemaRegistryUrl;
 
     @Bean
-    public ProducerFactory<String, PaymentRequestedEvent> producerFactory() {
+    public ProducerFactory<String, Object> producerConfig() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -36,7 +38,32 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, PaymentRequestedEvent> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    public ProducerFactory<String, PaymentRequestedEvent> paymentRequestedProducerFactory() {
+        return new DefaultKafkaProducerFactory<>(producerConfig().getConfigurationProperties());
+    }
+
+    @Bean
+    public KafkaTemplate<String, PaymentRequestedEvent> paymentRequestedKafkaTemplate() {
+        return new KafkaTemplate<>(paymentRequestedProducerFactory());
+    }
+
+    @Bean
+    public ProducerFactory<String, CaptureRequestedEvent> captureRequestedProducerFactory(){
+        return new DefaultKafkaProducerFactory<>(producerConfig().getConfigurationProperties());
+    }
+
+    @Bean
+    public KafkaTemplate<String, CaptureRequestedEvent> captureRequestedKafkaTemplate(){
+        return new KafkaTemplate<>(captureRequestedProducerFactory());
+    }
+
+    @Bean
+    public ProducerFactory<String, RefundRequestedEvent> refundRequestedProducerFactory(){
+        return new DefaultKafkaProducerFactory<>(producerConfig().getConfigurationProperties());
+    }
+
+    @Bean
+    public KafkaTemplate<String, RefundRequestedEvent> kafkaTemplate() {
+        return new KafkaTemplate<>(refundRequestedProducerFactory());
     }
 }

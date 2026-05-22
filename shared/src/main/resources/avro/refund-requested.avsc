@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "RefundRequestedEvent",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    {
+      "name": "paymentId",
+      "type": ["null","string"],
+      "default": null
+    }
+  ,
+    {
+      "name": "refundAmount",
+      "type": ["null","string"],
+      "default": null
+    }
+  ]
+}

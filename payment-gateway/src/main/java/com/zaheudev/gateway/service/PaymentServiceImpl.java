@@ -3,12 +3,14 @@ package com.zaheudev.gateway.service;
 import com.zaheudev.gateway.client.TokenizerClient;
 import com.zaheudev.gateway.dto.CreatePaymentRequest;
 import com.zaheudev.gateway.dto.PaymentResponse;
+import com.zaheudev.gateway.dto.RefundRequest;
 import com.zaheudev.gateway.entity.PaymentEntity;
 import com.zaheudev.gateway.exception.PaymentFailedException;
 import com.zaheudev.gateway.kafka.producer.PaymentEventProducer;
 import com.zaheudev.gateway.model.Amount;
 import com.zaheudev.gateway.model.Payment;
-import com.zaheudev.shared.avro.AuthorizationCompleted;
+import com.zaheudev.shared.avro.CaptureRequestedEvent;
+import com.zaheudev.shared.avro.RefundRequestedEvent;
 import com.zaheudev.shared.dto.PaymentStatus;
 import com.zaheudev.gateway.repository.PaymentRepository;
 import com.zaheudev.shared.avro.PaymentRequestedEvent;
@@ -71,27 +73,24 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public PaymentResponse capturePayment(String paymentID) {
-        paymentRepository.findByPaymentId(paymentID).ifPresent(paymentEntity -> {
-            if(paymentEntity.getStatus() == PaymentStatus.AUTHORIZED){
-                // here will produce another event to capture the payment
-                // and update the status to captured once we receive the response from the card network emulator
-                paymentEntity.setStatus(PaymentStatus.CAPTURED);
-                paymentRepository.save(paymentEntity);
-            }else{
-                log.error("The payment {} cant be captured, it isn't authorized yet", paymentID);
-                throw new PaymentFailedException(paymentEntity, "Payment is not authorized");
-            }
-        });
-        return null;
+        PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentID).orElseThrow(() ->
+                new PaymentFailedException(null, "Payment not found with id: " + paymentID)
+        );
+
+        if(paymentEntity.getStatus() == PaymentStatus.AUTHORIZED){
+            producer.publishCaptureRequestedEvent(CaptureRequestedEvent.newBuilder()
+                    .setPaymentId(paymentID)
+                    .build());
+            log.info("The capture event for payment {} has been published", paymentID);
+        }else{
+            log.error("The payment {} cant be captured, it isn't authorized yet", paymentID);
+            throw new PaymentFailedException(paymentEntity, "Payment is not authorized");
+        }
+        return paymentEntity.tranformInPaymentResponse("Request capture sent successfully");
     }
 
     @Override
     public PaymentResponse getPayment(String paymentId) {
-        return null;
-    }
-
-    @Override
-    public PaymentResponse modifyPayment(String paymentId, BigDecimal newAmount, String status) {
         return null;
     }
 
@@ -101,7 +100,18 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public PaymentResponse refundPayment(String paymentId) {
+    public PaymentResponse refundPayment(String paymentId, RefundRequest request) {
+        PaymentEntity entity = paymentRepository.findByPaymentId(paymentId)
+                .orElseThrow(()-> new PaymentFailedException(null,"Payment not found with id: " + paymentId));
+        if(entity.getStatus() == PaymentStatus.CAPTURED || entity.getStatus() == PaymentStatus.PARTIALLY_REFUNDED){
+            producer.publishRefundRequestedEvent(RefundRequestedEvent.newBuilder()
+                    .setPaymentId(paymentId)
+                    .setRefundAmount(request.getAmount())
+                    .build());
+        }else{
+            log.error("The payment {} cant be refunded, it isn't captured", paymentId);
+            throw new PaymentFailedException(entity, "Payment is not captured");
+        }
         return null;
     }
 

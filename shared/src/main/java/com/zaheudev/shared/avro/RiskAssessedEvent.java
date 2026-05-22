@@ -12,26 +12,26 @@ import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
-public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6321891341425831103L;
+public class RiskAssessedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = -4739948810926017816L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RiskAssessed\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\"},{\"name\":\"riskLevel\",\"type\":{\"type\":\"enum\",\"name\":\"RiskLevel\",\"symbols\":[\"LOW\",\"MEDIUM\",\"HIGH\",\"CRITICAL\"]}},{\"name\":\"approved\",\"type\":\"boolean\"},{\"name\":\"reason\",\"type\":\"string\"},{\"name\":\"assessmentId\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"cardRecord\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"CardRecord\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"tokenValue\",\"type\":[\"null\",\"string\"],\"doc\":\"This is the network token value\",\"default\":null},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"},{\"name\":\"primaryNetwork\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}],\"default\":null},{\"name\":\"cardType\",\"type\":[\"null\",\"string\"],\"default\":null}]}],\"default\":null},{\"name\":\"amount\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]}],\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RiskAssessedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\"},{\"name\":\"riskLevel\",\"type\":{\"type\":\"enum\",\"name\":\"RiskLevel\",\"symbols\":[\"LOW\",\"MEDIUM\",\"HIGH\",\"CRITICAL\"]}},{\"name\":\"approved\",\"type\":\"boolean\"},{\"name\":\"reason\",\"type\":\"string\"},{\"name\":\"assessmentId\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"cardRecord\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"CardRecord\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"tokenValue\",\"type\":[\"null\",\"string\"],\"doc\":\"This is the network token value\",\"default\":null},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"},{\"name\":\"primaryNetwork\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}],\"default\":null},{\"name\":\"cardType\",\"type\":[\"null\",\"string\"],\"default\":null}]}],\"default\":null},{\"name\":\"amount\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
 
-  private static final BinaryMessageEncoder<RiskAssessed> ENCODER =
+  private static final BinaryMessageEncoder<RiskAssessedEvent> ENCODER =
       new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
-  private static final BinaryMessageDecoder<RiskAssessed> DECODER =
+  private static final BinaryMessageDecoder<RiskAssessedEvent> DECODER =
       new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
    * @return the message encoder used by this class
    */
-  public static BinaryMessageEncoder<RiskAssessed> getEncoder() {
+  public static BinaryMessageEncoder<RiskAssessedEvent> getEncoder() {
     return ENCODER;
   }
 
@@ -39,7 +39,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
    * Return the BinaryMessageDecoder instance used by this class.
    * @return the message decoder used by this class
    */
-  public static BinaryMessageDecoder<RiskAssessed> getDecoder() {
+  public static BinaryMessageDecoder<RiskAssessedEvent> getDecoder() {
     return DECODER;
   }
 
@@ -48,12 +48,12 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
-  public static BinaryMessageDecoder<RiskAssessed> createDecoder(SchemaStore resolver) {
+  public static BinaryMessageDecoder<RiskAssessedEvent> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
-   * Serializes this RiskAssessed to a ByteBuffer.
+   * Serializes this RiskAssessedEvent to a ByteBuffer.
    * @return a buffer holding the serialized data for this instance
    * @throws java.io.IOException if this instance could not be serialized
    */
@@ -62,12 +62,12 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   /**
-   * Deserializes a RiskAssessed from a ByteBuffer.
+   * Deserializes a RiskAssessedEvent from a ByteBuffer.
    * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a RiskAssessed instance decoded from the given buffer
+   * @return a RiskAssessedEvent instance decoded from the given buffer
    * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
    */
-  public static RiskAssessed fromByteBuffer(
+  public static RiskAssessedEvent fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
@@ -86,7 +86,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public RiskAssessed() {}
+  public RiskAssessedEvent() {}
 
   /**
    * All-args constructor.
@@ -99,7 +99,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
    * @param cardRecord The new value for cardRecord
    * @param amount The new value for amount
    */
-  public RiskAssessed(java.lang.CharSequence paymentId, com.zaheudev.shared.avro.RiskLevel riskLevel, java.lang.Boolean approved, java.lang.CharSequence reason, java.lang.CharSequence assessmentId, java.lang.Long timestamp, com.zaheudev.shared.avro.CardRecord cardRecord, com.zaheudev.shared.avro.Amount amount) {
+  public RiskAssessedEvent(java.lang.CharSequence paymentId, com.zaheudev.shared.avro.RiskLevel riskLevel, java.lang.Boolean approved, java.lang.CharSequence reason, java.lang.CharSequence assessmentId, java.lang.Long timestamp, com.zaheudev.shared.avro.CardRecord cardRecord, com.zaheudev.shared.avro.Amount amount) {
     this.paymentId = paymentId;
     this.riskLevel = riskLevel;
     this.approved = approved;
@@ -286,45 +286,45 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   /**
-   * Creates a new RiskAssessed RecordBuilder.
-   * @return A new RiskAssessed RecordBuilder
+   * Creates a new RiskAssessedEvent RecordBuilder.
+   * @return A new RiskAssessedEvent RecordBuilder
    */
-  public static com.zaheudev.shared.avro.RiskAssessed.Builder newBuilder() {
-    return new com.zaheudev.shared.avro.RiskAssessed.Builder();
+  public static com.zaheudev.shared.avro.RiskAssessedEvent.Builder newBuilder() {
+    return new com.zaheudev.shared.avro.RiskAssessedEvent.Builder();
   }
 
   /**
-   * Creates a new RiskAssessed RecordBuilder by copying an existing Builder.
+   * Creates a new RiskAssessedEvent RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new RiskAssessed RecordBuilder
+   * @return A new RiskAssessedEvent RecordBuilder
    */
-  public static com.zaheudev.shared.avro.RiskAssessed.Builder newBuilder(com.zaheudev.shared.avro.RiskAssessed.Builder other) {
+  public static com.zaheudev.shared.avro.RiskAssessedEvent.Builder newBuilder(com.zaheudev.shared.avro.RiskAssessedEvent.Builder other) {
     if (other == null) {
-      return new com.zaheudev.shared.avro.RiskAssessed.Builder();
+      return new com.zaheudev.shared.avro.RiskAssessedEvent.Builder();
     } else {
-      return new com.zaheudev.shared.avro.RiskAssessed.Builder(other);
+      return new com.zaheudev.shared.avro.RiskAssessedEvent.Builder(other);
     }
   }
 
   /**
-   * Creates a new RiskAssessed RecordBuilder by copying an existing RiskAssessed instance.
+   * Creates a new RiskAssessedEvent RecordBuilder by copying an existing RiskAssessedEvent instance.
    * @param other The existing instance to copy.
-   * @return A new RiskAssessed RecordBuilder
+   * @return A new RiskAssessedEvent RecordBuilder
    */
-  public static com.zaheudev.shared.avro.RiskAssessed.Builder newBuilder(com.zaheudev.shared.avro.RiskAssessed other) {
+  public static com.zaheudev.shared.avro.RiskAssessedEvent.Builder newBuilder(com.zaheudev.shared.avro.RiskAssessedEvent other) {
     if (other == null) {
-      return new com.zaheudev.shared.avro.RiskAssessed.Builder();
+      return new com.zaheudev.shared.avro.RiskAssessedEvent.Builder();
     } else {
-      return new com.zaheudev.shared.avro.RiskAssessed.Builder(other);
+      return new com.zaheudev.shared.avro.RiskAssessedEvent.Builder(other);
     }
   }
 
   /**
-   * RecordBuilder for RiskAssessed instances.
+   * RecordBuilder for RiskAssessedEvent instances.
    */
   @org.apache.avro.specific.AvroGenerated
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<RiskAssessed>
-    implements org.apache.avro.data.RecordBuilder<RiskAssessed> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<RiskAssessedEvent>
+    implements org.apache.avro.data.RecordBuilder<RiskAssessedEvent> {
 
     private java.lang.CharSequence paymentId;
     private com.zaheudev.shared.avro.RiskLevel riskLevel;
@@ -346,7 +346,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.zaheudev.shared.avro.RiskAssessed.Builder other) {
+    private Builder(com.zaheudev.shared.avro.RiskAssessedEvent.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.paymentId)) {
         this.paymentId = data().deepCopy(fields()[0].schema(), other.paymentId);
@@ -389,10 +389,10 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /**
-     * Creates a Builder by copying an existing RiskAssessed instance
+     * Creates a Builder by copying an existing RiskAssessedEvent instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.zaheudev.shared.avro.RiskAssessed other) {
+    private Builder(com.zaheudev.shared.avro.RiskAssessedEvent other) {
       super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.paymentId)) {
         this.paymentId = data().deepCopy(fields()[0].schema(), other.paymentId);
@@ -444,7 +444,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'paymentId'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setPaymentId(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder setPaymentId(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.paymentId = value;
       fieldSetFlags()[0] = true;
@@ -464,7 +464,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'paymentId' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder clearPaymentId() {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder clearPaymentId() {
       paymentId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -484,7 +484,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'riskLevel'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setRiskLevel(com.zaheudev.shared.avro.RiskLevel value) {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder setRiskLevel(com.zaheudev.shared.avro.RiskLevel value) {
       validate(fields()[1], value);
       this.riskLevel = value;
       fieldSetFlags()[1] = true;
@@ -504,7 +504,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'riskLevel' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder clearRiskLevel() {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder clearRiskLevel() {
       riskLevel = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -524,7 +524,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'approved'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setApproved(boolean value) {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder setApproved(boolean value) {
       validate(fields()[2], value);
       this.approved = value;
       fieldSetFlags()[2] = true;
@@ -544,7 +544,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'approved' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder clearApproved() {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder clearApproved() {
       fieldSetFlags()[2] = false;
       return this;
     }
@@ -563,7 +563,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'reason'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setReason(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder setReason(java.lang.CharSequence value) {
       validate(fields()[3], value);
       this.reason = value;
       fieldSetFlags()[3] = true;
@@ -583,7 +583,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'reason' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder clearReason() {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder clearReason() {
       reason = null;
       fieldSetFlags()[3] = false;
       return this;
@@ -603,7 +603,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'assessmentId'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setAssessmentId(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder setAssessmentId(java.lang.CharSequence value) {
       validate(fields()[4], value);
       this.assessmentId = value;
       fieldSetFlags()[4] = true;
@@ -623,7 +623,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'assessmentId' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder clearAssessmentId() {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder clearAssessmentId() {
       assessmentId = null;
       fieldSetFlags()[4] = false;
       return this;
@@ -643,7 +643,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setTimestamp(long value) {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder setTimestamp(long value) {
       validate(fields()[5], value);
       this.timestamp = value;
       fieldSetFlags()[5] = true;
@@ -663,7 +663,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'timestamp' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder clearTimestamp() {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder clearTimestamp() {
       fieldSetFlags()[5] = false;
       return this;
     }
@@ -682,7 +682,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'cardRecord'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setCardRecord(com.zaheudev.shared.avro.CardRecord value) {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder setCardRecord(com.zaheudev.shared.avro.CardRecord value) {
       validate(fields()[6], value);
       this.cardRecordBuilder = null;
       this.cardRecord = value;
@@ -719,7 +719,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
      * @return This builder.
      */
 
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.Builder value) {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder setCardRecordBuilder(com.zaheudev.shared.avro.CardRecord.Builder value) {
       clearCardRecord();
       cardRecordBuilder = value;
       return this;
@@ -737,7 +737,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'cardRecord' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder clearCardRecord() {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder clearCardRecord() {
       cardRecord = null;
       cardRecordBuilder = null;
       fieldSetFlags()[6] = false;
@@ -758,7 +758,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'amount'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setAmount(com.zaheudev.shared.avro.Amount value) {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder setAmount(com.zaheudev.shared.avro.Amount value) {
       validate(fields()[7], value);
       this.amountBuilder = null;
       this.amount = value;
@@ -795,7 +795,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
      * @return This builder.
      */
 
-    public com.zaheudev.shared.avro.RiskAssessed.Builder setAmountBuilder(com.zaheudev.shared.avro.Amount.Builder value) {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder setAmountBuilder(com.zaheudev.shared.avro.Amount.Builder value) {
       clearAmount();
       amountBuilder = value;
       return this;
@@ -813,7 +813,7 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'amount' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RiskAssessed.Builder clearAmount() {
+    public com.zaheudev.shared.avro.RiskAssessedEvent.Builder clearAmount() {
       amount = null;
       amountBuilder = null;
       fieldSetFlags()[7] = false;
@@ -822,9 +822,9 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
 
     @Override
     @SuppressWarnings("unchecked")
-    public RiskAssessed build() {
+    public RiskAssessedEvent build() {
       try {
-        RiskAssessed record = new RiskAssessed();
+        RiskAssessedEvent record = new RiskAssessedEvent();
         record.paymentId = fieldSetFlags()[0] ? this.paymentId : (java.lang.CharSequence) defaultValue(fields()[0]);
         record.riskLevel = fieldSetFlags()[1] ? this.riskLevel : (com.zaheudev.shared.avro.RiskLevel) defaultValue(fields()[1]);
         record.approved = fieldSetFlags()[2] ? this.approved : (java.lang.Boolean) defaultValue(fields()[2]);
@@ -861,8 +861,8 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumWriter<RiskAssessed>
-    WRITER$ = (org.apache.avro.io.DatumWriter<RiskAssessed>)MODEL$.createDatumWriter(SCHEMA$);
+  private static final org.apache.avro.io.DatumWriter<RiskAssessedEvent>
+    WRITER$ = (org.apache.avro.io.DatumWriter<RiskAssessedEvent>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -870,8 +870,8 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumReader<RiskAssessed>
-    READER$ = (org.apache.avro.io.DatumReader<RiskAssessed>)MODEL$.createDatumReader(SCHEMA$);
+  private static final org.apache.avro.io.DatumReader<RiskAssessedEvent>
+    READER$ = (org.apache.avro.io.DatumReader<RiskAssessedEvent>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
@@ -1027,10 +1027,10 @@ public class RiskAssessed extends org.apache.avro.specific.SpecificRecordBase im
     if (this == o) {
       return true;
     }
-    if (!(o instanceof RiskAssessed)) {
+    if (!(o instanceof RiskAssessedEvent)) {
       return false;
     }
-    RiskAssessed other = (RiskAssessed) o;
+    RiskAssessedEvent other = (RiskAssessedEvent) o;
     if (Utf8.compareSequences(this.paymentId, other.paymentId) != 0) {
       return false;
     }

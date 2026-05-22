@@ -1,7 +1,6 @@
 package com.zaheudev.gateway.config;
 
-import com.zaheudev.shared.avro.AuthorizationCompleted;
-import com.zaheudev.shared.avro.PaymentRequestedEvent;
+import com.zaheudev.shared.avro.AuthorizationCompletedEvent;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -33,7 +32,7 @@ public class KafkaConsumerConfig {
     private String autoOffsetReset;
 
     @Bean
-    public ConsumerFactory<String, AuthorizationCompleted> consumerFactory() {
+    public ConsumerFactory<String, Object> consumerFactory() {
         Map<String, Object> consumerProps = new HashMap<>();
         consumerProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -47,11 +46,11 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, AuthorizationCompleted> kafkaListenerContainerFactory(
-            ConsumerFactory<String, AuthorizationCompleted> consumerFactory,
+    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
+            ConsumerFactory<String, Object> consumerFactory,
             DefaultErrorHandler kafkaErrorHandler
     ) {
-        ConcurrentKafkaListenerContainerFactory<String, AuthorizationCompleted> factory =
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);

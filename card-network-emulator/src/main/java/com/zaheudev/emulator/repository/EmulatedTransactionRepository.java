@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface EmulatedTransactionRepository extends JpaRepository<EmulatedTransactionEntity, String> {
     Optional<EmulatedTransactionEntity> findByPaymentId(String paymentId);
+    Optional<EmulatedTransactionEntity> findByProcessorTransactionId(String processorTransactionId);
     boolean existsByPaymentId(String paymentId);
 }

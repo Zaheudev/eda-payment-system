@@ -1,7 +1,6 @@
 package com.zaheudev.routing.config;
 
-import com.zaheudev.shared.avro.PaymentRequestedEvent;
-import com.zaheudev.shared.avro.RiskAssessed;
+import com.zaheudev.shared.avro.RiskAssessedEvent;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -34,7 +33,7 @@ public class KafkaConsumerConfig {
     private String autoOffsetReset;
 
     @Bean
-    public ConsumerFactory<String, RiskAssessed> consumerFactory() {
+    public ConsumerFactory<String, RiskAssessedEvent> consumerFactory() {
         Map<String, Object> consumerProps = new HashMap<>();
         consumerProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -48,11 +47,11 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, RiskAssessed> kafkaListenerContainerFactory(
-            ConsumerFactory<String, RiskAssessed> consumerFactory,
+    public ConcurrentKafkaListenerContainerFactory<String, RiskAssessedEvent> kafkaListenerContainerFactory(
+            ConsumerFactory<String, RiskAssessedEvent> consumerFactory,
             DefaultErrorHandler kafkaErrorHandler
     ) {
-        ConcurrentKafkaListenerContainerFactory<String, RiskAssessed> factory =
+        ConcurrentKafkaListenerContainerFactory<String, RiskAssessedEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);

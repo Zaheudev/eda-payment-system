@@ -6,7 +6,7 @@ import com.zaheudev.routing.kafka.producer.RoutingEventProducer;
 import com.zaheudev.routing.repository.RoutingDecisionRepository;
 import com.zaheudev.routing.service.RoutingService;
 import com.zaheudev.shared.avro.PaymentMethodEnum;
-import com.zaheudev.shared.avro.RiskAssessed;
+import com.zaheudev.shared.avro.RiskAssessedEvent;
 import com.zaheudev.shared.avro.RoutedCompletedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -31,9 +31,9 @@ public class RiskAssessedConsumer {
     private RoutingEventProducer routingEventProducer;
 
     @KafkaListener(topics = "risk-assessed")
-    public void consume(ConsumerRecord<String, RiskAssessed> record, Acknowledgment ack) {
+    public void consume(ConsumerRecord<String, RiskAssessedEvent> record, Acknowledgment ack) {
         String paymentId = record.key();
-        RiskAssessed event = record.value();
+        RiskAssessedEvent event = record.value();
 
         log.info("Processing Routing for payment: {}", paymentId);
         System.out.println("Received risk assessment for payment: " + paymentId + " with risk level: " + event.getRiskLevel());

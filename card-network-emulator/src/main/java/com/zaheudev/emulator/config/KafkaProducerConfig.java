@@ -1,7 +1,8 @@
 package com.zaheudev.emulator.config;
 
-import com.zaheudev.shared.avro.AuthorizationCompleted;
-import com.zaheudev.shared.avro.RiskAssessed;
+import com.zaheudev.shared.avro.CaptureCompletedEvent;
+import com.zaheudev.shared.avro.AuthorizationCompletedEvent;
+import com.zaheudev.shared.avro.RefundCompletedEvent;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -24,7 +25,7 @@ public class KafkaProducerConfig {
     private String schemaRegistryUrl;
 
     @Bean
-    public ProducerFactory<String, AuthorizationCompleted> producerFactory() {
+    public ProducerFactory<String, AuthorizationCompletedEvent> producerFactoryConfig() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -36,7 +37,32 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, AuthorizationCompleted> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    public ProducerFactory<String, AuthorizationCompletedEvent> producerFactoryAuthorizationCompleted() {
+        return new DefaultKafkaProducerFactory<>(producerFactoryConfig().getConfigurationProperties());
+    }
+
+    @Bean
+    public KafkaTemplate<String, AuthorizationCompletedEvent> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactoryAuthorizationCompleted());
+    }
+
+    @Bean
+    public ProducerFactory<String, CaptureCompletedEvent> producerFactoryCapturedCompleted() {
+        return new DefaultKafkaProducerFactory<>(producerFactoryConfig().getConfigurationProperties());
+    }
+
+    @Bean
+    public KafkaTemplate<String, CaptureCompletedEvent> kafkaTemplateCapturedCompleted() {
+        return new KafkaTemplate<>(producerFactoryCapturedCompleted());
+    }
+
+    @Bean
+    public ProducerFactory<String, RefundCompletedEvent> producerFactoryRefundCompleted() {
+        return new DefaultKafkaProducerFactory<>(producerFactoryConfig().getConfigurationProperties());
+    }
+
+    @Bean
+    public KafkaTemplate<String, RefundCompletedEvent> kafkaTemplateRefundCompleted() {
+        return new KafkaTemplate<>(producerFactoryRefundCompleted());
     }
 }

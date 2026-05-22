@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "RiskAssessed",
+  "name": "RiskAssessedEvent",
   "namespace": "com.zaheudev.shared.avro",
   "fields": [
     {"name": "paymentId", "type": "string"},

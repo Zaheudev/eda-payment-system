@@ -12,26 +12,26 @@ import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
-public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -8442683977267091796L;
+public class AuthorizationCompletedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = -4634143828524575826L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"AuthorizationCompleted\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"success\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"authCode\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"rrn\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"processorTransactionId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"selectedPaymentMethod\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}],\"default\":null},{\"name\":\"errorMessage\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"timestamp\",\"type\":[\"null\",\"long\"],\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"AuthorizationCompletedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"success\",\"type\":[\"null\",\"boolean\"],\"default\":null},{\"name\":\"authCode\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"rrn\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"processorTransactionId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"selectedPaymentMethod\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}],\"default\":null},{\"name\":\"errorMessage\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"timestamp\",\"type\":[\"null\",\"long\"],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
 
-  private static final BinaryMessageEncoder<AuthorizationCompleted> ENCODER =
+  private static final BinaryMessageEncoder<AuthorizationCompletedEvent> ENCODER =
       new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
-  private static final BinaryMessageDecoder<AuthorizationCompleted> DECODER =
+  private static final BinaryMessageDecoder<AuthorizationCompletedEvent> DECODER =
       new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
    * @return the message encoder used by this class
    */
-  public static BinaryMessageEncoder<AuthorizationCompleted> getEncoder() {
+  public static BinaryMessageEncoder<AuthorizationCompletedEvent> getEncoder() {
     return ENCODER;
   }
 
@@ -39,7 +39,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
    * Return the BinaryMessageDecoder instance used by this class.
    * @return the message decoder used by this class
    */
-  public static BinaryMessageDecoder<AuthorizationCompleted> getDecoder() {
+  public static BinaryMessageDecoder<AuthorizationCompletedEvent> getDecoder() {
     return DECODER;
   }
 
@@ -48,12 +48,12 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
-  public static BinaryMessageDecoder<AuthorizationCompleted> createDecoder(SchemaStore resolver) {
+  public static BinaryMessageDecoder<AuthorizationCompletedEvent> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
-   * Serializes this AuthorizationCompleted to a ByteBuffer.
+   * Serializes this AuthorizationCompletedEvent to a ByteBuffer.
    * @return a buffer holding the serialized data for this instance
    * @throws java.io.IOException if this instance could not be serialized
    */
@@ -62,12 +62,12 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
   }
 
   /**
-   * Deserializes a AuthorizationCompleted from a ByteBuffer.
+   * Deserializes a AuthorizationCompletedEvent from a ByteBuffer.
    * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a AuthorizationCompleted instance decoded from the given buffer
+   * @return a AuthorizationCompletedEvent instance decoded from the given buffer
    * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
    */
-  public static AuthorizationCompleted fromByteBuffer(
+  public static AuthorizationCompletedEvent fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
@@ -86,7 +86,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public AuthorizationCompleted() {}
+  public AuthorizationCompletedEvent() {}
 
   /**
    * All-args constructor.
@@ -99,7 +99,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
    * @param errorMessage The new value for errorMessage
    * @param timestamp The new value for timestamp
    */
-  public AuthorizationCompleted(java.lang.CharSequence paymentId, java.lang.Boolean success, java.lang.CharSequence authCode, java.lang.CharSequence rrn, java.lang.CharSequence processorTransactionId, com.zaheudev.shared.avro.PaymentMethodEnum selectedPaymentMethod, java.lang.CharSequence errorMessage, java.lang.Long timestamp) {
+  public AuthorizationCompletedEvent(java.lang.CharSequence paymentId, java.lang.Boolean success, java.lang.CharSequence authCode, java.lang.CharSequence rrn, java.lang.CharSequence processorTransactionId, com.zaheudev.shared.avro.PaymentMethodEnum selectedPaymentMethod, java.lang.CharSequence errorMessage, java.lang.Long timestamp) {
     this.paymentId = paymentId;
     this.success = success;
     this.authCode = authCode;
@@ -286,45 +286,45 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
   }
 
   /**
-   * Creates a new AuthorizationCompleted RecordBuilder.
-   * @return A new AuthorizationCompleted RecordBuilder
+   * Creates a new AuthorizationCompletedEvent RecordBuilder.
+   * @return A new AuthorizationCompletedEvent RecordBuilder
    */
-  public static com.zaheudev.shared.avro.AuthorizationCompleted.Builder newBuilder() {
-    return new com.zaheudev.shared.avro.AuthorizationCompleted.Builder();
+  public static com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder newBuilder() {
+    return new com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder();
   }
 
   /**
-   * Creates a new AuthorizationCompleted RecordBuilder by copying an existing Builder.
+   * Creates a new AuthorizationCompletedEvent RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new AuthorizationCompleted RecordBuilder
+   * @return A new AuthorizationCompletedEvent RecordBuilder
    */
-  public static com.zaheudev.shared.avro.AuthorizationCompleted.Builder newBuilder(com.zaheudev.shared.avro.AuthorizationCompleted.Builder other) {
+  public static com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder newBuilder(com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder other) {
     if (other == null) {
-      return new com.zaheudev.shared.avro.AuthorizationCompleted.Builder();
+      return new com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder();
     } else {
-      return new com.zaheudev.shared.avro.AuthorizationCompleted.Builder(other);
+      return new com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder(other);
     }
   }
 
   /**
-   * Creates a new AuthorizationCompleted RecordBuilder by copying an existing AuthorizationCompleted instance.
+   * Creates a new AuthorizationCompletedEvent RecordBuilder by copying an existing AuthorizationCompletedEvent instance.
    * @param other The existing instance to copy.
-   * @return A new AuthorizationCompleted RecordBuilder
+   * @return A new AuthorizationCompletedEvent RecordBuilder
    */
-  public static com.zaheudev.shared.avro.AuthorizationCompleted.Builder newBuilder(com.zaheudev.shared.avro.AuthorizationCompleted other) {
+  public static com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder newBuilder(com.zaheudev.shared.avro.AuthorizationCompletedEvent other) {
     if (other == null) {
-      return new com.zaheudev.shared.avro.AuthorizationCompleted.Builder();
+      return new com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder();
     } else {
-      return new com.zaheudev.shared.avro.AuthorizationCompleted.Builder(other);
+      return new com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder(other);
     }
   }
 
   /**
-   * RecordBuilder for AuthorizationCompleted instances.
+   * RecordBuilder for AuthorizationCompletedEvent instances.
    */
   @org.apache.avro.specific.AvroGenerated
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<AuthorizationCompleted>
-    implements org.apache.avro.data.RecordBuilder<AuthorizationCompleted> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<AuthorizationCompletedEvent>
+    implements org.apache.avro.data.RecordBuilder<AuthorizationCompletedEvent> {
 
     private java.lang.CharSequence paymentId;
     private java.lang.Boolean success;
@@ -344,7 +344,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.zaheudev.shared.avro.AuthorizationCompleted.Builder other) {
+    private Builder(com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.paymentId)) {
         this.paymentId = data().deepCopy(fields()[0].schema(), other.paymentId);
@@ -381,10 +381,10 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
     }
 
     /**
-     * Creates a Builder by copying an existing AuthorizationCompleted instance
+     * Creates a Builder by copying an existing AuthorizationCompletedEvent instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.zaheudev.shared.avro.AuthorizationCompleted other) {
+    private Builder(com.zaheudev.shared.avro.AuthorizationCompletedEvent other) {
       super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.paymentId)) {
         this.paymentId = data().deepCopy(fields()[0].schema(), other.paymentId);
@@ -434,7 +434,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * @param value The value of 'paymentId'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder setPaymentId(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder setPaymentId(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.paymentId = value;
       fieldSetFlags()[0] = true;
@@ -454,7 +454,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * Clears the value of the 'paymentId' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder clearPaymentId() {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder clearPaymentId() {
       paymentId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -474,7 +474,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * @param value The value of 'success'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder setSuccess(java.lang.Boolean value) {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder setSuccess(java.lang.Boolean value) {
       validate(fields()[1], value);
       this.success = value;
       fieldSetFlags()[1] = true;
@@ -494,7 +494,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * Clears the value of the 'success' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder clearSuccess() {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder clearSuccess() {
       success = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -514,7 +514,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * @param value The value of 'authCode'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder setAuthCode(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder setAuthCode(java.lang.CharSequence value) {
       validate(fields()[2], value);
       this.authCode = value;
       fieldSetFlags()[2] = true;
@@ -534,7 +534,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * Clears the value of the 'authCode' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder clearAuthCode() {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder clearAuthCode() {
       authCode = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -554,7 +554,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * @param value The value of 'rrn'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder setRrn(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder setRrn(java.lang.CharSequence value) {
       validate(fields()[3], value);
       this.rrn = value;
       fieldSetFlags()[3] = true;
@@ -574,7 +574,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * Clears the value of the 'rrn' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder clearRrn() {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder clearRrn() {
       rrn = null;
       fieldSetFlags()[3] = false;
       return this;
@@ -594,7 +594,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * @param value The value of 'processorTransactionId'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder setProcessorTransactionId(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder setProcessorTransactionId(java.lang.CharSequence value) {
       validate(fields()[4], value);
       this.processorTransactionId = value;
       fieldSetFlags()[4] = true;
@@ -614,7 +614,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * Clears the value of the 'processorTransactionId' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder clearProcessorTransactionId() {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder clearProcessorTransactionId() {
       processorTransactionId = null;
       fieldSetFlags()[4] = false;
       return this;
@@ -634,7 +634,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * @param value The value of 'selectedPaymentMethod'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder setSelectedPaymentMethod(com.zaheudev.shared.avro.PaymentMethodEnum value) {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder setSelectedPaymentMethod(com.zaheudev.shared.avro.PaymentMethodEnum value) {
       validate(fields()[5], value);
       this.selectedPaymentMethod = value;
       fieldSetFlags()[5] = true;
@@ -654,7 +654,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * Clears the value of the 'selectedPaymentMethod' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder clearSelectedPaymentMethod() {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder clearSelectedPaymentMethod() {
       selectedPaymentMethod = null;
       fieldSetFlags()[5] = false;
       return this;
@@ -674,7 +674,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * @param value The value of 'errorMessage'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder setErrorMessage(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder setErrorMessage(java.lang.CharSequence value) {
       validate(fields()[6], value);
       this.errorMessage = value;
       fieldSetFlags()[6] = true;
@@ -694,7 +694,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * Clears the value of the 'errorMessage' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder clearErrorMessage() {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder clearErrorMessage() {
       errorMessage = null;
       fieldSetFlags()[6] = false;
       return this;
@@ -714,7 +714,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder setTimestamp(java.lang.Long value) {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder setTimestamp(java.lang.Long value) {
       validate(fields()[7], value);
       this.timestamp = value;
       fieldSetFlags()[7] = true;
@@ -734,7 +734,7 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
       * Clears the value of the 'timestamp' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.AuthorizationCompleted.Builder clearTimestamp() {
+    public com.zaheudev.shared.avro.AuthorizationCompletedEvent.Builder clearTimestamp() {
       timestamp = null;
       fieldSetFlags()[7] = false;
       return this;
@@ -742,9 +742,9 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
 
     @Override
     @SuppressWarnings("unchecked")
-    public AuthorizationCompleted build() {
+    public AuthorizationCompletedEvent build() {
       try {
-        AuthorizationCompleted record = new AuthorizationCompleted();
+        AuthorizationCompletedEvent record = new AuthorizationCompletedEvent();
         record.paymentId = fieldSetFlags()[0] ? this.paymentId : (java.lang.CharSequence) defaultValue(fields()[0]);
         record.success = fieldSetFlags()[1] ? this.success : (java.lang.Boolean) defaultValue(fields()[1]);
         record.authCode = fieldSetFlags()[2] ? this.authCode : (java.lang.CharSequence) defaultValue(fields()[2]);
@@ -763,8 +763,8 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumWriter<AuthorizationCompleted>
-    WRITER$ = (org.apache.avro.io.DatumWriter<AuthorizationCompleted>)MODEL$.createDatumWriter(SCHEMA$);
+  private static final org.apache.avro.io.DatumWriter<AuthorizationCompletedEvent>
+    WRITER$ = (org.apache.avro.io.DatumWriter<AuthorizationCompletedEvent>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -772,8 +772,8 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumReader<AuthorizationCompleted>
-    READER$ = (org.apache.avro.io.DatumReader<AuthorizationCompleted>)MODEL$.createDatumReader(SCHEMA$);
+  private static final org.apache.avro.io.DatumReader<AuthorizationCompletedEvent>
+    READER$ = (org.apache.avro.io.DatumReader<AuthorizationCompletedEvent>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
@@ -1013,10 +1013,10 @@ public class AuthorizationCompleted extends org.apache.avro.specific.SpecificRec
     if (this == o) {
       return true;
     }
-    if (!(o instanceof AuthorizationCompleted)) {
+    if (!(o instanceof AuthorizationCompletedEvent)) {
       return false;
     }
-    AuthorizationCompleted other = (AuthorizationCompleted) o;
+    AuthorizationCompletedEvent other = (AuthorizationCompletedEvent) o;
     if (Utf8.compareSequences(this.paymentId, other.paymentId) != 0) {
       return false;
     }

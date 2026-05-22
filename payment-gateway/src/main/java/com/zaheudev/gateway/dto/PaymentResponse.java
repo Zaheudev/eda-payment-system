@@ -15,6 +15,7 @@ public class PaymentResponse {
     private String rrn;
     private String authCode;
     private String processorTransactionId;
+    private String captureId;
     private Amount amount;
     private LocalDateTime createdAt;
     private String message;

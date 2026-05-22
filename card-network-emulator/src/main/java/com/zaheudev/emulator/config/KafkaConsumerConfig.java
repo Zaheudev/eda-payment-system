@@ -32,7 +32,7 @@ public class KafkaConsumerConfig {
     private String autoOffsetReset;
 
     @Bean
-    public ConsumerFactory<String, PaymentRequestedEvent> consumerFactory() {
+    public ConsumerFactory<String, Object> consumerFactory() {
         Map<String, Object> consumerProps = new HashMap<>();
         consumerProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -46,11 +46,11 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, PaymentRequestedEvent> kafkaListenerContainerFactory(
-            ConsumerFactory<String, PaymentRequestedEvent> consumerFactory,
+    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
+            ConsumerFactory<String, Object> consumerFactory,
             DefaultErrorHandler kafkaErrorHandler
     ) {
-        ConcurrentKafkaListenerContainerFactory<String, PaymentRequestedEvent> factory =
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
