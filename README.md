@@ -1,255 +1,152 @@
-# 🏦 Event-Driven Payment Processing System
+# Payment Gateway — Event-Driven Architecture
 
-## 📚 Proiect de Licență - Universitate
-
-**Titlu:** Dezvoltarea unei aplicații Java orientată pe principiile arhitecturilor bazate pe evenimente (EDA)
-
-**Autor:** Zaharia Iulian  
-**Status:** 🚧 **Work in Progress** - Proiect în desfășurare  
-**Dată Inițiere:** Februarie 2026
+A microservices-based payment processing system built with Spring Boot and Apache Kafka, using Avro for message serialization.
 
 ---
 
-## 📋 Descriere Proiect
+## Modules
 
-Acest proiect implementează un **sistem de procesare a plăților asincron, bazat pe arhitectura event-driven (EDA)**, utilizând cele mai moderne tehnologii Java pentru a demonstra principiile de design și best practices în construirea sistemelor distribuite și scalabile.
+### `payment-gateway` — Port `8080`
+The entry point of the system. Exposes a REST API for creating, capturing, refunding, and cancelling payments. Publishes payment events to Kafka and listens for results to update payment state.
 
-### 🎯 Obiective Principale
+### `risk-fraud` — Port `8085`
+Consumes payment requests and performs risk assessment. Publishes either an approval or a rejection event based on the risk level.
 
-- ✅ Implementarea unei arhitecturi event-driven cu **Apache Kafka** pentru event streaming
-- ✅ Utilizarea **Apache Avro** pentru schema management și serializare
-- ✅ Persistență în **PostgreSQL** cu ORM-ul Spring Data JPA
-- ✅ Comunicație asincronă și decuplată între module
-- ✅ Demonstrarea best practices în arhitecturi distriburite
-- ✅ Scalabilitate și fault-tolerance prin event sourcing
+### `payment-routing` — Port `8081`
+Routes approved payments to the correct card network. Decides which processor should handle the transaction and forwards accordingly.
 
----
+### `card-network-emulator` — Port `8086`
+Simulates a real card network (e.g., Visa/Mastercard). Processes authorization, capture, and refund requests and publishes completion events back to Kafka. Adds configurable latency to mimic real-world conditions.
 
-## 🛠️ Tehnologii Utilizate
+### `card-token-manager` — Port `8084`
+Handles card tokenization and detokenization. Stores encrypted card data and returns tokens used by the rest of the system to avoid handling raw card numbers.
 
-| Componenta | Versiune | Rol |
-|------------|----------|-----|
-| **Java** | 21 LTS | Limbaj de programare |
-| **Spring Boot** | 3.2.2 | Framework principal |
-| **Spring Data JPA** | 3.2.2 | ORM și persistență |
-| **Spring Kafka** | 3.2.2 | Integrare Kafka |
-| **Apache Kafka** | 7.6.0 | Event streaming broker |
-| **Confluent Schema Registry** | 7.6.0 | Avro schema management |
-| **Apache Avro** | 1.12.1 | Serializare și schema |
-| **PostgreSQL** | 16 | Bază de date relațională |
-| **Lombok** | 1.18.38 | Reducere boilerplate code |
-| **Maven** | 3.13.0+ | Build tool |
+### `shared`
+A library module with shared Avro schemas and DTOs used across all services. Not a runnable application.
 
 ---
 
-## 📦 Structura Proiectului
 
-```
-demo/
-├── pom.xml                          # Parent POM - Maven configuration
-├── docker-compose.yml               # Docker stack (Kafka, PostgreSQL, Schema Registry)
-│
-├── shared/                          # Module - Shared components
-│   ├── pom.xml
-│   ├── src/main/java/com/zaheudev/shared/
-│   │   └── avro/
-│   │       ├── PaymentEvent.java    # Generated from Avro schema
-│   │       └── PaymentStatus.java   # Enum for payment status
-│   └── src/main/resources/avro/
-│       └── payment.avsc             # Avro schema definition
-│
-└── payment-gateway/                 # Spring Boot Application Module
-    ├── pom.xml
-    ├── src/main/java/com/zaheudev/demo/
-    │   ├── DemoApplication.java     # Spring Boot entry point
-    │   ├── entity/                  # JPA entities
-    │   ├── service/                 # Business logic
-    │   ├── kafka/                   # Kafka producers/consumers
-    │   └── controller/              # REST endpoints
-    └── src/main/resources/
-        └── application.properties   # Configuration
-```
+## Infrastructure
+
+| Service         | Port   | Description                        |
+|----------------|--------|------------------------------------|
+| Kafka           | `29092` | Message broker (KRaft, no Zookeeper) |
+| Schema Registry | `8082`  | Avro schema registry               |
+| Kafka UI        | `8083`  | Web UI for Kafka topics & schemas  |
+| PostgreSQL      | `5433`  | Shared database                    |
 
 ---
 
-## 🚀 Quick Start
+## How to Run
 
-### Prerequisite-uri
+### 1. Start infrastructure
 
-- **Java 21 LTS** - [Download](https://www.oracle.com/java/technologies/downloads/#java21)
-- **Maven 3.13.0+** - [Download](https://maven.apache.org/download.cgi)
-- **Docker & Docker Compose** - [Download](https://www.docker.com/products/docker-desktop)
+### 2. Build shared module first
 
-### 1️⃣ Setup Infrastrukturii (Kafka, PostgreSQL, Schema Registry)
+### 3. Start each service
 
-```bash
-# Din root-ul proiectului
-docker-compose up -d
-```
+Run each module independently (in any order after infrastructure is up):
 
-**Servicii disponibile:**
-- 🐳 **Kafka**: `localhost:29092`
-- 🗄️ **PostgreSQL**: `localhost:5433` (user: postgres, pass: postgres, db: demo)
-- 📋 **Schema Registry**: `http://localhost:8082`
-- 📊 **Kafka UI**: `http://localhost:8083`
-
-### 2️⃣ Build Proiect
-
-```bash
-# Clean + Compile + Install
-mvn clean install
-
-# Build JAR-uri
-mvn clean package -DskipTests
-```
-
-### 3️⃣ Rulare Aplicație
-
-```bash
-# Opția 1: Cu Maven
-mvn -pl payment-gateway spring-boot:run
-
-# Opția 2: Direct JAR
-java -jar payment-gateway/target/payment-gateway-0.0.1-SNAPSHOT.jar
-```
-
-Aplicația se va porni pe `http://localhost:8080`
+Or run them directly from IntelliJ using the individual Spring Boot run configurations.
 
 ---
 
-## 📖 Documentație Tehnică
+## Notes
 
-### Avro Schema (payment.avsc)
+- All services connect to Kafka on `localhost:29092` and Schema Registry on `localhost:8082`.
+- All services share the same PostgreSQL database (`payment-gateway`).
+- Avro schemas are defined in `shared/src/main/resources/avro/`.
 
+---
+
+## API Reference
+
+### `payment-gateway` — `http://localhost:8080`
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/payments` | Create a new payment |
+| `POST` | `/api/v1/capture/{paymentId}` | Capture an authorized payment |
+| `POST` | `/api/v1/refund/{paymentId}` | Refund a captured payment |
+| `GET`  | `/api/v1/payments` | List all payments *(not yet implemented)* |
+| `GET`  | `/api/v1/payments/{paymentId}` | Get a payment by ID *(not yet implemented)* |
+
+**Create Payment — request body:**
 ```json
 {
-  "type": "record",
-  "name": "PaymentEvent",
-  "namespace": "com.zaheudev.shared.avro",
-  "fields": [
-    {"name": "paymentId", "type": "string"},
-    {"name": "amount", "type": "double"},
-    {"name": "currency", "type": "string"},
-    {"name": "status", "type": "string"},
-    {"name": "timestamp", "type": "long"}
-  ]
+  "merchantReference": "order-123",
+  "amount": 99.99,
+  "currency": "USD",
+  "cardDetails": {
+    "cardNumber": "4111111111111111",
+    "cvv": "123",
+    "expiryMonth": "12",
+    "expiryYear": "2027",
+    "cardHolderName": "John Doe"
+  }
 }
 ```
 
-### Topicuri Kafka
+> You can pass a `tokenRef` instead of `cardDetails` if the card is already tokenized.
 
-- **payment-events** - Events de plăți (create, update, completed)
-- **payment-commands** - Comenzi de procesare (în desfășurare)
-- **payment-errors** - Events de erori și retry logic
-
-### Database Schema (PostgreSQL)
-
-```sql
--- Se vor crea prin Spring Data JPA (Hibernate)
--- Entități: Payment, Transaction, PaymentStatus
--- Persista toate evenimentele din Kafka pentru audit trail
+**Refund — request body:**
+```json
+{
+  "amount": "49.99"
+}
 ```
 
 ---
 
-## 🔧 Configurare Environment
+### `card-token-manager` — `http://localhost:8084`
 
-File: `payment-gateway/src/main/resources/application.properties`
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/tokenize` | Tokenize a card |
+| `GET`  | `/api/v1/{tokenRef}/detokenize` | Retrieve raw card data by token |
+| `GET`  | `/api/v1/{tokenRef}` | Get token metadata (no sensitive data) |
 
-```properties
-# Spring
-spring.application.name=payment-gateway
-spring.jpa.hibernate.ddl-auto=update
-
-# Database
-spring.datasource.url=jdbc:postgresql://localhost:5433/demo
-spring.datasource.username=postgres
-spring.datasource.password=postgres
-
-# Kafka
-spring.kafka.bootstrap-servers=localhost:29092
-spring.kafka.producer.value-serializer=io.confluent.kafka.serializers.KafkaAvroSerializer
-spring.kafka.consumer.value-deserializer=io.confluent.kafka.serializers.KafkaAvroDeserializer
-spring.kafka.properties.schema.registry.url=http://localhost:8082
+**Tokenize — request body:**
+```json
+{
+  "cardNumber": "4111111111111111",
+  "cvv": "123",
+  "expiryMonth": "12",
+  "expiryYear": "2027",
+  "cardHolderName": "John Doe"
+}
 ```
 
 ---
 
-## 📝 Probleme Rezolvate
+## BIN Lookup — Card Network & Type Detection
 
-Proiectul a depășit următoarele provocări tehnologice:
+The `card-token-manager` determines the card network and type automatically from the card number at tokenization time. No manual configuration is needed — just use the right card number prefix.
 
-✅ Compatibilitate **Lombok 1.18.38** cu Java 21  
-✅ Compatibilitate **Apache Avro 1.12.1** cu Java 21  
-✅ Configurare **Maven Compiler 3.13.0** pentru Java 21  
-✅ UTF-8 encoding în fișiere de configurare  
-✅ Multi-module Maven setup cu dependency management  
+### Card Network (determined by card number prefix)
 
-Vezi detalii în [PROBLEME_SI_SOLUTII.md](./PROBLEME_SI_SOLUTII.md)
+| Network | Prefix | Example card number |
+|---------|--------|---------------------|
+| Visa | `4` | `4111111111111111` |
+| Mastercard | `51` – `55` | `5111111111111111` |
+| Amex | `34`, `37` | `371111111111111` |
+| Discover | `6` | `6011111111111117` |
 
----
+> If no prefix matches, the network defaults to **Visa**.
 
-## 🧪 Testing
+### Card Type (determined by BIN — first 6 digits)
 
-```bash
-# Rula test-uri
-mvn test
+| Type | BIN prefix | Example card number |
+|------|-----------|---------------------|
+| DEBIT | `453xxx` | `4530001111111111` |
+| DEBIT | `520xxx` | `5200001111111111` |
+| CREDIT | anything else | `4111111111111111` |
 
-# Coverage report
-mvn test jacoco:report
-```
+> ⚠️ In a real system this would come from a BIN database. This is a simplified demo rule.
 
----
+### Examples
 
-## 📚 Resurse & Referințe
-
-- [Spring Boot 3.2.2 Documentation](https://spring.io/projects/spring-boot)
-- [Apache Kafka Documentation](https://kafka.apache.org/documentation/)
-- [Apache Avro Guide](https://avro.apache.org/docs/current/)
-- [Event-Driven Architecture Pattern](https://martinfowler.com/articles/201701-event-driven.html)
-- [Confluent Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html)
-
----
-
-## 🤝 Contribuții
-
-Acest proiect este în dezvoltare și nu acceptă contribuții externe în acest moment. Este un proiect academic de licență.
-
----
-
-## 📄 Licență
-
-Acest proiect este licențiat sub **MIT License** - Vezi [LICENSE](./LICENSE) pentru detalii.
-
----
-
-## 👨‍💻 Autor
-
-**Zaharia Iulian**
-
-- 🔗 GitHub: [@zaheudev](https://github.com/zaheudev)
-- 📧 Email: zaharia.iulian@example.com (dacă e cazul)
-
----
-
-## 📞 Contact & Suport
-
-Pentru întrebări sau sugestii legate de acest proiect:
-- 📌 Deschide o issue pe GitHub
-- 💬 Contactează autorul direct
-
----
-
-## 🔔 Notă Importantă
-
-⚠️ **Status:** Acest proiect este **în desfășurare activă** și suferă frecvente modificări. Nu este recomandat pentru producție.
-
-Ramurile principale:
-- `main` - Versiunea stabilă (updates lunare)
-- `develop` - Versiunea în dezvoltare (updates frecvente)
-
----
-
-**Ultima actualizare:** Februarie 2026  
-**Versiune:** 0.0.1-SNAPSHOT
-
+| Goal | Card number to use |
+|------|--------------------|
+| Visa Credit
