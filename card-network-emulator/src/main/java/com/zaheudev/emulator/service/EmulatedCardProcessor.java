@@ -102,7 +102,7 @@ public class EmulatedCardProcessor implements CardProcessor {
     }
 
     @Override
-    public RefundCompletedEvent refund(String paymentId, String originalProcessorTransactionId, BigDecimal refundAmount, String currency) {
+    public RefundCompletedEvent refund(String paymentId, String originalProcessorTransactionId, BigDecimal refundAmountTotal, String currency) {
         simulateNetworkLatency();
         if(RANDOM.nextInt(100) < 5){
             log.error("Refund failed for paymentId: {}", paymentId);
@@ -123,7 +123,10 @@ public class EmulatedCardProcessor implements CardProcessor {
                 .setOriginalProcessorTransactionId(originalProcessorTransactionId)
                 .setRefundId("REFUND-"+UUID.randomUUID().toString().substring(TRANSACTION_ID_LENGTH))
                 .setCurrency(currency)
-                .setRefundedAmount(refundAmount.toString())
+                .setRefundedAmount(Amount.newBuilder()
+                        .setValue(refundAmountTotal.multiply(BigDecimal.valueOf(100)).longValue())
+                        .setCurrency(currency)
+                        .build())
                 .setCreatedAt(LocalDate.now().toString())
                 .setUpdatedAt(LocalDate.now().toString())
                 .setTimeStamp(System.currentTimeMillis())

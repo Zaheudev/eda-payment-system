@@ -104,9 +104,13 @@ public class PaymentServiceImpl implements PaymentService{
         PaymentEntity entity = paymentRepository.findByPaymentId(paymentId)
                 .orElseThrow(()-> new PaymentFailedException(null,"Payment not found with id: " + paymentId));
         if(entity.getStatus() == PaymentStatus.CAPTURED || entity.getStatus() == PaymentStatus.PARTIALLY_REFUNDED){
+            log.info("request: ", request.toString());
             producer.publishRefundRequestedEvent(RefundRequestedEvent.newBuilder()
                     .setPaymentId(paymentId)
-                    .setRefundAmount(request.getAmount())
+                    .setRefundAmount(com.zaheudev.shared.avro.Amount.newBuilder()
+                            .setValue(request.getAmount().multiply(BigDecimal.valueOf(100)).longValue())
+                            .setCurrency(request.getCurrency())
+                            .build())
                     .build());
         }else{
             log.error("The payment {} cant be refunded, it isn't captured", paymentId);

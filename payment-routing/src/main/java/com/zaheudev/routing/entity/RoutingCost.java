@@ -27,8 +27,8 @@ public class RoutingCost {
      * @param amount
      * @return
      */
-    public BigDecimal calculateTotalCost(Long amount) {;
+    public BigDecimal calculateTotalCost(BigDecimal amount) {;
         //i think this is the formula, but it can be changed if needed
-        return (percentageFee.multiply(BigDecimal.valueOf(amount))).add(fixedFee).add(BigDecimal.valueOf(authorizationRate));
+        return (percentageFee.multiply(amount)).add(fixedFee).add(BigDecimal.valueOf(authorizationRate));
     }
 }

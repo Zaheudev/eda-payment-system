@@ -11,7 +11,7 @@
   ,
     {
       "name": "refundAmount",
-      "type": ["null","string"],
+      "type": ["null","com.zaheudev.shared.avro.Amount"],
       "default": null
     }
   ]

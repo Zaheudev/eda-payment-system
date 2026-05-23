@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 7554699869803597378L;
+  private static final long serialVersionUID = -4354434373184797952L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RefundRequestedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"refundAmount\",\"type\":[\"null\",\"string\"],\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RefundRequestedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"refundAmount\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -73,7 +73,7 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
   }
 
   private java.lang.CharSequence paymentId;
-  private java.lang.CharSequence refundAmount;
+  private com.zaheudev.shared.avro.Amount refundAmount;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -87,7 +87,7 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
    * @param paymentId The new value for paymentId
    * @param refundAmount The new value for refundAmount
    */
-  public RefundRequestedEvent(java.lang.CharSequence paymentId, java.lang.CharSequence refundAmount) {
+  public RefundRequestedEvent(java.lang.CharSequence paymentId, com.zaheudev.shared.avro.Amount refundAmount) {
     this.paymentId = paymentId;
     this.refundAmount = refundAmount;
   }
@@ -114,7 +114,7 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: paymentId = (java.lang.CharSequence)value$; break;
-    case 1: refundAmount = (java.lang.CharSequence)value$; break;
+    case 1: refundAmount = (com.zaheudev.shared.avro.Amount)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -140,7 +140,7 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
    * Gets the value of the 'refundAmount' field.
    * @return The value of the 'refundAmount' field.
    */
-  public java.lang.CharSequence getRefundAmount() {
+  public com.zaheudev.shared.avro.Amount getRefundAmount() {
     return refundAmount;
   }
 
@@ -149,7 +149,7 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
    * Sets the value of the 'refundAmount' field.
    * @param value the value to set.
    */
-  public void setRefundAmount(java.lang.CharSequence value) {
+  public void setRefundAmount(com.zaheudev.shared.avro.Amount value) {
     this.refundAmount = value;
   }
 
@@ -195,7 +195,8 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
     implements org.apache.avro.data.RecordBuilder<RefundRequestedEvent> {
 
     private java.lang.CharSequence paymentId;
-    private java.lang.CharSequence refundAmount;
+    private com.zaheudev.shared.avro.Amount refundAmount;
+    private com.zaheudev.shared.avro.Amount.Builder refundAmountBuilder;
 
     /** Creates a new Builder */
     private Builder() {
@@ -216,6 +217,9 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
         this.refundAmount = data().deepCopy(fields()[1].schema(), other.refundAmount);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
+      if (other.hasRefundAmountBuilder()) {
+        this.refundAmountBuilder = com.zaheudev.shared.avro.Amount.newBuilder(other.getRefundAmountBuilder());
+      }
     }
 
     /**
@@ -232,6 +236,7 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
         this.refundAmount = data().deepCopy(fields()[1].schema(), other.refundAmount);
         fieldSetFlags()[1] = true;
       }
+      this.refundAmountBuilder = null;
     }
 
     /**
@@ -278,7 +283,7 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
       * Gets the value of the 'refundAmount' field.
       * @return The value.
       */
-    public java.lang.CharSequence getRefundAmount() {
+    public com.zaheudev.shared.avro.Amount getRefundAmount() {
       return refundAmount;
     }
 
@@ -288,8 +293,9 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
       * @param value The value of 'refundAmount'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RefundRequestedEvent.Builder setRefundAmount(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.RefundRequestedEvent.Builder setRefundAmount(com.zaheudev.shared.avro.Amount value) {
       validate(fields()[1], value);
+      this.refundAmountBuilder = null;
       this.refundAmount = value;
       fieldSetFlags()[1] = true;
       return this;
@@ -303,6 +309,40 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
       return fieldSetFlags()[1];
     }
 
+    /**
+     * Gets the Builder instance for the 'refundAmount' field and creates one if it doesn't exist yet.
+     * @return This builder.
+     */
+    public com.zaheudev.shared.avro.Amount.Builder getRefundAmountBuilder() {
+      if (refundAmountBuilder == null) {
+        if (hasRefundAmount()) {
+          setRefundAmountBuilder(com.zaheudev.shared.avro.Amount.newBuilder(refundAmount));
+        } else {
+          setRefundAmountBuilder(com.zaheudev.shared.avro.Amount.newBuilder());
+        }
+      }
+      return refundAmountBuilder;
+    }
+
+    /**
+     * Sets the Builder instance for the 'refundAmount' field
+     * @param value The builder instance that must be set.
+     * @return This builder.
+     */
+
+    public com.zaheudev.shared.avro.RefundRequestedEvent.Builder setRefundAmountBuilder(com.zaheudev.shared.avro.Amount.Builder value) {
+      clearRefundAmount();
+      refundAmountBuilder = value;
+      return this;
+    }
+
+    /**
+     * Checks whether the 'refundAmount' field has an active Builder instance
+     * @return True if the 'refundAmount' field has an active Builder instance
+     */
+    public boolean hasRefundAmountBuilder() {
+      return refundAmountBuilder != null;
+    }
 
     /**
       * Clears the value of the 'refundAmount' field.
@@ -310,6 +350,7 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
       */
     public com.zaheudev.shared.avro.RefundRequestedEvent.Builder clearRefundAmount() {
       refundAmount = null;
+      refundAmountBuilder = null;
       fieldSetFlags()[1] = false;
       return this;
     }
@@ -320,7 +361,16 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
       try {
         RefundRequestedEvent record = new RefundRequestedEvent();
         record.paymentId = fieldSetFlags()[0] ? this.paymentId : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.refundAmount = fieldSetFlags()[1] ? this.refundAmount : (java.lang.CharSequence) defaultValue(fields()[1]);
+        if (refundAmountBuilder != null) {
+          try {
+            record.refundAmount = this.refundAmountBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("refundAmount"));
+            throw e;
+          }
+        } else {
+          record.refundAmount = fieldSetFlags()[1] ? this.refundAmount : (com.zaheudev.shared.avro.Amount) defaultValue(fields()[1]);
+        }
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -366,7 +416,7 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
       out.writeNull();
     } else {
       out.writeIndex(1);
-      out.writeString(this.refundAmount);
+      this.refundAmount.customEncode(out);
     }
 
   }
@@ -387,7 +437,10 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
         in.readNull();
         this.refundAmount = null;
       } else {
-        this.refundAmount = in.readString(this.refundAmount instanceof Utf8 ? (Utf8)this.refundAmount : null);
+        if (this.refundAmount == null) {
+          this.refundAmount = new com.zaheudev.shared.avro.Amount();
+        }
+        this.refundAmount.customDecode(in);
       }
 
     } else {
@@ -407,7 +460,10 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
             in.readNull();
             this.refundAmount = null;
           } else {
-            this.refundAmount = in.readString(this.refundAmount instanceof Utf8 ? (Utf8)this.refundAmount : null);
+            if (this.refundAmount == null) {
+              this.refundAmount = new com.zaheudev.shared.avro.Amount();
+            }
+            this.refundAmount.customDecode(in);
           }
           break;
 
@@ -438,7 +494,7 @@ public class RefundRequestedEvent extends org.apache.avro.specific.SpecificRecor
     if (Utf8.compareSequences(this.paymentId, other.paymentId) != 0) {
       return false;
     }
-    if (Utf8.compareSequences(this.refundAmount, other.refundAmount) != 0) {
+    if (!java.util.Objects.equals(this.refundAmount, other.refundAmount)) {
       return false;
     }
     return true;

@@ -19,7 +19,7 @@ public class RoutingService {
     private RoutingCostRepository routingCostRepository;
 
     public RoutingResult calculateOptimalRouting(RiskAssessedEvent event){
-        Long value = event.getAmount().getValue();
+        BigDecimal value = BigDecimal.valueOf(event.getAmount().getValue()).divide(BigDecimal.valueOf(100));
         log.info("Calculating optimal routing for event: {}", event);
         Set<PaymentMethodEnum> availableNetworks = determineAvailableNetworks(event);
         log.info("Available networks: {}", availableNetworks);
@@ -49,12 +49,12 @@ public class RoutingService {
         }
         log.info("Routing options: {}", options);
         if(options.isEmpty()){
-            return RoutingResult.noValidOptions(BigDecimal.valueOf(value), event.getAmount().getCurrency().toString());
+            return RoutingResult.noValidOptions(value, event.getAmount().getCurrency().toString());
         }
         return RoutingResult.builder()
                 .selectedPaymentMethod(options.first().getNetwork())
                 .calculatedFee(options.first().cost)
-                .transactionAmount(BigDecimal.valueOf(value))
+                .transactionAmount(value)
                 .currency(event.getAmount().getCurrency().toString())
                 .useToken(false)
                 .build();

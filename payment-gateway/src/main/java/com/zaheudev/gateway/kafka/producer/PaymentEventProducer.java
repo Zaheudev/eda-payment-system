@@ -12,20 +12,14 @@ public class PaymentEventProducer {
     private final String CAPTURE_TOPIC_NAME = "capture-requests";
     private final String REFUND_TOPIC_NAME = "refund-requests";
 
-    private final KafkaTemplate<String, PaymentRequestedEvent> paymentRequestedKafkaTemplate;
-    private final KafkaTemplate<String, CaptureRequestedEvent> captureRequestedKafkaTemplate;
-    private final KafkaTemplate<String, RefundRequestedEvent> refundRequestedKafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public PaymentEventProducer(KafkaTemplate<String, PaymentRequestedEvent> kafkaTemplate,
-                                KafkaTemplate<String, CaptureRequestedEvent> captureRequestedKafkaTemplate,
-                                KafkaTemplate<String, RefundRequestedEvent> refundRequestedKafkaTemplate) {
-        this.paymentRequestedKafkaTemplate = kafkaTemplate;
-        this.captureRequestedKafkaTemplate = captureRequestedKafkaTemplate;
-        this.refundRequestedKafkaTemplate = refundRequestedKafkaTemplate;
+    public PaymentEventProducer(KafkaTemplate<String, Object> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     public void publishPaymentRequestedEvent(PaymentRequestedEvent event) {
-        paymentRequestedKafkaTemplate.send(PAYMENT_REQUEST_TOPIC_NAME, event.getPaymentId().toString(), event)
+        kafkaTemplate.send(PAYMENT_REQUEST_TOPIC_NAME, event.getPaymentId().toString(), event)
                 .whenComplete((result, e) -> {
                     if (e != null) {
                         System.err.println("Failed to publish event: " + e.getMessage());
@@ -36,7 +30,7 @@ public class PaymentEventProducer {
     }
 
     public void publishCaptureRequestedEvent(CaptureRequestedEvent event) {
-        captureRequestedKafkaTemplate.send(CAPTURE_TOPIC_NAME, event.getPaymentId().toString(), event)
+        kafkaTemplate.send(CAPTURE_TOPIC_NAME, event.getPaymentId().toString(), event)
                 .whenComplete((result, e) -> {
                     if (e != null) {
                         System.err.println("Failed to publish capture event: " + e.getMessage());
@@ -47,7 +41,7 @@ public class PaymentEventProducer {
     }
 
     public void publishRefundRequestedEvent(RefundRequestedEvent event) {
-        refundRequestedKafkaTemplate.send(REFUND_TOPIC_NAME, event.getPaymentId().toString(), event)
+        kafkaTemplate.send(REFUND_TOPIC_NAME, event.getPaymentId().toString(), event)
                 .whenComplete((result, e) -> {
                     if (e != null) {
                         System.err.println("Failed to publish refund event: " + e.getMessage());

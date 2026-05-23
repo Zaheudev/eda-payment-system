@@ -87,7 +87,7 @@ public class PaymentEventsConsumer {
             PaymentEntity entity = paymentRepository.findByPaymentId(paymentId).orElseThrow(() ->
                     new PaymentFailedException(null, "Payment doesnt exist"));
             entity.setStatus(refundCompletedEvent.getStatus().toString().equals("REFUNDED") ? PaymentStatus.REFUNDED : PaymentStatus.PARTIALLY_REFUNDED);
-            entity.setRefundedAmount(BigDecimal.valueOf(Double.parseDouble(refundCompletedEvent.getRefundedAmount().toString())));
+            entity.setRefundedAmount(BigDecimal.valueOf(refundCompletedEvent.getRefundedAmount().getValue()).divide(BigDecimal.valueOf(100)));
             paymentRepository.save(entity);
             log.info("Refunded processed sucessfully status updated to for payment id: {} to {}", paymentId, entity.getStatus());
         }

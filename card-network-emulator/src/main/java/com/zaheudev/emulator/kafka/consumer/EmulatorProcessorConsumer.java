@@ -51,7 +51,7 @@ public class EmulatorProcessorConsumer {
                 paymentId,
                 event.getCardRecord(),
                 event.getSelectedPaymentMethod(),
-                BigDecimal.valueOf(event.getAmount().getValue()),
+                BigDecimal.valueOf(event.getAmount().getValue()).divide(BigDecimal.valueOf(100)),
                 event.getAmount().getCurrency().toString()
         );
         log.info("Authorization result for payment id {} saved in database", paymentId);
@@ -63,7 +63,7 @@ public class EmulatorProcessorConsumer {
                 .authCode(authCompleted.getAuthCode().toString())
                 .selectedPaymentMethod(authCompleted.getSelectedPaymentMethod())
                 .networkFee(BigDecimal.valueOf(Double.parseDouble(event.getEstimatedCost().toString())))
-                .authorizedAmount(BigDecimal.valueOf(event.getAmount().getValue()))
+                .authorizedAmount(BigDecimal.valueOf(event.getAmount().getValue()).divide(BigDecimal.valueOf(100)))
                 .currency(event.getAmount().getCurrency().toString())
                 .transactionStatus(authCompleted.getSuccess() ? TransactionStatus.AUTHORIZED : TransactionStatus.FAILED)
                 .errorMessage(authCompleted.getErrorMessage()  != null ? authCompleted.getErrorMessage().toString() : null)
@@ -127,9 +127,7 @@ public class EmulatorProcessorConsumer {
         }
         List<EmulatedRefundTransactionEntity> refunds = refundTransactionRepository.findByPaymentId(paymentId);
         log.info("Event: {}", event);
-        BigDecimal refundAmount = BigDecimal.valueOf(
-                Double.parseDouble(event.getRefundAmount() != null ?
-                        event.getRefundAmount().toString() : transactionEntity.getCapturedAmount().toString()));
+        BigDecimal refundAmount = BigDecimal.valueOf(event.getRefundAmount().getValue()).divide(BigDecimal.valueOf(100));
 
         BigDecimal totalRefundedAmount = refunds.stream()
                     .filter(refund -> refund.getTransactionStatus() == TransactionStatus.REFUNDED)
@@ -148,7 +146,7 @@ public class EmulatorProcessorConsumer {
             ack.acknowledge();
         }
         RefundCompletedEvent refundResult = cardProcessor.refund(paymentId, transactionEntity.getProcessorTransactionId(),
-                refundAmount, transactionEntity.getCurrency());
+                totalRefundedAmount.add(refundAmount), transactionEntity.getCurrency());
         if(!refundResult.getSuccess()){
             EmulatedRefundTransactionEntity refundEntity = EmulatedRefundTransactionEntity.builder()
                     .paymentId(paymentId)
