@@ -25,7 +25,7 @@ public class KafkaProducerConfig {
     private String schemaRegistryUrl;
 
     @Bean
-    public ProducerFactory<String, Object> producerConfigs() {
+    public ProducerFactory<String, Object> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -36,22 +36,8 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
-    @Bean public ProducerFactory<String, RiskAssessedEvent> riskAssessedProducerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfigs().getConfigurationProperties());
-    }
-
     @Bean
-    public KafkaTemplate<String, RiskAssessedEvent> riskAssessedKafkaTemplate() {
-        return new KafkaTemplate<>(riskAssessedProducerFactory());
-    }
-
-    @Bean
-    public ProducerFactory<String, PaymentRejectedEvent> paymentRejectedProducerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfigs().getConfigurationProperties());
-    }
-
-    @Bean
-    public KafkaTemplate<String, PaymentRejectedEvent> paymentRejectedKafkaTemplate() {
-        return new KafkaTemplate<String, PaymentRejectedEvent>(paymentRejectedProducerFactory());
+    public KafkaTemplate<String, Object> riskAssessedKafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
     }
 }

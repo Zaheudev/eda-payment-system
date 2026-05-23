@@ -26,7 +26,7 @@ public class KafkaProducerConfig {
     private String schemaRegistryUrl;
 
     @Bean
-    public ProducerFactory<String, Object> producerConfig() {
+    public ProducerFactory<String, Object> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -38,32 +38,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<String, PaymentRequestedEvent> paymentRequestedProducerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfig().getConfigurationProperties());
-    }
-
-    @Bean
-    public KafkaTemplate<String, PaymentRequestedEvent> paymentRequestedKafkaTemplate() {
-        return new KafkaTemplate<>(paymentRequestedProducerFactory());
-    }
-
-    @Bean
-    public ProducerFactory<String, CaptureRequestedEvent> captureRequestedProducerFactory(){
-        return new DefaultKafkaProducerFactory<>(producerConfig().getConfigurationProperties());
-    }
-
-    @Bean
-    public KafkaTemplate<String, CaptureRequestedEvent> captureRequestedKafkaTemplate(){
-        return new KafkaTemplate<>(captureRequestedProducerFactory());
-    }
-
-    @Bean
-    public ProducerFactory<String, RefundRequestedEvent> refundRequestedProducerFactory(){
-        return new DefaultKafkaProducerFactory<>(producerConfig().getConfigurationProperties());
-    }
-
-    @Bean
-    public KafkaTemplate<String, RefundRequestedEvent> kafkaTemplate() {
-        return new KafkaTemplate<>(refundRequestedProducerFactory());
+    public KafkaTemplate<String, Object> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
     }
 }
