@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService{
         log.info("Received tokenization response: {}", tokenResponse);
 
         Payment payment = Payment.createPayment(
-                request.getMerchantReference(),
+                request.getMerchantRef(),
                 Amount.of(request.getAmount(), request.getCurrency()),
                 request.getCardDetails(),
                 tokenResponse.getTokenRef()
@@ -56,6 +56,7 @@ public class PaymentServiceImpl implements PaymentService{
                         .build())
                 .setStatus(com.zaheudev.shared.avro.PaymentStatus.PENDING)
                 .setTimestamp(payment.getCreatedAt().toInstant(java.time.ZoneOffset.UTC).toEpochMilli())
+                .setMerchantRef(payment.getMerchantRef())
                 .setCardRecord(com.zaheudev.shared.avro.CardRecord.newBuilder()
                         .setBin(tokenResponse.getBin())
                         .setLastFour(tokenResponse.getLastFour())

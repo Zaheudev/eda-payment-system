@@ -37,6 +37,7 @@ public class PaymentEntity {
                 .paymentId(payment.getPaymentId())
                 .status(payment.getStatus())
                 .tokenRef(payment.getTokenRef())
+                .merchantRef(payment.getMerchantRef())
                 .createdAt(payment.getCreatedAt())
                 .updatedAt(payment.getUpdatedAt())
                 .amount(BigDecimal.valueOf(payment.getAmount().getAmount()).divide(BigDecimal.valueOf(100)))

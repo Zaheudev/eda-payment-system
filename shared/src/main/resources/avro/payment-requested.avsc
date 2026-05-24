@@ -14,6 +14,12 @@
       "doc": "Amount object with currency and value"
     },
     {
+      "name": "merchantRef",
+      "type": ["null","string"],
+      "default": null,
+      "doc": "Merchant reference"
+    },
+    {
       "name": "cardRecord",
       "type": "com.zaheudev.shared.avro.CardRecord",
       "doc": "This is the token for the card details"

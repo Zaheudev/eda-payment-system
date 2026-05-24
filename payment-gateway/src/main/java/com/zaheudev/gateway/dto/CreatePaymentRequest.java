@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class CreatePaymentRequest {
     @NonNull @Getter
-    private String merchantReference;
+    private String merchantRef;
     @NonNull @Positive @Getter
     private BigDecimal amount;
     @NonNull @Getter

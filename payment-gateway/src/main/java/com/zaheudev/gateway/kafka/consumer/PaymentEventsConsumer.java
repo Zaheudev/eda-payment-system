@@ -69,6 +69,7 @@ public class PaymentEventsConsumer {
         PaymentEntity entity = paymentRepository.findByPaymentId(paymentId).orElseThrow(() ->
                 new PaymentFailedException(null, "Payment doesnt exist"));
         entity.setStatus(captureCompletedEvent.getSuccess() ? PaymentStatus.CAPTURED : PaymentStatus.FAILED);
+        entity.setCaptureId(captureCompletedEvent.getCaptureId().toString());
         paymentRepository.save(entity);
         log.info("Payment status updated for payment id: {} to {}", paymentId, entity.getStatus());
     }
