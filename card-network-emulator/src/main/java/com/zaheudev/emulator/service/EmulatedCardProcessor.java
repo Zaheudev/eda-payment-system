@@ -1,11 +1,11 @@
 package com.zaheudev.emulator.service;
 
-import com.zaheudev.emulator.entity.EmulatedRefundTransactionEntity;
 import com.zaheudev.shared.avro.CaptureCompletedEvent;
 import com.zaheudev.emulator.client.CardMetadataClient;
 import com.zaheudev.emulator.entity.EmulatedTransactionEntity;
 import com.zaheudev.shared.avro.*;
 import com.zaheudev.shared.dto.CardTokenMetadata;
+import com.zaheudev.shared.dto.TokenStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 @Service @Slf4j
@@ -33,53 +32,80 @@ public class EmulatedCardProcessor implements CardProcessor {
     private int maxLatency;
 
     @Override
-    public AuthorizationCompletedEvent authorize(String paymentId, CardRecord card,
-                                                 PaymentMethodEnum selectedPaymentMethod,
-                                                 BigDecimal amount, String currency) {
-        CardTokenMetadata cardMetadata = cardMetadataClient.getMetadata(card.getTokenRef().toString());
-        int expiryYear = Integer.parseInt(cardMetadata.getExpiryYear());
-        int expiryMonth = Integer.parseInt(cardMetadata.getExpiryMonth());
-        log.info("Precessing the authorization for paymentId: {}, cardHolderName: {}, selectedPaymentMethod: {}, amount: {}, currency: {}",
-                paymentId, cardMetadata.getCardholderName(), selectedPaymentMethod, amount, currency);
+    public AuthorizationCompletedEvent authorize(RoutedCompletedEvent event) {
         simulateNetworkLatency();
-        if(expiryYear < LocalDate.now().getYear() ||
-                (expiryYear == LocalDate.now().getYear() && expiryMonth < LocalDate.now().getMonthValue())){
-            log.warn("Card expired for paymentId: {}", paymentId);
+        boolean validCard;
+        if(event.getUseToken()){
+            validCard = isTokenActive(event.getCardRecord());
+        }else {
+            validCard = isCardValid(event.getCardRecord());
+        }
+        log.info("Precessing the authorization for paymentId: {}, selectedPaymentMethod: {}, amount: {}, useToken: {}",
+                event.getPaymentId(), event.getSelectedPaymentMethod(), event.getAmount().toString(), event.getUseToken());
+        if(!validCard){
+            String errorMessage = event.getUseToken() ? "Token expired" : "Card expired";
+            log.warn(errorMessage+" for paymentId: {}", event.getPaymentId());
             return AuthorizationCompletedEvent.newBuilder()
                     .setSuccess(false)
-                    .setPaymentId(paymentId)
-                    .setProcessorTransactionId("PROC"+ UUID.randomUUID().toString().substring(TRANSACTION_ID_LENGTH))
-                    .setRrn(generateRRN())
-                    .setAuthCode(String.format("%06d", RANDOM.nextInt(1000000)))
-                    .setSelectedPaymentMethod(selectedPaymentMethod)
-                    .setErrorMessage("Card expired")
+                    .setPaymentId(event.getPaymentId())
+                    .setProcessorTransactionId(null)
+                    .setRrn(null)
+                    .setAuthCode(null)
+                    .setSelectedPaymentMethod(event.getSelectedPaymentMethod())
+                    .setErrorMessage(errorMessage)
                     .setTimestamp(System.currentTimeMillis())
                     .build();
         }
-        if(RANDOM.nextInt(100) < 10){ // 10% chance of failure
-            log.warn("Authorization failed for paymentId: {}", paymentId);
+        if(RANDOM.nextInt(100) < (event.getUseToken() ? 3:10)){ // 10% chance of failure for non-token payments, 3% for token payments
+            log.warn("Authorization failed for paymentId: {}", event.getPaymentId());
             return AuthorizationCompletedEvent.newBuilder()
                     .setSuccess(false)
-                    .setPaymentId(paymentId)
+                    .setPaymentId(event.getPaymentId())
                     .setProcessorTransactionId("PROC"+ UUID.randomUUID().toString().substring(TRANSACTION_ID_LENGTH))
                     .setRrn(generateRRN())
-                    .setAuthCode(String.format("%06d", RANDOM.nextInt(1000000)))
-                    .setSelectedPaymentMethod(selectedPaymentMethod)
+                    .setAuthCode("FAILED-"+String.format("%06d", RANDOM.nextInt(1000000)))
+                    .setSelectedPaymentMethod(event.getSelectedPaymentMethod())
                     .setErrorMessage("Authorization declined by issuer. Contact issuer for more details.")
                     .setTimestamp(System.currentTimeMillis())
                     .build();
         }
         AuthorizationCompletedEvent result = AuthorizationCompletedEvent.newBuilder()
                 .setSuccess(true)
-                .setPaymentId(paymentId)
+                .setPaymentId(event.getPaymentId())
                 .setProcessorTransactionId("PROC"+ UUID.randomUUID().toString().substring(TRANSACTION_ID_LENGTH))
                 .setRrn(generateRRN())
                 .setAuthCode(String.format("%06d", RANDOM.nextInt(1000000)))
-                .setSelectedPaymentMethod(selectedPaymentMethod)
+                .setSelectedPaymentMethod(event.getSelectedPaymentMethod())
                 .setTimestamp(System.currentTimeMillis())
                 .build();
-        log.info("Authorization completed for paymentId: {}", paymentId);
+        log.info("Authorization completed for paymentId: {}", event.getPaymentId());
         return result;
+    }
+
+    public boolean isCardValid(CardRecord card){
+        try{
+        CardTokenMetadata cardMetadata = cardMetadataClient.getMetadata(card.getTokenRef().toString());
+        int expiryYear = Integer.parseInt(cardMetadata.getExpiryYear());
+        int expiryMonth = Integer.parseInt(cardMetadata.getExpiryMonth());
+        log.info("Check for card expiry month and year, cardHolderName: {}, expiryMonth: {}, expiryYear: {}",
+                cardMetadata.getCardholderName(), expiryMonth, expiryYear);
+        return expiryYear > LocalDate.now().getYear() ||
+                (expiryYear == LocalDate.now().getYear() && expiryMonth >= LocalDate.now().getMonthValue());
+        }catch (Exception e){
+            log.error("Error checking card expiry: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean isTokenActive(CardRecord cardRecord){
+        try{
+            TokenStatus tokenStatus = cardMetadataClient.getTokenStatus(cardRecord.getTokenRef().toString());
+            log.info("Check for token status, tokenRef: {}, tokenStatus: {}", cardRecord.getTokenRef(), tokenStatus);
+            return tokenStatus == TokenStatus.ACTIVE;
+        }catch(Exception e){
+            log.error("Error checking token status: {}", e.getMessage());
+            return false;
+        }
     }
 
     @Override

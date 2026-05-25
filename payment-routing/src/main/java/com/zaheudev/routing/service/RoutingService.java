@@ -20,6 +20,7 @@ public class RoutingService {
 
     public RoutingResult calculateOptimalRouting(RiskAssessedEvent event){
         BigDecimal value = BigDecimal.valueOf(event.getAmount().getValue()).divide(BigDecimal.valueOf(100));
+        boolean useToken = isTokenEligible(event);
         log.info("Calculating optimal routing for event: {}", event);
         Set<PaymentMethodEnum> availableNetworks = determineAvailableNetworks(event);
         log.info("Available networks: {}", availableNetworks);
@@ -27,24 +28,22 @@ public class RoutingService {
         // we use TreeSet to insert them decreasing by the cost
         // For now a good approach is to use a TreeMap, but in future I will implement risk and other criteria to comporator which best is TreeSet
         // for long term TreeSet is the best and implementing.
-        TreeSet<OptimalNetwork<PaymentMethodEnum, BigDecimal>> options = new TreeSet<>(new Comparator<OptimalNetwork<PaymentMethodEnum, BigDecimal>>() {
+        TreeSet<OptimalNetwork> options = new TreeSet<>(new Comparator<OptimalNetwork>() {
             @Override
-            public int compare(OptimalNetwork<PaymentMethodEnum, BigDecimal> o1, OptimalNetwork<PaymentMethodEnum, BigDecimal> o2) {
+            public int compare(OptimalNetwork o1, OptimalNetwork o2) {
                 int cmp = o1.getCost().compareTo(o2.getCost());
                 return cmp != 0 ? cmp : o1.getNetwork().name().compareTo(o2.getNetwork().name());
             }
         });
+
+        Collection<Boolean> tokenOptions = useToken ? List.of(true, false) : List.of(false);
         for(PaymentMethodEnum network : availableNetworks){
-            // for now by default we parse token false because we dont have build yet
-            // the card token manager module. In the future, when we have the
-            // tokenization module, we will determine if we can use a token or not
-            // based on the event data and the tokenization status of the card.
-            routingCostRepository.findByPaymentMethodAndIsToken(network, false).forEach(cost -> {
+            routingCostRepository.findByPaymentMethodAndIsTokenIn(network, tokenOptions).forEach(cost -> {
                 BigDecimal calculatedFee = cost.calculateTotalCost(value);
                 log.info("Calculated fee for {}: {}", network, calculatedFee);
                 log.info("Value: " + value);
                 log.info("variables: " + cost);
-                options.add(new OptimalNetwork<>(network, calculatedFee));
+                options.add(new OptimalNetwork(network, calculatedFee, cost.getIsToken()));
             });
         }
         log.info("Routing options: {}", options);
@@ -56,7 +55,7 @@ public class RoutingService {
                 .calculatedFee(options.first().cost)
                 .transactionAmount(value)
                 .currency(event.getAmount().getCurrency().toString())
-                .useToken(false)
+                .useToken(options.first().useToken)
                 .build();
     }
 
@@ -78,33 +77,41 @@ public class RoutingService {
         return networks;
     }
 
-        private Set<PaymentMethodEnum> getDebitNetworksForNetwork(PaymentMethodEnum network) {
-        // in reality this would come from a bin database,
-        // but for demo purposes I hardcode some rules
+    private Set<PaymentMethodEnum> getDebitNetworksForNetwork(PaymentMethodEnum network) {
+    // in reality this would come from a bin database,
+    // but for demo purposes I hardcode some rules
 
-        Set<PaymentMethodEnum> debitNetworks = new HashSet<>();
-        if (network.equals(PaymentMethodEnum.VISA)) {
-            debitNetworks.add(PaymentMethodEnum.ACCEL);
-            debitNetworks.add(PaymentMethodEnum.STAR);
+    Set<PaymentMethodEnum> debitNetworks = new HashSet<>();
+    if (network.equals(PaymentMethodEnum.VISA)) {
+        debitNetworks.add(PaymentMethodEnum.ACCEL);
+        debitNetworks.add(PaymentMethodEnum.STAR);
+    }
+
+    if (network.equals(PaymentMethodEnum.MASTERCARD)) {
+        debitNetworks.add(PaymentMethodEnum.NYCE);
+        debitNetworks.add(PaymentMethodEnum.PULSE);
+    }
+
+    if(network.equals(PaymentMethodEnum.DISCOVER)){
+        debitNetworks.add(PaymentMethodEnum.PULSE);
+    }
+
+    return debitNetworks;
+    }
+
+    private boolean isTokenEligible(RiskAssessedEvent event){
+        if(event.getCardRecord().getTokenValue() == null){
+            log.warn("Token value is null for paymentId: {}", event.getPaymentId());
+            return false;
         }
-
-        if (network.equals(PaymentMethodEnum.MASTERCARD)) {
-            debitNetworks.add(PaymentMethodEnum.NYCE);
-            debitNetworks.add(PaymentMethodEnum.PULSE);
-        }
-
-        if(network.equals(PaymentMethodEnum.DISCOVER)){
-            debitNetworks.add(PaymentMethodEnum.PULSE);
-        }
-
-        return debitNetworks;
+        return event.getCardRecord().getTokenValue() != null &&
+                event.getCardRecord().getTokenStatus().toString().equals("ACTIVE");
     }
 
     @Data @AllArgsConstructor @NoArgsConstructor
-    private class OptimalNetwork<K,V>{
-        @Getter
-        private K network;
-        @Getter
-        private V cost;
+    private static class OptimalNetwork{
+        private PaymentMethodEnum network;
+        private BigDecimal cost;
+        private boolean useToken;
     }
 }

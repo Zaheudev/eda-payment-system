@@ -1,9 +1,6 @@
 package com.zaheudev.ctm.controller;
 
-import com.zaheudev.shared.dto.CardTokenMetadata;
-import com.zaheudev.shared.dto.DetokenizeResponse;
-import com.zaheudev.shared.dto.TokenizeRequest;
-import com.zaheudev.shared.dto.TokenizeResponse;
+import com.zaheudev.shared.dto.*;
 import com.zaheudev.ctm.service.CardTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class CardTokenController {
     @Autowired
-    CardTokenService cardTokenService;
+    private CardTokenService cardTokenService;
 
     @PostMapping("/api/v1/tokenize")
     public ResponseEntity<TokenizeResponse> tokenize(@RequestBody TokenizeRequest cardDetails){
@@ -41,5 +38,10 @@ public class CardTokenController {
     @GetMapping("/api/v1/{tokenRef}")
     public ResponseEntity<CardTokenMetadata> getMetadata(@PathVariable String tokenRef){
         return ResponseEntity.ok(cardTokenService.getMetadata(tokenRef));
+    }
+
+    @GetMapping("/api/v1/{tokenRef}/status")
+    public ResponseEntity<TokenStatus> getStatus(@PathVariable String tokenRef){
+        return ResponseEntity.ok(cardTokenService.getStatus(tokenRef));
     }
 }

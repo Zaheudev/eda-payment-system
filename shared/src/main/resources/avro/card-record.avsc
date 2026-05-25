@@ -32,6 +32,11 @@
       "name": "cardType",
       "type": ["null","string"],
       "default": null
+    },
+    {
+      "name": "tokenStatus",
+      "type": ["null","string"],
+      "default": null
     }
   ]
 }

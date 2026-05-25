@@ -33,7 +33,7 @@ public class CardTokenService {
 
     public TokenizeResponse tokenize(TokenizeRequest cardDetails) throws Exception {
         String tokenRef = "TKN-" + UUID.randomUUID().toString();
-        String tokenValue = generator.generatePAN(12);
+        String tokenValue = generator.generatePAN(16);
         String encryptedPan = generator.encryptPAN(cardDetails.getCardNumber().toString(),getSecretKey());
         log.info("Encrypted PAN: {} with tokenRef: {}", encryptedPan, tokenRef);
 
@@ -95,6 +95,20 @@ public class CardTokenService {
                 .expiryYear(entity.getExpiryYear())
                 .status(entity.getStatus())
                 .build();
+    }
+
+    public TokenStatus updateStatus(String tokenRef, TokenStatus status){
+        CardTokenEntity entity = cardTokenRepository.findByTokenRef(tokenRef)
+                .orElseThrow(() -> new RuntimeException("Token not found"));
+        entity.setStatus(status);
+        cardTokenRepository.save(entity);
+        return status;
+    }
+
+    public TokenStatus getStatus(String tokenRef){
+        CardTokenEntity entity = cardTokenRepository.findByTokenRef(tokenRef)
+                .orElseThrow(() -> new RuntimeException("Token not found"));
+        return entity.getStatus();
     }
 
     private PaymentMethodEnum determinePrimaryNetwork(String number) {

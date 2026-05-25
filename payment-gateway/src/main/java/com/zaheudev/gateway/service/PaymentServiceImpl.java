@@ -64,6 +64,7 @@ public class PaymentServiceImpl implements PaymentService{
                         .setTokenValue(tokenResponse.getTokenValue())
                         .setPrimaryNetwork(tokenResponse.getCardNetwork())
                         .setCardType(tokenResponse.getCardType())
+                        .setTokenStatus(tokenResponse.getStatus().name())
                         .build())
                 .build();
 

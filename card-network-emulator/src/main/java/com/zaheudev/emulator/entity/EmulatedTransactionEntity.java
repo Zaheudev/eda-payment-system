@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 @Data @NoArgsConstructor @AllArgsConstructor
 @Entity @Builder
 public class EmulatedTransactionEntity {
-    private String paymentId;
     @Id
+    private String paymentId;
     private String processorTransactionId;
     private String captureId;
     private String rrn;

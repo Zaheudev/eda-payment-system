@@ -47,20 +47,14 @@ public class EmulatorProcessorConsumer {
             return;
         }
         RoutedCompletedEvent event  = record.value();
-        AuthorizationCompletedEvent authCompleted = cardProcessor.authorize(
-                paymentId,
-                event.getCardRecord(),
-                event.getSelectedPaymentMethod(),
-                BigDecimal.valueOf(event.getAmount().getValue()).divide(BigDecimal.valueOf(100)),
-                event.getAmount().getCurrency().toString()
-        );
-        log.info("Authorization result for payment id {} saved in database", paymentId);
+        AuthorizationCompletedEvent authCompleted = cardProcessor.authorize(event);
+        log.info("Authorization result for payment id {}", paymentId);
         ack.acknowledge();
         transactionRepository.save(EmulatedTransactionEntity.builder()
                 .paymentId(paymentId)
-                .processorTransactionId(authCompleted.getProcessorTransactionId().toString())
-                .rrn(authCompleted.getRrn().toString())
-                .authCode(authCompleted.getAuthCode().toString())
+                .processorTransactionId(authCompleted.getProcessorTransactionId() != null ? authCompleted.getProcessorTransactionId().toString() : null)
+                .rrn(authCompleted.getRrn() != null ? authCompleted.getRrn().toString() : null)
+                .authCode(authCompleted.getAuthCode() != null ? authCompleted.getAuthCode().toString() : null)
                 .selectedPaymentMethod(authCompleted.getSelectedPaymentMethod())
                 .networkFee(BigDecimal.valueOf(Double.parseDouble(event.getEstimatedCost().toString())))
                 .authorizedAmount(BigDecimal.valueOf(event.getAmount().getValue()).divide(BigDecimal.valueOf(100)))
@@ -70,10 +64,10 @@ public class EmulatorProcessorConsumer {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build());
-        log.info("Persiting authorization result for : {}", authCompleted.getProcessorTransactionId().toString());
-        ack.acknowledge();
-        
+        log.info("Persiting authorization result for : {}", paymentId);
+
         kafkaProducer.publishAuthorizationCompleteEvent(authCompleted);
+        ack.acknowledge();
         log.info("Published to kafka authorization completed event: {}", authCompleted);
         }catch (Exception e){
             log.error("Error processing routing completed event for payment id {}: {}", paymentId, e.getMessage());

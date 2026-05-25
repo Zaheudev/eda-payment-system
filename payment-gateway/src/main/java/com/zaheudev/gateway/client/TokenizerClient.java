@@ -16,6 +16,7 @@ public class TokenizerClient {
     RestClient restClient = RestClient.create();
     @Value("${ctm.base.url}")
     private String BASE_URL;
+
     public TokenizeResponse tokenize(CardDetails cardDetails) {
         TokenizeRequest req = TokenizeRequest.builder()
                 .cardNumber(cardDetails.getCardNumber())

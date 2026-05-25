@@ -6,9 +6,7 @@ import com.zaheudev.emulator.entity.EmulatedTransactionEntity;
 import java.math.BigDecimal;
 
 public interface CardProcessor {
-    AuthorizationCompletedEvent authorize(String paymentId, CardRecord cardRecord,
-                                          PaymentMethodEnum selectedPaymentMethod,
-                                          BigDecimal amount, String currency);
+    AuthorizationCompletedEvent authorize(RoutedCompletedEvent event);
     CaptureCompletedEvent capture(EmulatedTransactionEntity transactionEntity);
     RefundCompletedEvent refund(String paymentId, String processorTransactionId, BigDecimal refundAmount, String currency);
     AuthorizationCompletedEvent voidTransaction(String paymentId);
