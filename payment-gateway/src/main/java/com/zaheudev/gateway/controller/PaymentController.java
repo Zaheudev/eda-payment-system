@@ -30,19 +30,7 @@ public class PaymentController {
             PaymentResponse response = paymentService.capturePayment(paymentId);
             return new ResponseEntity<>(response, null, 202);
         }catch (PaymentFailedException e){
-            return ResponseEntity.status(500).body(PaymentResponse.builder()
-                    .paymentId(e.getPaymentEntity().getPaymentId())
-                    .rrn(e.getPaymentEntity().getRrn())
-                    .authCode(e.getPaymentEntity().getAuthCode())
-                    .processorTransactionId(e.getPaymentEntity().getProcessorTransactionId())
-                    .message(e.getPaymentEntity().getErrorMessage())
-                    .paymentStatus(e.getPaymentEntity().getStatus())
-                    .createdAt(e.getPaymentEntity().getCreatedAt())
-                    .amount(Amount.builder()
-                            .amount(e.getPaymentEntity().getAmount().longValue())
-                            .currency(e.getPaymentEntity().getCurrency())
-                            .build())
-                    .build());
+            return paymentService.getResponseEntity(500, e.getPaymentEntity());
         }
     }
 
@@ -52,21 +40,18 @@ public class PaymentController {
             PaymentResponse response = paymentService.refundPayment(paymentId, amount);
             return new ResponseEntity<>(response, null, 202);
         }catch(PaymentFailedException e){
-            return ResponseEntity.status(500).body(PaymentResponse.builder()
-                    .paymentId(e.getPaymentEntity().getPaymentId())
-                    .rrn(e.getPaymentEntity().getRrn())
-                    .authCode(e.getPaymentEntity().getAuthCode())
-                    .processorTransactionId(e.getPaymentEntity().getProcessorTransactionId())
-                    .message(e.getPaymentEntity().getErrorMessage())
-                    .paymentStatus(e.getPaymentEntity().getStatus())
-                    .createdAt(e.getPaymentEntity().getCreatedAt())
-                    .message(e.getPaymentEntity().getErrorMessage())
-                    .amount(Amount.builder()
-                            .amount(e.getPaymentEntity().getAmount().longValue())
-                            .currency(e.getPaymentEntity().getCurrency())
-                            .build())
-                    .build());
+            return paymentService.getResponseEntity(500, e.getPaymentEntity());
         }
+    }
+
+    @GetMapping(value = "api/v1/void/{paymentId}")
+    public ResponseEntity<PaymentResponse> voidPayment(@PathVariable String paymentId){
+            try{
+                PaymentResponse response = paymentService.voidPayment(paymentId);
+                return new ResponseEntity<>(response, null, 202);
+            }catch (PaymentFailedException e){
+                return paymentService.getResponseEntity(500, e.getPaymentEntity());
+            }
     }
 
     @GetMapping(value = "/api/v1/payments")

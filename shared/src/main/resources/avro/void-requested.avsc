@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "VoidRequestedEvent",
+  "namespace": "com.zaheudev.shared.avro",
+  "fields": [
+    {
+      "name": "paymentId",
+      "type": ["null","string"],
+      "default": null
+    }
+  ]
+}

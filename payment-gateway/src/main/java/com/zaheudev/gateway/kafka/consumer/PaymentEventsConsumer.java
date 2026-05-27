@@ -1,12 +1,9 @@
 package com.zaheudev.gateway.kafka.consumer;
 
-import com.zaheudev.shared.avro.CaptureCompletedEvent;
+import com.zaheudev.shared.avro.*;
 import com.zaheudev.gateway.entity.PaymentEntity;
 import com.zaheudev.gateway.exception.PaymentFailedException;
 import com.zaheudev.gateway.repository.PaymentRepository;
-import com.zaheudev.shared.avro.AuthorizationCompletedEvent;
-import com.zaheudev.shared.avro.PaymentRejectedEvent;
-import com.zaheudev.shared.avro.RefundCompletedEvent;
 import com.zaheudev.shared.dto.PaymentStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -91,6 +88,25 @@ public class PaymentEventsConsumer {
             entity.setRefundedAmount(BigDecimal.valueOf(refundCompletedEvent.getRefundedAmount().getValue()).divide(BigDecimal.valueOf(100)));
             paymentRepository.save(entity);
             log.info("Refunded processed sucessfully status updated to for payment id: {} to {}", paymentId, entity.getStatus());
+        }
+    }
+
+    @KafkaListener(topics = "void-completed")
+    public void consumeVoidCompleted(ConsumerRecord<String, VoidCompletedEvent> record, Acknowledgment ack){
+        String paymentId = record.key();
+        VoidCompletedEvent voidCompletedEvent = record.value();
+        log.info("Received void completed event for payment id: {}", paymentId);
+        if(!voidCompletedEvent.getSuccess()){
+            log.error("Void status failed for payment: {} due to error: {}", paymentId, voidCompletedEvent.getErrorMessage());
+            log.error("Stoping the void process for payment id: {}", paymentId);
+            ack.acknowledge();
+        }else{
+            ack.acknowledge();
+            PaymentEntity entity = paymentRepository.findByPaymentId(paymentId).orElseThrow(() ->
+                    new PaymentFailedException(null, "Payment doesnt exist"));
+            entity.setStatus(PaymentStatus.VOID);
+            paymentRepository.save(entity);
+            log.info("Void processed sucessfully status updated to for payment id: {} to {}", paymentId, entity.getStatus());
         }
     }
 }

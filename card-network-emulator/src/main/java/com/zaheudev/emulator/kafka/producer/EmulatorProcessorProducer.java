@@ -3,6 +3,7 @@ package com.zaheudev.emulator.kafka.producer;
 import com.zaheudev.shared.avro.CaptureCompletedEvent;
 import com.zaheudev.shared.avro.AuthorizationCompletedEvent;
 import com.zaheudev.shared.avro.RefundCompletedEvent;
+import com.zaheudev.shared.avro.VoidCompletedEvent;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ public class EmulatorProcessorProducer {
     private final String AUTHORIZATION_TOPIC_NAME = "authorization-completed";
     private final String CAPTURE_COMPLETED_TOPIC = "capture-completed";
     private final String REFUND_COMPLETED_TOPIC = "refund-completed";
+    private final String VOID_COMPLETED_TOPIC = "void-completed";
 
     private KafkaTemplate<String, Object> kafkaTemplate;
 
@@ -47,6 +49,17 @@ public class EmulatorProcessorProducer {
                         System.out.println("Error publishing Refund event: " + e.getMessage());
                     } else {
                         System.out.println("Refund event published successfully");
+                    }
+                });
+    }
+
+    public void publishVoidCompletedEvent(VoidCompletedEvent event) {
+        kafkaTemplate.send(VOID_COMPLETED_TOPIC, event.getPaymentId().toString(), event)
+                .whenComplete((result, e) -> {
+                    if (e != null) {
+                        System.out.println("Error publishing Void event: " + e.getMessage());
+                    } else {
+                        System.out.println("Void event published successfully");
                     }
                 });
     }

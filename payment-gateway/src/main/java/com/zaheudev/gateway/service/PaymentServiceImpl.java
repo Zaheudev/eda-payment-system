@@ -11,12 +11,14 @@ import com.zaheudev.gateway.model.Amount;
 import com.zaheudev.gateway.model.Payment;
 import com.zaheudev.shared.avro.CaptureRequestedEvent;
 import com.zaheudev.shared.avro.RefundRequestedEvent;
+import com.zaheudev.shared.avro.VoidRequestedEvent;
 import com.zaheudev.shared.dto.PaymentStatus;
 import com.zaheudev.gateway.repository.PaymentRepository;
 import com.zaheudev.shared.avro.PaymentRequestedEvent;
 import com.zaheudev.shared.dto.TokenizeResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -97,8 +99,19 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public PaymentResponse cancelPayment(String paymentId) {
-        return null;
+    public PaymentResponse voidPayment(String paymentId) {
+        PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId)
+                .orElseThrow(()-> new PaymentFailedException(null,"Payment not found with id: " + paymentId));
+        if(paymentEntity.getStatus() == PaymentStatus.AUTHORIZED){
+            producer.publishVoidRequestedEvent(VoidRequestedEvent.newBuilder()
+                    .setPaymentId(paymentId)
+                    .build());
+            log.info("The payment {} has been voided successfully", paymentId);
+        }else{
+            log.error("The payment {} cant be voided, it isn't authorized yet", paymentId);
+            throw new PaymentFailedException(paymentEntity, "Payment is not authorized");
+        }
+        return paymentEntity.tranformInPaymentResponse("Request void sent successfully");
     }
 
     @Override
@@ -119,6 +132,26 @@ public class PaymentServiceImpl implements PaymentService{
             throw new PaymentFailedException(entity, "Payment is not captured");
         }
         return null;
+    }
+
+    public ResponseEntity<PaymentResponse> getResponseEntity(int code, PaymentEntity response){
+        if(response == null){
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(code).body(PaymentResponse.builder()
+                .paymentId(response.getPaymentId())
+                .rrn(response.getRrn())
+                .authCode(response.getAuthCode())
+                .processorTransactionId(response.getProcessorTransactionId())
+                .message(response.getErrorMessage())
+                .paymentStatus(response.getStatus())
+                .createdAt(response.getCreatedAt())
+                .message(response.getErrorMessage())
+                .amount(Amount.builder()
+                        .amount(response.getAmount().longValue())
+                        .currency(response.getCurrency())
+                        .build())
+                .build());
     }
 
     @Override

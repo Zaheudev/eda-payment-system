@@ -9,5 +9,5 @@ public interface CardProcessor {
     AuthorizationCompletedEvent authorize(RoutedCompletedEvent event);
     CaptureCompletedEvent capture(EmulatedTransactionEntity transactionEntity);
     RefundCompletedEvent refund(String paymentId, String processorTransactionId, BigDecimal refundAmount, String currency);
-    AuthorizationCompletedEvent voidTransaction(String paymentId);
+    VoidCompletedEvent voidTransaction(String paymentId);
 }

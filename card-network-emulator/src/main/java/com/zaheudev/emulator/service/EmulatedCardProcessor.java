@@ -1,5 +1,7 @@
 package com.zaheudev.emulator.service;
 
+import com.zaheudev.emulator.model.TransactionStatus;
+import com.zaheudev.emulator.repository.EmulatedTransactionRepository;
 import com.zaheudev.shared.avro.CaptureCompletedEvent;
 import com.zaheudev.emulator.client.CardMetadataClient;
 import com.zaheudev.emulator.entity.EmulatedTransactionEntity;
@@ -20,6 +22,9 @@ import java.util.UUID;
 public class EmulatedCardProcessor implements CardProcessor {
     @Autowired
     CardMetadataClient cardMetadataClient;
+
+    @Autowired
+    EmulatedTransactionRepository transactionRepository;
 
     private static final String ALLOWED_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final int RRN_LENGTH = 12;
@@ -148,7 +153,6 @@ public class EmulatedCardProcessor implements CardProcessor {
                 .setPaymentId(paymentId)
                 .setOriginalProcessorTransactionId(originalProcessorTransactionId)
                 .setRefundId("REFUND-"+UUID.randomUUID().toString().substring(TRANSACTION_ID_LENGTH))
-                .setCurrency(currency)
                 .setRefundedAmount(Amount.newBuilder()
                         .setValue(refundAmountTotal.multiply(BigDecimal.valueOf(100)).longValue())
                         .setCurrency(currency)
@@ -162,8 +166,34 @@ public class EmulatedCardProcessor implements CardProcessor {
     }
 
     @Override
-    public AuthorizationCompletedEvent voidTransaction(String paymentId) {
-        return null;
+    public VoidCompletedEvent voidTransaction(String paymentId) {
+        simulateNetworkLatency();
+        EmulatedTransactionEntity entity = transactionRepository.findByPaymentId(paymentId).orElseThrow(()->
+                new RuntimeException("Payment not found with id: " + paymentId));
+        if(entity.getTransactionStatus() != TransactionStatus.AUTHORIZED){
+            log.error("Payment with id {} is not authorized. Current status: {}. Skipping processing.", paymentId, entity.getTransactionStatus());
+            return VoidCompletedEvent.newBuilder()
+                    .setSuccess(false)
+                    .setErrorMessage("Only authorized transactions can be voided")
+                    .setPaymentId(paymentId)
+                    .setProcessortransactionId(entity.getProcessorTransactionId())
+                    .setTimeStamp(System.currentTimeMillis())
+                    .setCreatedAt(LocalDate.now().toString())
+                    .setUpdatedAt(LocalDate.now().toString())
+                    .build();
+        }
+        boolean accepted = RANDOM.nextInt(100) > 5; // 5% chance of failure
+        entity.setTransactionStatus(TransactionStatus.VOID);
+        transactionRepository.save(entity);
+        return VoidCompletedEvent.newBuilder()
+                .setSuccess(accepted)
+                .setStatus(accepted ? "VOID" : "FAILED")
+                .setPaymentId(paymentId)
+                .setProcessortransactionId(entity.getProcessorTransactionId())
+                .setTimeStamp(System.currentTimeMillis())
+                .setCreatedAt(LocalDate.now().toString())
+                .setUpdatedAt(LocalDate.now().toString())
+                .build();
     }
 
 

@@ -14,8 +14,8 @@ public interface PaymentService {
     /** Returns a payment after it's id */
     PaymentResponse getPayment(String paymentId);
 
-    /** Cancel a payment */
-    PaymentResponse cancelPayment(String paymentId);
+    /** Cancel an authorized payment */
+    PaymentResponse voidPayment(String paymentId);
 
     /** Refund a captured payment */
     PaymentResponse refundPayment(String paymentId, RefundRequest amount);
