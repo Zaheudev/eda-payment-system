@@ -1,5 +1,7 @@
 package com.zaheudev.gateway.kafka.consumer;
 
+import com.zaheudev.gateway.kafka.producer.PaymentEventProducer;
+import com.zaheudev.gateway.service.PaymentServiceImpl;
 import com.zaheudev.shared.avro.*;
 import com.zaheudev.gateway.entity.PaymentEntity;
 import com.zaheudev.gateway.exception.PaymentFailedException;
@@ -19,6 +21,9 @@ import java.math.BigDecimal;
 public class PaymentEventsConsumer {
     @Autowired
     private PaymentRepository paymentRepository;
+
+    @Autowired
+    private PaymentServiceImpl paymentService;
 
     @KafkaListener(topics = "authorization-completed")
     public void consumeAuthorizationCompleted(ConsumerRecord<String, AuthorizationCompletedEvent> record, Acknowledgment ack) {
@@ -108,5 +113,35 @@ public class PaymentEventsConsumer {
             paymentRepository.save(entity);
             log.info("Void processed sucessfully status updated to for payment id: {} to {}", paymentId, entity.getStatus());
         }
+    }
+
+    @KafkaListener(topics = "routing-completed")
+    public void consumeRoutingCompleted(ConsumerRecord<String, RoutedCompletedEvent> record, Acknowledgment ack){
+        String paymentId = record.key();
+        RoutedCompletedEvent routedCompletedEvent = record.value();
+        log.info("Received routing completed event for payment id: {}", paymentId);
+        log.info("Estimated cost: {}, in network: {}", routedCompletedEvent.getEstimatedCost(), routedCompletedEvent.getSelectedPaymentMethod());
+        ack.acknowledge();
+        try{
+            paymentService.updatePaymentStatus(paymentId, PaymentStatus.ROUTING_COMPLETED, PaymentStatus.RISK_ASSESSED);
+        }catch(PaymentFailedException e){
+            log.error("Error updating payment status for payment id: {}, cause: {}", paymentId, e.getMessage());
+        }
+        ack.acknowledge();
+    }
+
+    @KafkaListener(topics = "risk-assessed")
+    public void consumeRiskAssessed(ConsumerRecord<String, RiskAssessedEvent> record, Acknowledgment ack){
+        String paymentId = record.key();
+        RiskAssessedEvent riskAssessedEvent = record.value();
+        log.info("Received risk assessed event for payment id: {}", paymentId);
+        log.info("Risk assessed event: {}", riskAssessedEvent);
+        ack.acknowledge();
+        try{
+            paymentService.updatePaymentStatus(paymentId, PaymentStatus.RISK_ASSESSED, PaymentStatus.CREATED);
+        }catch(PaymentFailedException e){
+            log.error("Error updating payment status for payment id: {}, cause: {}", paymentId, e.getMessage());
+        }
+        ack.acknowledge();
     }
 }

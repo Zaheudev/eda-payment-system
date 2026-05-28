@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Service
 @Slf4j
@@ -132,6 +133,18 @@ public class PaymentServiceImpl implements PaymentService{
             throw new PaymentFailedException(entity, "Payment is not captured");
         }
         return null;
+    }
+
+    public void updatePaymentStatus(String paymentId, PaymentStatus status, PaymentStatus previousStatus){
+        PaymentEntity payment = paymentRepository.findByPaymentId(paymentId)
+                .orElseThrow(()-> new PaymentFailedException(null,"Payment not found with id: " + paymentId));
+        if(previousStatus == payment.getStatus()){
+            payment.setStatus(status);
+            payment.setUpdatedAt(LocalDateTime.now());
+            paymentRepository.save(payment);
+        }else{
+            throw new PaymentFailedException(payment, "Payment status has changed since the event was published. Current status: " + payment.getStatus());
+        }
     }
 
     public ResponseEntity<PaymentResponse> getResponseEntity(int code, PaymentEntity response){
