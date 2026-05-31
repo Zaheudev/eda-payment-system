@@ -18,6 +18,7 @@ import com.zaheudev.shared.avro.PaymentRequestedEvent;
 import com.zaheudev.shared.dto.TokenizeResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -210,9 +211,11 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public List<PaymentResponse> getAllPayments() {
-        return paymentRepository.findAll().stream()
-                .map(paymentEntity -> paymentEntity.tranformInPaymentResponse(null))
+    public List<PaymentResponse> getAllPayments(int limit) {
+        int safe = Math.max(1, Math.min(limit, 100));
+        return paymentRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, safe))
+                .stream()
+                .map(e -> e.tranformInPaymentResponse(null))
                 .toList();
     }
 }

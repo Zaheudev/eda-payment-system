@@ -247,6 +247,19 @@ body {
   display: flex; gap: 8px; margin-top: 12px; align-items: center;
 }
 
+/* --- Payments list scroll --- */
+.payments-scroll {
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.payments-scroll table { border: none; }
+.payments-scroll thead th {
+  position: sticky; top: 0; background: var(--surface); z-index: 1;
+  box-shadow: 0 1px 0 var(--border);
+}
+
 /* --- Scrollbar --- */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ContainerInfo } from "../types";
-import { addToxic, fetchContainers, killContainer, removeToxics, startContainer } from "../api";
+import { addToxic, bounceContainer, fetchContainers, killContainer, removeToxics, startContainer } from "../api";
 
 export default function ChaosPanel() {
   const [containers, setContainers] = useState<ContainerInfo[]>([]);
@@ -43,14 +43,21 @@ export default function ChaosPanel() {
     refresh();
   };
 
-  const paymentContainers = containers.filter(
-    (c) =>
-      c.names.includes("payment-gateway") ||
-      c.names.includes("payment-risk") ||
-      c.names.includes("payment-routing") ||
-      c.names.includes("card-network") ||
-      c.names.includes("card-token")
-  );
+  const handleBounce = async (name: string) => {
+    setStatus(`Bouncing ${name} (5s delay)...`);
+    try {
+      await bounceContainer(name);
+      setStatus(`${name} bouncing...`);
+    } catch {
+      setStatus(`Failed to bounce ${name}`);
+    }
+    setTimeout(refresh, 6000);
+  };
+
+  const paymentContainers = containers.filter((c) => {
+    const names = Array.isArray(c.names) ? c.names.join(",") : c.names ?? "";
+    return /\/(payment|card)-/.test(names);
+  });
 
   return (
     <div>
@@ -85,12 +92,20 @@ export default function ChaosPanel() {
                   </div>
                   <div className="actions">
                     {running ? (
-                      <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => handleKill(name)}
-                      >
-                        Kill
-                      </button>
+                      <>
+                        <button
+                          className="btn btn-sm btn-danger"
+                          onClick={() => handleKill(name)}
+                        >
+                          Kill
+                        </button>
+                        <button
+                          className="btn btn-sm btn-secondary"
+                          onClick={() => handleBounce(name)}
+                        >
+                          Bounce
+                        </button>
+                      </>
                     ) : (
                       <button
                         className="btn btn-sm btn-secondary"

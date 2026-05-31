@@ -1,36 +1,55 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { PaymentResponse, EventEnvelope } from "../types";
 import { fetchAllPayments } from "../api";
 import PaymentDetailModal from "./PaymentDetailModal";
 
 interface Props {
   events: EventEnvelope[];
+  refreshKey: number;
   onSuccess: () => void;
 }
 
-export default function PaymentsList({ events, onSuccess }: Props) {
+export default function PaymentsList({ events, refreshKey, onSuccess }: Props) {
   const [payments, setPayments] = useState<PaymentResponse[]>([]);
   const [selectedPid, setSelectedPid] = useState<string | null>(null);
 
   const refresh = () => {
-    fetchAllPayments()
+    fetchAllPayments(20)
       .then((data) => setPayments(Array.isArray(data) ? data : []))
       .catch(() => {});
   };
 
   useEffect(() => {
     refresh();
-    const timer = setInterval(refresh, 3000);
+    const timer = setInterval(refresh, 5000);
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    refresh();
+  }, [refreshKey]);
+
+  const sortedPayments = useMemo(
+    () =>
+      [...payments].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ),
+    [payments]
+  );
+
   const statusClass = (status: string) => {
     switch (status) {
-      case "CAPTURED": return "badge-success";
+      case "AUTHORIZED":
+      case "CAPTURED":
+      case "REFUNDED":
+        return "badge-success";
       case "REJECTED":
-      case "FAILED": return "badge-danger";
-      case "VOID": return "badge-warning";
-      default: return "badge-info";
+      case "FAILED":
+        return "badge-danger";
+      case "VOID":
+        return "badge-warning";
+      default:
+        return "badge-info";
     }
   };
 
@@ -38,27 +57,28 @@ export default function PaymentsList({ events, onSuccess }: Props) {
     <>
       <div className="card">
         <div className="card-title" style={{ display: "flex", justifyContent: "space-between" }}>
-          <span>Payments ({payments.length})</span>
-          <button className="btn btn-sm btn-secondary" onClick={refresh}>Refresh</button>
+          <span>Payments (latest 20)</span>
+          <button className="btn btn-sm btn-secondary" onClick={refresh}>
+            Refresh
+          </button>
         </div>
         {payments.length === 0 ? (
           <p style={{ color: "var(--text-muted)", fontSize: 13 }}>
             No payments yet. Submit a payment using the form on the left.
           </p>
         ) : (
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Payment ID</th>
-                <th>Status</th>
-                <th>Amount</th>
-                <th>Created</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[...payments]
-                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                .map((p) => (
+          <div className="payments-scroll">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Payment ID</th>
+                  <th>Status</th>
+                  <th>Amount</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedPayments.map((p) => (
                   <tr
                     key={p.paymentId}
                     className="clickable"
@@ -82,8 +102,9 @@ export default function PaymentsList({ events, onSuccess }: Props) {
                     </td>
                   </tr>
                 ))}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 

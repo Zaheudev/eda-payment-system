@@ -82,7 +82,7 @@ export default function App() {
                 onSuccess={() => setRefreshKey((k) => k + 1)}
                 onTrack={(pid) => setTrackedPaymentId(pid)}
               />
-              <PaymentsList key={refreshKey} events={events} onSuccess={() => setRefreshKey((k) => k + 1)} />
+              <PaymentsList refreshKey={refreshKey} events={events} onSuccess={() => setRefreshKey((k) => k + 1)} />
             </div>
             <LiveTracker
               paymentId={trackedPaymentId}

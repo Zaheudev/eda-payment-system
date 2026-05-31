@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RestController
@@ -82,6 +83,32 @@ public class ChaosController {
             log.error("Failed to start container {}", containerName, e);
             return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
         }
+    }
+
+    @PostMapping("/api/chaos/bounce/{containerName}")
+    public ResponseEntity<Map<String, Object>> bounceContainer(
+            @PathVariable String containerName,
+            @RequestParam(defaultValue = "5") int delay) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("action", "bounce");
+        result.put("container", containerName);
+        result.put("delay", delay);
+
+        CompletableFuture.runAsync(() -> {
+            try (DockerClient docker = createDockerClient()) {
+                log.info("Bouncing {}: stopping...", containerName);
+                docker.stopContainerCmd(containerName).exec();
+                log.info("Bouncing {}: waiting {}s...", containerName, delay);
+                Thread.sleep(delay * 1000L);
+                log.info("Bouncing {}: starting...", containerName);
+                docker.startContainerCmd(containerName).exec();
+                log.info("Bouncing {}: done", containerName);
+            } catch (Exception e) {
+                log.error("Failed to bounce container {}", containerName, e);
+            }
+        });
+
+        return ResponseEntity.accepted().body(result);
     }
 
     @PostMapping("/api/chaos/toxic/{proxyName}")

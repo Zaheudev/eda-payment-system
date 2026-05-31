@@ -2,6 +2,7 @@ package com.zaheudev.gateway.repository;
 
 import com.zaheudev.gateway.entity.PaymentEntity;
 import com.zaheudev.shared.dto.PaymentStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, String> 
     Optional<PaymentEntity> findByPaymentId(String paymentId);
     List<PaymentEntity> findByStatus(PaymentStatus status);
     List<PaymentEntity> getAllByOrderByCreatedAtDesc();
+    List<PaymentEntity> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

@@ -55,11 +55,12 @@ public class PaymentController {
     }
 
     @GetMapping(value = "/api/v1/payments")
-    public ResponseEntity<List<PaymentResponse>> getAllPayments(){
-        try{
-            return new ResponseEntity<>(paymentService.getAllPayments(), null, 200);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, null, 500);
+    public ResponseEntity<List<PaymentResponse>> getAllPayments(
+            @RequestParam(defaultValue = "20") int limit) {
+        try {
+            return ResponseEntity.ok(paymentService.getAllPayments(limit));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 

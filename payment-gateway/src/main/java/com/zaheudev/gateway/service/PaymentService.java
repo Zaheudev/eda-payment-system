@@ -15,7 +15,7 @@ public interface PaymentService {
     /** Returns a payment after it's id */
     PaymentResponse getPayment(String paymentId);
 
-    List<PaymentResponse> getAllPayments();
+    List<PaymentResponse> getAllPayments(int limit);
 
     /** Cancel an authorized payment */
     PaymentResponse voidPayment(String paymentId);

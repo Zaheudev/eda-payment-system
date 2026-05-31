@@ -39,8 +39,8 @@ export async function voidPayment(paymentId: string) {
   return res.json();
 }
 
-export async function fetchAllPayments() {
-  const res = await fetch(`${BASE}/api/v1/payments`);
+export async function fetchAllPayments(limit = 20) {
+  const res = await fetch(`${BASE}/api/v1/payments?limit=${limit}`);
   if (!res.ok) return [];
   return res.json();
 }
@@ -103,5 +103,10 @@ export async function addToxic(proxyName: string, type: string, opts?: Record<st
 
 export async function removeToxics(proxyName: string) {
   const res = await fetch(`/api/bff/chaos/toxic/${proxyName}`, { method: "DELETE" });
+  return res.json();
+}
+
+export async function bounceContainer(name: string, delay = 5) {
+  const res = await fetch(`/api/bff/chaos/bounce/${name}?delay=${delay}`, { method: "POST" });
   return res.json();
 }
