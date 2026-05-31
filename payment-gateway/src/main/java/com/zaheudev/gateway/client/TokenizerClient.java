@@ -1,5 +1,7 @@
 package com.zaheudev.gateway.client;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.zaheudev.gateway.dto.CardDetails;
 import com.zaheudev.shared.dto.CardTokenMetadata;
 import com.zaheudev.shared.dto.DetokenizeResponse;
@@ -11,13 +13,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.time.Duration;
+
 @Component
 public class TokenizerClient {
+
+    private static final Cache<String, TokenizeResponse> tokenCache = Caffeine.newBuilder()
+            .expireAfterWrite(Duration.ofMinutes(5))
+            .maximumSize(200)
+            .build();
+
     RestClient restClient = RestClient.create();
     @Value("${ctm.base.url}")
     private String BASE_URL;
 
     public TokenizeResponse tokenize(CardDetails cardDetails) {
+        String cacheKey = cardDetails.getCardNumber() + "|" + cardDetails.getCvv()
+                + "|" + cardDetails.getExpiryMonth() + "|" + cardDetails.getExpiryYear();
+        return tokenCache.get(cacheKey, key -> doTokenize(cardDetails));
+    }
+
+    private TokenizeResponse doTokenize(CardDetails cardDetails) {
         TokenizeRequest req = TokenizeRequest.builder()
                 .cardNumber(cardDetails.getCardNumber())
                 .cvv(cardDetails.getCvv())
@@ -26,7 +42,7 @@ public class TokenizerClient {
                 .cardHolderName(cardDetails.getCardHolderName())
                 .build();
         ResponseEntity<TokenizeResponse> response = this.restClient.post()
-                .uri(BASE_URL+"/api/v1/tokenize")
+                .uri(BASE_URL + "/api/v1/tokenize")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(req)
                 .retrieve()

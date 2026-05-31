@@ -20,6 +20,7 @@
         <module>card-token-manager</module>
         <module>risk-fraud</module>
         <module>card-network-emulator</module>
+        <module>demo-bff</module>
     </modules>
 
     <properties>

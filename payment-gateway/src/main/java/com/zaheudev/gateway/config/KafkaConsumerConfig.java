@@ -1,5 +1,6 @@
 package com.zaheudev.gateway.config;
 
+import com.zaheudev.gateway.exception.PaymentFailedException;
 import com.zaheudev.shared.avro.AuthorizationCompletedEvent;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -60,6 +61,8 @@ public class KafkaConsumerConfig {
 
     @Bean
     public DefaultErrorHandler kafkaErrorHandler() {
-        return new DefaultErrorHandler(new FixedBackOff(1000L, 3L));
+        DefaultErrorHandler handler = new DefaultErrorHandler(new FixedBackOff(1000L, 3L));
+        handler.addNotRetryableExceptions(PaymentFailedException.class);
+        return handler;
     }
 }

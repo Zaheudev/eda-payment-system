@@ -31,11 +31,11 @@ public class PaymentEventsConsumer {
         AuthorizationCompletedEvent authorizationCompletedEvent = record.value();
         log.info("Received authorization completed event for payment id: {}", paymentId);
         log.info("Authorization completed event: {}", authorizationCompletedEvent);
-        if(!authorizationCompletedEvent.getSuccess()){
+        if (!authorizationCompletedEvent.getSuccess()) {
             log.error("The payment has failed the authorization with error: {}", authorizationCompletedEvent.getErrorMessage());
         }
         log.info("Updating payment status for payment id: {} to {}", paymentId,
-                authorizationCompletedEvent.getSuccess() ?  PaymentStatus.AUTHORIZED: PaymentStatus.FAILED);
+                authorizationCompletedEvent.getSuccess() ? PaymentStatus.AUTHORIZED : PaymentStatus.FAILED);
         paymentRepository.findById(paymentId).ifPresent(paymentEntity -> {
             paymentEntity.setStatus(authorizationCompletedEvent.getSuccess() ? PaymentStatus.AUTHORIZED : PaymentStatus.FAILED);
             paymentEntity.setRrn(authorizationCompletedEvent.getRrn().toString());
@@ -63,7 +63,7 @@ public class PaymentEventsConsumer {
     }
 
     @KafkaListener(topics = "capture-completed")
-    public void consumeCaptureCompleted(ConsumerRecord<String, CaptureCompletedEvent> record, Acknowledgment ack){
+    public void consumeCaptureCompleted(ConsumerRecord<String, CaptureCompletedEvent> record, Acknowledgment ack) {
         String paymentId = record.key();
         CaptureCompletedEvent captureCompletedEvent = record.value();
         log.info("Received capture completed event for payment id: {}", paymentId);
@@ -77,15 +77,15 @@ public class PaymentEventsConsumer {
     }
 
     @KafkaListener(topics = "refund-completed")
-    public void consumeRefundCompleted(ConsumerRecord<String, RefundCompletedEvent> record, Acknowledgment ack){
+    public void consumeRefundCompleted(ConsumerRecord<String, RefundCompletedEvent> record, Acknowledgment ack) {
         String paymentId = record.key();
         RefundCompletedEvent refundCompletedEvent = record.value();
         log.info("Received refund completed event for payment id: {}", paymentId);
-        if(!refundCompletedEvent.getSuccess()){
+        if (!refundCompletedEvent.getSuccess()) {
             log.error("Refund status failed for payment: {} due to error: {}", paymentId, refundCompletedEvent.getErrorMessage());
             log.error("Stoping the refund process for payment id: {}", paymentId);
             ack.acknowledge();
-        }else{
+        } else {
             ack.acknowledge();
             PaymentEntity entity = paymentRepository.findByPaymentId(paymentId).orElseThrow(() ->
                     new PaymentFailedException(null, "Payment doesnt exist"));
@@ -97,15 +97,15 @@ public class PaymentEventsConsumer {
     }
 
     @KafkaListener(topics = "void-completed")
-    public void consumeVoidCompleted(ConsumerRecord<String, VoidCompletedEvent> record, Acknowledgment ack){
+    public void consumeVoidCompleted(ConsumerRecord<String, VoidCompletedEvent> record, Acknowledgment ack) {
         String paymentId = record.key();
         VoidCompletedEvent voidCompletedEvent = record.value();
         log.info("Received void completed event for payment id: {}", paymentId);
-        if(!voidCompletedEvent.getSuccess()){
+        if (!voidCompletedEvent.getSuccess()) {
             log.error("Void status failed for payment: {} due to error: {}", paymentId, voidCompletedEvent.getErrorMessage());
             log.error("Stoping the void process for payment id: {}", paymentId);
             ack.acknowledge();
-        }else{
+        } else {
             ack.acknowledge();
             PaymentEntity entity = paymentRepository.findByPaymentId(paymentId).orElseThrow(() ->
                     new PaymentFailedException(null, "Payment doesnt exist"));
@@ -113,21 +113,6 @@ public class PaymentEventsConsumer {
             paymentRepository.save(entity);
             log.info("Void processed sucessfully status updated to for payment id: {} to {}", paymentId, entity.getStatus());
         }
-    }
-
-    @KafkaListener(topics = "routing-completed")
-    public void consumeRoutingCompleted(ConsumerRecord<String, RoutedCompletedEvent> record, Acknowledgment ack){
-        String paymentId = record.key();
-        RoutedCompletedEvent routedCompletedEvent = record.value();
-        log.info("Received routing completed event for payment id: {}", paymentId);
-        log.info("Estimated cost: {}, in network: {}", routedCompletedEvent.getEstimatedCost(), routedCompletedEvent.getSelectedPaymentMethod());
-        ack.acknowledge();
-        try{
-            paymentService.updatePaymentStatus(paymentId, PaymentStatus.ROUTING_COMPLETED, PaymentStatus.RISK_ASSESSED);
-        }catch(PaymentFailedException e){
-            log.error("Error updating payment status for payment id: {}, cause: {}", paymentId, e.getMessage());
-        }
-        ack.acknowledge();
     }
 
     @KafkaListener(topics = "risk-assessed")
@@ -144,4 +129,21 @@ public class PaymentEventsConsumer {
         }
         ack.acknowledge();
     }
+
+    @KafkaListener(topics = "routing-completed")
+    public void consumeRoutingCompleted(ConsumerRecord<String, RoutedCompletedEvent> record, Acknowledgment ack) {
+        String paymentId = record.key();
+        RoutedCompletedEvent routedCompletedEvent = record.value();
+        log.info("Received routing completed event for payment id: {}", paymentId);
+        log.info("Estimated cost: {}, in network: {}", routedCompletedEvent.getEstimatedCost(), routedCompletedEvent.getSelectedPaymentMethod());
+        ack.acknowledge();
+        try {
+            paymentService.updatePaymentStatus(paymentId, PaymentStatus.ROUTING_COMPLETED, PaymentStatus.RISK_ASSESSED);
+            paymentService.updateNetworkFee(paymentId, new BigDecimal(routedCompletedEvent.getEstimatedCost().toString()));
+        } catch (PaymentFailedException e) {
+            log.error("Error updating payment status for payment id: {}, cause: {}", paymentId, e.getMessage());
+        }
+        ack.acknowledge();
+    }
+
 }

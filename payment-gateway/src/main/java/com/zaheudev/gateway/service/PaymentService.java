@@ -6,6 +6,7 @@ import com.zaheudev.gateway.dto.RefundRequest;
 import com.zaheudev.shared.dto.PaymentStatus;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface PaymentService {
     /** Create a new payment */
@@ -13,6 +14,8 @@ public interface PaymentService {
 
     /** Returns a payment after it's id */
     PaymentResponse getPayment(String paymentId);
+
+    List<PaymentResponse> getAllPayments();
 
     /** Cancel an authorized payment */
     PaymentResponse voidPayment(String paymentId);
@@ -22,6 +25,8 @@ public interface PaymentService {
 
     /** Capture a previously authorized payment */
     PaymentResponse capturePayment(String paymentId);
+
+    void updatePaymentStatus(String paymentId, PaymentStatus status, PaymentStatus previousStatus);
 
     PaymentStatus getPaymentStatus(String paymentId);
 

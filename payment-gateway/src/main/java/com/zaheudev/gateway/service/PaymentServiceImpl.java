@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -77,32 +78,24 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public PaymentResponse capturePayment(String paymentID) {
-        PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentID).orElseThrow(() ->
-                new PaymentFailedException(null, "Payment not found with id: " + paymentID)
-        );
+    public PaymentResponse capturePayment(String paymentId) {
+        PaymentEntity paymentEntity = getPaymentEntity(paymentId);
 
         if(paymentEntity.getStatus() == PaymentStatus.AUTHORIZED){
             producer.publishCaptureRequestedEvent(CaptureRequestedEvent.newBuilder()
-                    .setPaymentId(paymentID)
+                    .setPaymentId(paymentId)
                     .build());
-            log.info("The capture event for payment {} has been published", paymentID);
+            log.info("The capture event for payment {} has been published", paymentId);
         }else{
-            log.error("The payment {} cant be captured, it isn't authorized yet", paymentID);
+            log.error("The payment {} cant be captured, it isn't authorized yet", paymentId);
             throw new PaymentFailedException(paymentEntity, "Payment is not authorized");
         }
         return paymentEntity.tranformInPaymentResponse("Request capture sent successfully");
     }
 
     @Override
-    public PaymentResponse getPayment(String paymentId) {
-        return null;
-    }
-
-    @Override
     public PaymentResponse voidPayment(String paymentId) {
-        PaymentEntity paymentEntity = paymentRepository.findByPaymentId(paymentId)
-                .orElseThrow(()-> new PaymentFailedException(null,"Payment not found with id: " + paymentId));
+        PaymentEntity paymentEntity = getPaymentEntity(paymentId);
         if(paymentEntity.getStatus() == PaymentStatus.AUTHORIZED){
             producer.publishVoidRequestedEvent(VoidRequestedEvent.newBuilder()
                     .setPaymentId(paymentId)
@@ -117,8 +110,7 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public PaymentResponse refundPayment(String paymentId, RefundRequest request) {
-        PaymentEntity entity = paymentRepository.findByPaymentId(paymentId)
-                .orElseThrow(()-> new PaymentFailedException(null,"Payment not found with id: " + paymentId));
+        PaymentEntity entity = getPaymentEntity(paymentId);
         if(entity.getStatus() == PaymentStatus.CAPTURED || entity.getStatus() == PaymentStatus.PARTIALLY_REFUNDED){
             log.info("request: ", request.toString());
             producer.publishRefundRequestedEvent(RefundRequestedEvent.newBuilder()
@@ -135,16 +127,44 @@ public class PaymentServiceImpl implements PaymentService{
         return null;
     }
 
-    public void updatePaymentStatus(String paymentId, PaymentStatus status, PaymentStatus previousStatus){
-        PaymentEntity payment = paymentRepository.findByPaymentId(paymentId)
-                .orElseThrow(()-> new PaymentFailedException(null,"Payment not found with id: " + paymentId));
-        if(previousStatus == payment.getStatus()){
+    public void updatePaymentStatus(String paymentId, PaymentStatus status, PaymentStatus previousStatus) {
+        PaymentEntity payment = getPaymentEntity(paymentId);
+
+        PaymentStatus current = payment.getStatus();
+
+        if (isAtOrPast(current, status)) {
+            log.debug("Payment {} already at {} (target was {}), skipping idempotent update",
+                    paymentId, current, status);
+            return;
+        }
+
+        if (current == previousStatus || current == PaymentStatus.PENDING) {
             payment.setStatus(status);
             payment.setUpdatedAt(LocalDateTime.now());
             paymentRepository.save(payment);
-        }else{
-            throw new PaymentFailedException(payment, "Payment status has changed since the event was published. Current status: " + payment.getStatus());
+            return;
         }
+
+        throw new PaymentFailedException(payment,
+                "Invalid transition: cannot go from " + current + " to " + status
+                        + " (expected predecessor " + previousStatus + ")");
+    }
+
+    private boolean isAtOrPast(PaymentStatus current, PaymentStatus target) {
+        return stateOrder(current) >= stateOrder(target);
+    }
+
+    private int stateOrder(PaymentStatus status) {
+        return switch (status) {
+            case CREATED, PENDING -> 0;
+            case RISK_ASSESSED -> 1;
+            case ROUTING_COMPLETED -> 2;
+            case AUTHORIZED -> 3;
+            case CAPTURED, PARTIALLY_CAPTURED, VOID, FAILED -> 4;
+            case REFUNDED, PARTIALLY_REFUNDED -> 5;
+            case REJECTED -> -2;
+            default -> -1;
+        };
     }
 
     public ResponseEntity<PaymentResponse> getResponseEntity(int code, PaymentEntity response){
@@ -167,8 +187,32 @@ public class PaymentServiceImpl implements PaymentService{
                 .build());
     }
 
+    public void updateNetworkFee(String paymentId, BigDecimal networkFee){
+        PaymentEntity payment = getPaymentEntity(paymentId);
+        payment.setNetworkFee(networkFee);
+        paymentRepository.save(payment);
+    }
+
+    public PaymentEntity getPaymentEntity(String paymentId){
+        return paymentRepository.findByPaymentId(paymentId)
+                .orElseThrow(() -> new PaymentFailedException(null, "Payment not found with id: " + paymentId));
+    }
+
     @Override
     public PaymentStatus getPaymentStatus(String paymentId) {
         return null;
+    }
+
+    @Override
+    public PaymentResponse getPayment(String paymentId) {
+        PaymentEntity paymentEntity = getPaymentEntity(paymentId);
+        return paymentEntity.tranformInPaymentResponse(null);
+    }
+
+    @Override
+    public List<PaymentResponse> getAllPayments() {
+        return paymentRepository.findAll().stream()
+                .map(paymentEntity -> paymentEntity.tranformInPaymentResponse(null))
+                .toList();
     }
 }

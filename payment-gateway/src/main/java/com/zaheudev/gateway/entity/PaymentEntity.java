@@ -29,6 +29,7 @@ public class PaymentEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private BigDecimal amount;
+    private BigDecimal networkFee;
     private BigDecimal refundedAmount;
     private String currency;
 

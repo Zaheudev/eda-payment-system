@@ -64,3 +64,74 @@ services:
       POSTGRES_DB: payment-gateway
     ports:
       - "5433:5432"
+
+  # --- EDA Demo: Toxiproxy (network chaos) ---
+  toxiproxy:
+    image: ghcr.io/shopify/toxiproxy:2.11.0
+    container_name: payment-toxiproxy
+    ports:
+      - "8474:8474"
+      - "29093:29093"
+    command:
+      - "-host=0.0.0.0"
+      - "-config=/config/toxiproxy.json"
+    volumes:
+      - ./chaos/toxiproxy.json:/config/toxiproxy.json:ro
+    depends_on:
+      - kafka
+    profiles:
+      - chaos
+
+  # --- EDA Demo: BFF (Backend for Frontend) ---
+  demo-bff:
+    build: ./demo-bff
+    container_name: payment-demo-bff
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_KAFKA_PROPERTIES_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      TOXIPROXY_HOST: toxiproxy
+      TOXIPROXY_PORT: 8474
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - kafka
+      - schema-registry
+    profiles:
+      - demo
+
+  # --- EDA Demo: UI (React + Vite, production build served by nginx) ---
+  demo-ui:
+    build: ./demo-ui
+    container_name: payment-demo-ui
+    ports:
+      - "8091:80"
+    depends_on:
+      - demo-bff
+    profiles:
+      - demo
+
+  # --- Chaos: Pumba kills risk-fraud randomly ---
+  pumba-riskfraud:
+    image: gaiaadm/pumba:latest
+    container_name: payment-pumba-riskfraud
+    command: --interval 30s kill --signal SIGKILL re2:payment-risk-fraud
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - toxiproxy
+    profiles:
+      - chaos
+
+  # --- Chaos: Pumba kills routing randomly ---
+  pumba-routing:
+    image: gaiaadm/pumba:latest
+    container_name: payment-pumba-routing
+    command: --interval 45s kill --signal SIGKILL re2:payment-routing
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - toxiproxy
+    profiles:
+      - chaos

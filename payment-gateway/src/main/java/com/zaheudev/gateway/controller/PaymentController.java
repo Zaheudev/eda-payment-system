@@ -44,7 +44,7 @@ public class PaymentController {
         }
     }
 
-    @GetMapping(value = "api/v1/void/{paymentId}")
+    @PostMapping(value = "api/v1/void/{paymentId}")
     public ResponseEntity<PaymentResponse> voidPayment(@PathVariable String paymentId){
             try{
                 PaymentResponse response = paymentService.voidPayment(paymentId);
@@ -55,13 +55,21 @@ public class PaymentController {
     }
 
     @GetMapping(value = "/api/v1/payments")
-    public List<Payment> getAllPayments(){
-        return null;
+    public ResponseEntity<List<PaymentResponse>> getAllPayments(){
+        try{
+            return new ResponseEntity<>(paymentService.getAllPayments(), null, 200);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, null, 500);
+        }
     }
 
     @GetMapping(value = "/api/v1/payments/{paymentId}")
-    public Payment getPayment(@PathVariable String paymentId){
-        return null;
+    public ResponseEntity<PaymentResponse> getPayment(@PathVariable String paymentId){
+        try{
+            return new ResponseEntity<>(paymentService.getPayment(paymentId), null, 200);
+        } catch (PaymentFailedException e) {
+            return paymentService.getResponseEntity(404, e.getPaymentEntity());
+        }
     }
 
 }
