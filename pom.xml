@@ -21,6 +21,8 @@
         <module>risk-fraud</module>
         <module>card-network-emulator</module>
         <module>demo-bff</module>
+        <module>integration-tests</module>
+        <module>load-tests</module>
     </modules>
 
     <properties>

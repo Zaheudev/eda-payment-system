@@ -35,6 +35,8 @@ public class EmulatedCardProcessor implements CardProcessor {
     private int minLatency;
     @Value("${cne.latency.max-ms}")
     private int maxLatency;
+    @Value("${cne.authorization-failure-percent:-1}")
+    private int authorizationFailurePercent;
 
     @Override
     public AuthorizationCompletedEvent authorize(RoutedCompletedEvent event) {
@@ -61,7 +63,10 @@ public class EmulatedCardProcessor implements CardProcessor {
                     .setTimestamp(System.currentTimeMillis())
                     .build();
         }
-        if(RANDOM.nextInt(100) < (event.getUseToken() ? 3:10)){ // 10% chance of failure for non-token payments, 3% for token payments
+        int failureRate = authorizationFailurePercent >= 0
+                ? authorizationFailurePercent
+                : (event.getUseToken() ? 3 : 10);
+        if(RANDOM.nextInt(100) < failureRate){
             log.warn("Authorization failed for paymentId: {}", event.getPaymentId());
             return AuthorizationCompletedEvent.newBuilder()
                     .setSuccess(false)

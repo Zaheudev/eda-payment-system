@@ -116,3 +116,5 @@ htmlcov/
 target/site/
 
 .factory
+
+droid-wiki

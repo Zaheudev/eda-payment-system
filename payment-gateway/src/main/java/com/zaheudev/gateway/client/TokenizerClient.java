@@ -10,6 +10,7 @@ import com.zaheudev.shared.dto.TokenizeResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -23,7 +24,12 @@ public class TokenizerClient {
             .maximumSize(200)
             .build();
 
-    RestClient restClient = RestClient.create();
+    private final RestClient restClient = RestClient.builder()
+            .requestFactory(new JdkClientHttpRequestFactory(
+                    java.net.http.HttpClient.newBuilder()
+                            .version(java.net.http.HttpClient.Version.HTTP_1_1)
+                            .build()))
+            .build();
     @Value("${ctm.base.url}")
     private String BASE_URL;
 
