@@ -21,7 +21,7 @@ public class DeterministicRiskService extends com.zaheudev.risk.service.RiskServ
     }
 
     @Override
-    public RiskLevel assessRisk(String transactionId) {
+    public RiskLevel assessRisk() {
         if (rejectNext) {
             return RiskLevel.CRITICAL;
         }

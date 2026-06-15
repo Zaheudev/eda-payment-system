@@ -47,6 +47,7 @@ public class RoutingService {
             });
         }
         log.info("Routing options: {}", options);
+        log.info("Optimal option: {}", options.first());
         if(options.isEmpty()){
             return RoutingResult.noValidOptions(value, event.getAmount().getCurrency().toString());
         }

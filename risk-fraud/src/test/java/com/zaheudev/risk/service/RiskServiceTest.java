@@ -9,7 +9,7 @@ class RiskServiceTest {
     @Test
     void assessRiskShouldReturnNonNullRiskLevel() {
         RiskService riskService = new RiskService();
-        var result = riskService.assessRisk("txn-123");
+        var result = riskService.assessRisk();
         assertThat(result).isNotNull();
     }
 }

@@ -6,10 +6,10 @@ import lombok.Getter;import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public enum RiskLevel {
-    LOW(0.0, 0.2, "Low Risk"),
-    MEDIUM(0.2, 0.4, "Medium Risk"),
-    HIGH(0.4, 0.6, "High Risk"),
-    CRITICAL(0.6, 1.0, "Critical Risk");
+    LOW(0.0, 0.3, "Low Risk"),
+    MEDIUM(0.3, 0.6, "Medium Risk"),
+    HIGH(0.6, 0.8, "High Risk"),
+    CRITICAL(0.8, 1.0, "Critical Risk");
 
     private double minScore;
     private double maxScore;

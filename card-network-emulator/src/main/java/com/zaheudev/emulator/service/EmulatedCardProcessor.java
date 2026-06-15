@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Service @Slf4j
-public class EmulatedCardProcessor implements CardProcessor {
+public class EmulatedCardProcessor{
     @Autowired
     CardMetadataClient cardMetadataClient;
 
@@ -38,12 +38,11 @@ public class EmulatedCardProcessor implements CardProcessor {
     @Value("${cne.authorization-failure-percent:-1}")
     private int authorizationFailurePercent;
 
-    @Override
     public AuthorizationCompletedEvent authorize(RoutedCompletedEvent event) {
         simulateNetworkLatency();
         boolean validCard;
         if(event.getUseToken()){
-            validCard = isTokenActive(event.getCardRecord());
+            validCard = isTokenActive(event.getCardRecord()) && isCardValid(event.getCardRecord());
         }else {
             validCard = isCardValid(event.getCardRecord());
         }
@@ -118,7 +117,6 @@ public class EmulatedCardProcessor implements CardProcessor {
         }
     }
 
-    @Override
     public CaptureCompletedEvent capture(EmulatedTransactionEntity entity) {
         simulateNetworkLatency();
         return CaptureCompletedEvent.newBuilder()
@@ -137,7 +135,6 @@ public class EmulatedCardProcessor implements CardProcessor {
                 .build();
     }
 
-    @Override
     public RefundCompletedEvent refund(String paymentId, String originalProcessorTransactionId, BigDecimal refundAmountTotal, String currency) {
         simulateNetworkLatency();
         if(RANDOM.nextInt(100) < 5){
@@ -170,7 +167,6 @@ public class EmulatedCardProcessor implements CardProcessor {
                 .build();
     }
 
-    @Override
     public VoidCompletedEvent voidTransaction(String paymentId) {
         simulateNetworkLatency();
         EmulatedTransactionEntity entity = transactionRepository.findByPaymentId(paymentId).orElseThrow(()->

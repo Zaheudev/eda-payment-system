@@ -35,7 +35,7 @@ public class PaymentRequestedConsumer {
         PaymentRequestedEvent event  = record.value();
         log.info("Calculating the risk for the payment with id: {}", paymentId);
         try{
-            RiskLevel riskLevel = riskService.assessRisk(paymentId);
+            RiskLevel riskLevel = riskService.assessRisk();
             boolean approved = riskLevel == RiskLevel.LOW || riskLevel == RiskLevel.MEDIUM || riskLevel == RiskLevel.HIGH;
             RiskAssessmentEntity riskEntity = RiskAssessmentEntity.builder()
                     .assessmentId(UUID.randomUUID().toString())

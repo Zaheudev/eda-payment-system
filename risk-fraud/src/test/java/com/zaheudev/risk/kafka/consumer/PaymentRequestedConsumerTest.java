@@ -58,7 +58,7 @@ class PaymentRequestedConsumerTest {
 
     @Test
     void consumeShouldPublishRiskAssessedWhenApproved() {
-        when(riskService.assessRisk("PMT001")).thenReturn(RiskLevel.LOW);
+        when(riskService.assessRisk()).thenReturn(RiskLevel.LOW);
         PaymentRequestedEvent event = buildPaymentRequestedEvent("PMT001");
         ConsumerRecord<String, PaymentRequestedEvent> record = new ConsumerRecord<>("topic", 0, 0, "PMT001", event);
 
@@ -72,7 +72,7 @@ class PaymentRequestedConsumerTest {
 
     @Test
     void consumeShouldPublishRejectedWhenCritical() {
-        when(riskService.assessRisk("PMT001")).thenReturn(RiskLevel.CRITICAL);
+        when(riskService.assessRisk()).thenReturn(RiskLevel.CRITICAL);
         PaymentRequestedEvent event = buildPaymentRequestedEvent("PMT001");
         ConsumerRecord<String, PaymentRequestedEvent> record = new ConsumerRecord<>("topic", 0, 0, "PMT001", event);
 
@@ -86,7 +86,7 @@ class PaymentRequestedConsumerTest {
 
     @Test
     void consumeMediumRiskShouldBeApproved() {
-        when(riskService.assessRisk("PMT001")).thenReturn(RiskLevel.MEDIUM);
+        when(riskService.assessRisk()).thenReturn(RiskLevel.MEDIUM);
         PaymentRequestedEvent event = buildPaymentRequestedEvent("PMT001");
         ConsumerRecord<String, PaymentRequestedEvent> record = new ConsumerRecord<>("topic", 0, 0, "PMT001", event);
 
@@ -98,7 +98,7 @@ class PaymentRequestedConsumerTest {
 
     @Test
     void consumeHighRiskShouldBeApproved() {
-        when(riskService.assessRisk("PMT001")).thenReturn(RiskLevel.HIGH);
+        when(riskService.assessRisk()).thenReturn(RiskLevel.HIGH);
         PaymentRequestedEvent event = buildPaymentRequestedEvent("PMT001");
         ConsumerRecord<String, PaymentRequestedEvent> record = new ConsumerRecord<>("topic", 0, 0, "PMT001", event);
 
