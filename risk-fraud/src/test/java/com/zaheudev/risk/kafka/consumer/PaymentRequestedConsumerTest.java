@@ -74,7 +74,8 @@ class PaymentRequestedConsumerTest {
     void consumeShouldPublishRejectedWhenCritical() {
         when(riskService.assessRisk()).thenReturn(RiskLevel.CRITICAL);
         PaymentRequestedEvent event = buildPaymentRequestedEvent("PMT001");
-        ConsumerRecord<String, PaymentRequestedEvent> record = new ConsumerRecord<>("topic", 0, 0, "PMT001", event);
+        ConsumerRecord<String, PaymentRequestedEvent> record =
+                new ConsumerRecord<>("topic", 0, 0, "PMT001", event);
 
         consumer.consume(record, ack);
 

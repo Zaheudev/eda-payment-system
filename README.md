@@ -150,3 +150,43 @@ The `card-token-manager` determines the card network and type automatically from
 | Goal | Card number to use |
 |------|--------------------|
 | Visa Credit
+
+---
+
+## Running Tests
+
+### Prerequisites
+
+- Java 21+ (the project targets release 21). If your default JDK is older, prefix commands with `JAVA_HOME=/usr/lib/jvm/java-25-openjdk`.
+- Docker running (integration tests use Testcontainers to spin up Kafka, Schema Registry, and PostgreSQL).
+
+### 1. Unit tests
+
+Run with Surefire (fast, no external infrastructure needed):
+
+```bash
+./mvnw test
+
+# single module:
+./mvnw -pl risk-fraud test
+```
+
+### 2. Integration tests
+
+End-to-end tests (`*IT` naming convention) using Failsafe and Testcontainers. Run on the `verify` phase:
+
+```bash
+./mvnw -pl integration-tests verify -am
+```
+
+Generates an EDA report at `integration-tests/target/eda-report/report.md` and JUnit XML reports at `integration-tests/target/failsafe-reports/`.
+
+### 3. Load tests (Gatling)
+
+Requires the full system and infrastructure running first. Each simulation submits traffic and observes the system under load or chaos conditions:
+
+```bash
+./mvnw -pl load-tests gatling:test -Dgatling.simulationClass=com.zaheudev.load.SpikeSimulation
+```
+
+Available simulations: `SpikeSimulation`, `ResilienceSimulation`, `DecouplingSimulation`. HTML results are written under `load-tests/target/gatling/`.
