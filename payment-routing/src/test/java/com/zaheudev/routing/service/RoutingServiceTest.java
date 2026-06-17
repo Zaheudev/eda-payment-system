@@ -1,6 +1,6 @@
 package com.zaheudev.routing.service;
 
-import com.zaheudev.routing.entity.RoutingCost;
+import com.zaheudev.routing.entity.RoutingCostEntity;
 import com.zaheudev.routing.repository.RoutingCostRepository;
 import com.zaheudev.shared.avro.*;
 import org.junit.jupiter.api.Test;
@@ -51,8 +51,8 @@ class RoutingServiceTest {
     @Test
     void calculateOptimalRoutingShouldPickLowestCost() {
         RiskAssessedEvent event = buildEvent("CREDIT");
-        RoutingCost cheap = buildCost(PaymentMethodEnum.VISA, BigDecimal.valueOf(0.10), true);
-        RoutingCost expensive = buildCost(PaymentMethodEnum.VISA, BigDecimal.valueOf(0.30), false);
+        RoutingCostEntity cheap = buildCost(PaymentMethodEnum.VISA, BigDecimal.valueOf(0.10), true);
+        RoutingCostEntity expensive = buildCost(PaymentMethodEnum.VISA, BigDecimal.valueOf(0.30), false);
         when(routingCostRepository.findByPaymentMethodAndIsTokenIn(any(), anyCollection()))
                 .thenReturn(List.of(cheap, expensive));
 
@@ -130,8 +130,8 @@ class RoutingServiceTest {
         assertThat(networks).containsExactly(PaymentMethodEnum.VISA);
     }
 
-    private RoutingCost buildCost(PaymentMethodEnum method, BigDecimal fixedFee, boolean isToken) {
-        RoutingCost cost = new RoutingCost();
+    private RoutingCostEntity buildCost(PaymentMethodEnum method, BigDecimal fixedFee, boolean isToken) {
+        RoutingCostEntity cost = new RoutingCostEntity();
         cost.setPaymentMethod(method);
         cost.setFixedFee(fixedFee);
         cost.setPercentageFee(BigDecimal.ZERO);

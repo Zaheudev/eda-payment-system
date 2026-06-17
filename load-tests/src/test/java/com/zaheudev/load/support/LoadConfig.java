@@ -17,7 +17,8 @@ public final class LoadConfig {
     }
 
     public static String chaosKillCmd() {
-        return System.getProperty("eda.chaos.kill.cmd", "");
+        return System.getProperty("eda.chaos.kill.cmd",
+                "pkill -f com.zaheudev.risk.RiskFraudApplication");
     }
 
     public static String chaosRestoreCmd() {

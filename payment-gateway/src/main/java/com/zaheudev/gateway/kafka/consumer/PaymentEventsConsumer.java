@@ -1,6 +1,5 @@
 package com.zaheudev.gateway.kafka.consumer;
 
-import com.zaheudev.gateway.kafka.producer.PaymentEventProducer;
 import com.zaheudev.gateway.service.PaymentServiceImpl;
 import com.zaheudev.shared.avro.*;
 import com.zaheudev.gateway.entity.PaymentEntity;
@@ -38,9 +37,9 @@ public class PaymentEventsConsumer {
                 authorizationCompletedEvent.getSuccess() ? PaymentStatus.AUTHORIZED : PaymentStatus.FAILED);
         paymentRepository.findById(paymentId).ifPresent(paymentEntity -> {
             paymentEntity.setStatus(authorizationCompletedEvent.getSuccess() ? PaymentStatus.AUTHORIZED : PaymentStatus.FAILED);
-            paymentEntity.setRrn(authorizationCompletedEvent.getRrn().toString());
-            paymentEntity.setAuthCode(authorizationCompletedEvent.getAuthCode().toString());
-            paymentEntity.setProcessorTransactionId(authorizationCompletedEvent.getProcessorTransactionId().toString());
+            paymentEntity.setRrn(authorizationCompletedEvent.getRrn() != null ? authorizationCompletedEvent.getRrn().toString() : null);
+            paymentEntity.setAuthCode(authorizationCompletedEvent.getAuthCode() != null ? authorizationCompletedEvent.getAuthCode().toString() : null);
+            paymentEntity.setProcessorTransactionId(authorizationCompletedEvent.getProcessorTransactionId() != null ? authorizationCompletedEvent.getProcessorTransactionId().toString() : null);
             paymentEntity.setErrorMessage(authorizationCompletedEvent.getErrorMessage() != null ? authorizationCompletedEvent.getErrorMessage().toString() : null);
             paymentRepository.save(paymentEntity);
             log.info("Payment status updated for payment id: {}", paymentId);

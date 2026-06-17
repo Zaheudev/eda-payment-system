@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Entity
 @Data
 @NoArgsConstructor @AllArgsConstructor
-public class RoutingCost {
+public class RoutingCostEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Enumerated(EnumType.STRING)

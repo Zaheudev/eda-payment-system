@@ -9,17 +9,13 @@ import java.time.LocalDate;
 @Entity @Builder
 @Data @NoArgsConstructor @AllArgsConstructor
 public class RiskAssessmentEntity {
-    @Id @Getter @Setter
+    @Id
     private String assessmentId;
-    @Getter @Setter
     private String paymentId;
-    @Getter @Setter @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private RiskLevel riskLevel;
-    @Getter @Setter
     private String riskReason;
-    @Getter @Setter
     private boolean approved;
-    @Getter @Setter
     private LocalDate assessmentDate;
 
 }

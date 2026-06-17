@@ -3,9 +3,11 @@ package com.zaheudev.load.support;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,14 +43,21 @@ public class EdaObserver {
         var props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, LoadConfig.kafkaBootstrap());
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "eda-load-observer-" + UUID.randomUUID());
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
         props.put("schema.registry.url", LoadConfig.schemaRegistryUrl());
         props.put("specific.avro.reader", "true");
 
         consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(ALL_TOPICS);
+        consumer.subscribe(ALL_TOPICS, new ConsumerRebalanceListener() {
+            @Override
+            public void onPartitionsRevoked(Collection<TopicPartition> partitions) {}
+            @Override
+            public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+                consumer.seekToEnd(partitions);
+            }
+        });
 
         pollThread = new Thread(this::pollLoop, "eda-observer");
         pollThread.setDaemon(true);
@@ -93,7 +102,8 @@ public class EdaObserver {
 
     public long completionCount() {
         return allEvents.stream()
-                .filter(e -> "authorization-completed".equals(e.topic))
+                .filter(e -> "authorization-completed".equals(e.topic)
+                        || "payment-rejected".equals(e.topic))
                 .count();
     }
 
@@ -185,7 +195,8 @@ public class EdaObserver {
 
     public Instant lastCompletionTime() {
         return allEvents.stream()
-                .filter(e -> "authorization-completed".equals(e.topic))
+                .filter(e -> "authorization-completed".equals(e.topic)
+                        || "payment-rejected".equals(e.topic))
                 .map(ObservedEvent::timestamp)
                 .max(Instant::compareTo)
                 .orElse(Instant.EPOCH);
@@ -200,13 +211,27 @@ public class EdaObserver {
         return -1;
     }
 
-    public boolean waitForDrain(long timeoutMs) {
-        long deadline = System.currentTimeMillis() + timeoutMs;
+    public boolean waitForDrain(long maxWaitMs) {
+        return waitForDrain(maxWaitMs, 30_000);
+    }
+
+    public boolean waitForDrain(long maxWaitMs, long stallMs) {
+        long deadline = System.currentTimeMillis() + maxWaitMs;
         long ingested = ingestionCount();
+        long lastCompleted = completionCount();
+        long lastProgressAt = System.currentTimeMillis();
         while (System.currentTimeMillis() < deadline) {
             long completed = completionCount();
             if (completed >= ingested && ingested > 0) {
                 return true;
+            }
+            if (completed > lastCompleted) {
+                lastCompleted = completed;
+                lastProgressAt = System.currentTimeMillis();
+            } else if (System.currentTimeMillis() - lastProgressAt > stallMs) {
+                log.warn("Drain stalled: {}/{} completed, no progress for {} ms",
+                        completed, ingested, stallMs);
+                return false;
             }
             try {
                 Thread.sleep(500);

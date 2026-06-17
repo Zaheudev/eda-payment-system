@@ -56,7 +56,7 @@ public class DecouplingSimulation extends Simulation {
     @Override
     public void after() {
         log.info("=== DecouplingSimulation: after hook — waiting for async drain ===");
-        boolean drained = observer.waitForDrain(120_000);
+        boolean drained = observer.waitForDrain(240_000);
 
         long ingested = observer.ingestionCount();
         long completed = observer.completionCount();

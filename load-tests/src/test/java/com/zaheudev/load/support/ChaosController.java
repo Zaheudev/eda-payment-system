@@ -33,8 +33,12 @@ public class ChaosController {
         }
         log.info("CHAOS: Executing kill command: {}", killCmd);
         try {
-            int exit = Runtime.getRuntime().exec(killCmd).waitFor();
+            int exit = Runtime.getRuntime()
+                    .exec(new String[]{"sh", "-c", killCmd}).waitFor();
             log.info("CHAOS: kill command exited with code {}", exit);
+            if (exit != 0) {
+                log.warn("CHAOS: kill command returned non-zero ({}). Was the target process running?", exit);
+            }
         } catch (Exception e) {
             log.error("CHAOS: kill command failed", e);
         }
@@ -55,8 +59,12 @@ public class ChaosController {
         }
         log.info("CHAOS: Executing restore command: {}", restoreCmd);
         try {
-            int exit = Runtime.getRuntime().exec(restoreCmd).waitFor();
+            int exit = Runtime.getRuntime()
+                    .exec(new String[]{"sh", "-c", restoreCmd}).waitFor();
             log.info("CHAOS: restore command exited with code {}", exit);
+            if (exit != 0) {
+                log.warn("CHAOS: restore command returned non-zero ({})", exit);
+            }
         } catch (Exception e) {
             log.error("CHAOS: restore command failed", e);
         }

@@ -1,13 +1,17 @@
 package com.zaheudev.integration;
 
+import com.zaheudev.integration.metrics.EventRecorder.RecordedEvent;
 import com.zaheudev.integration.metrics.MetricsCollector.ScenarioMetrics;
 import com.zaheudev.integration.metrics.ReportWriter;
 import com.zaheudev.integration.risk.DeterministicRiskService;
 import org.junit.jupiter.api.*;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class E_RejectionPathIT extends BaseIT {
@@ -33,27 +37,37 @@ public class E_RejectionPathIT extends BaseIT {
         m.incrementProcessed();
         log.info("Rejection-test payment {} submitted", pid);
 
-        sleep(4000);
+        await("payment " + pid + " rejected")
+                .atMost(Duration.ofSeconds(30))
+                .pollInterval(Duration.ofSeconds(1))
+                .untilAsserted(() -> {
+                    var finalResp = getJson("/api/v1/payments/" + pid);
+                    String status = A_HappyPathLifecycleIT.extractField(finalResp.body(), "paymentStatus");
+                    assertThat(status).isEqualTo("REJECTED");
+                });
 
-        var finalResp = getJson("/api/v1/payments/" + pid);
-        String status = A_HappyPathLifecycleIT.extractField(finalResp.body(), "paymentStatus");
-        log.info("Rejection path status for {}: {}", pid, status);
+        List<RecordedEvent> paymentEvents = eventRecorder.getEventsForPayment(pid);
+        long rejectedForPid = paymentEvents.stream()
+                .filter(e -> "payment-rejected".equals(e.topic())).count();
+        long authForPid = paymentEvents.stream()
+                .filter(e -> "authorization-completed".equals(e.topic())).count();
+        long routingForPid = paymentEvents.stream()
+                .filter(e -> "routing-completed".equals(e.topic())).count();
 
-        long rejectedEvents = eventRecorder.countEventsOnTopic("payment-rejected");
-        long authEvents = eventRecorder.countEventsOnTopic("authorization-completed");
-        long routingEvents = eventRecorder.countEventsOnTopic("routing-completed");
+        log.info("Rejection path status for {}: REJECTED. payment-rejected={}, auth-completed={}, routing-completed={}",
+                pid, rejectedForPid, authForPid, routingForPid);
 
-        m.addNote("Payment status: " + status);
-        m.addNote("payment-rejected events: " + rejectedEvents);
-        m.addNote("authorization-completed events: " + authEvents + " (should be 0)");
-        m.addNote("routing-completed events: " + routingEvents + " (should be 0)");
+        m.addNote("Payment status: REJECTED");
+        m.addNote("payment-rejected events: " + rejectedForPid);
+        m.addNote("authorization-completed events: " + authForPid + " (should be 0)");
+        m.addNote("routing-completed events: " + routingForPid + " (should be 0)");
         m.addNote("Key EDA property: rejected payments skip routing and authorization entirely");
         m.setTotalDurationMs(Instant.now().toEpochMilli() - start.toEpochMilli());
         m.setStatus("PASSED");
 
-        assertThat(status).isEqualTo("REJECTED");
-        assertThat(rejectedEvents).isGreaterThan(0);
-        assertThat(authEvents).isEqualTo(0);
+        assertThat(rejectedForPid).isGreaterThan(0);
+        assertThat(authForPid).isEqualTo(0);
+        assertThat(routingForPid).isEqualTo(0);
 
         DeterministicRiskService.resetToApprove();
 

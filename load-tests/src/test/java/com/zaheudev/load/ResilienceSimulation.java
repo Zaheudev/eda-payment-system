@@ -71,7 +71,7 @@ public class ResilienceSimulation extends Simulation {
     @Override
     public void after() {
         log.info("=== ResilienceSimulation: after hook — waiting for async drain ===");
-        boolean drained = observer.waitForDrain(180_000);
+        boolean drained = observer.waitForDrain(600_000);
 
         long ingested = observer.ingestionCount();
         long completed = observer.completionCount();

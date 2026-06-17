@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RoutingCostTest {
+class RoutingCostEntityTest {
 
     @Test
     void calculateTotalCostShouldApplyFormula() {
-        RoutingCost cost = new RoutingCost();
+        RoutingCostEntity cost = new RoutingCostEntity();
         cost.setFixedFee(BigDecimal.valueOf(0.20));
         cost.setPercentageFee(BigDecimal.valueOf(0.015));
         cost.setAuthorizationRate(0.05);
@@ -24,7 +24,7 @@ class RoutingCostTest {
 
     @Test
     void calculateTotalCostWithZeroAmount() {
-        RoutingCost cost = new RoutingCost();
+        RoutingCostEntity cost = new RoutingCostEntity();
         cost.setFixedFee(BigDecimal.valueOf(0.20));
         cost.setPercentageFee(BigDecimal.valueOf(0.015));
         cost.setAuthorizationRate(0.0);

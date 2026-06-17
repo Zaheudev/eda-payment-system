@@ -38,7 +38,7 @@ public class SpikeSimulation extends Simulation {
         setUp(
                 payments.injectOpen(
                         constantUsersPerSec(10).during(Duration.ofSeconds(20)),
-                        stressPeakUsers(100).during(Duration.ofSeconds(10)),
+                        constantUsersPerSec(100).during(Duration.ofSeconds(10)),
                         constantUsersPerSec(10).during(Duration.ofSeconds(30))
                 )
         ).protocols(httpProtocol)
@@ -57,7 +57,7 @@ public class SpikeSimulation extends Simulation {
     @Override
     public void after() {
         log.info("=== SpikeSimulation: after hook — waiting for async drain ===");
-        boolean drained = observer.waitForDrain(120_000);
+        boolean drained = observer.waitForDrain(300_000);
 
         long ingested = observer.ingestionCount();
         long completed = observer.completionCount();

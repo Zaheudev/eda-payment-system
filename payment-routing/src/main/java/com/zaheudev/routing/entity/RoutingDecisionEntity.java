@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity @Builder
 @Data @NoArgsConstructor @AllArgsConstructor
-public class RoutingDecision {
+public class RoutingDecisionEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String paymentId;

@@ -3,10 +3,12 @@ package com.zaheudev.gateway.client;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.zaheudev.gateway.dto.CardDetails;
+import com.zaheudev.gateway.exception.TokenizationException;
 import com.zaheudev.shared.dto.CardTokenMetadata;
 import com.zaheudev.shared.dto.DetokenizeResponse;
 import com.zaheudev.shared.dto.TokenizeRequest;
 import com.zaheudev.shared.dto.TokenizeResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.client.RestClient;
 
 import java.time.Duration;
 
+@Slf4j
 @Component
 public class TokenizerClient {
 
@@ -34,9 +37,17 @@ public class TokenizerClient {
     private String BASE_URL;
 
     public TokenizeResponse tokenize(CardDetails cardDetails) {
-        String cacheKey = cardDetails.getCardNumber() + "|" + cardDetails.getCvv()
-                + "|" + cardDetails.getExpiryMonth() + "|" + cardDetails.getExpiryYear();
-        return tokenCache.get(cacheKey, key -> doTokenize(cardDetails));
+        String cacheKey = cardDetails.getCardNumber() + "|"
+                + cardDetails.getExpiryMonth() + "|" + cardDetails.getExpiryYear();
+        try {
+            return tokenCache.get(cacheKey, key -> doTokenize(cardDetails));
+        } catch (Exception e) {
+            log.error("Tokenization failed for card ending in {}",
+                    cardDetails.getCardNumber().substring(cardDetails.getCardNumber().length() - 4), e);
+            throw new TokenizationException(
+                    "Tokenization failed for card ending in "
+                            + cardDetails.getCardNumber().substring(cardDetails.getCardNumber().length() - 4), e);
+        }
     }
 
     private TokenizeResponse doTokenize(CardDetails cardDetails) {

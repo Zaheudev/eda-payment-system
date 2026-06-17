@@ -12,12 +12,11 @@ class RiskLevelTest {
     @CsvSource({
             "0.0, LOW",
             "0.1, LOW",
-            "0.2, LOW",
-            "0.25, MEDIUM",
+            "0.25, LOW",
             "0.4, MEDIUM",
-            "0.45, HIGH",
-            "0.6, HIGH",
-            "0.7, CRITICAL",
+            "0.45, MEDIUM",
+            "0.6, MEDIUM",
+            "0.7, HIGH",
             "0.9, CRITICAL",
             "1.0, CRITICAL"
     })
@@ -34,16 +33,17 @@ class RiskLevelTest {
     @Test
     void isWithinRangeShouldDetectBoundaries() {
         assertThat(RiskLevel.LOW.isWithinRange(0.0)).isTrue();
-        assertThat(RiskLevel.LOW.isWithinRange(0.2)).isTrue();
-        assertThat(RiskLevel.LOW.isWithinRange(0.21)).isFalse();
+        assertThat(RiskLevel.LOW.isWithinRange(0.3)).isTrue();
+        assertThat(RiskLevel.LOW.isWithinRange(0.31)).isFalse();
 
-        assertThat(RiskLevel.MEDIUM.isWithinRange(0.2)).isTrue();
-        assertThat(RiskLevel.MEDIUM.isWithinRange(0.4)).isTrue();
+        assertThat(RiskLevel.MEDIUM.isWithinRange(0.3)).isTrue();
+        assertThat(RiskLevel.MEDIUM.isWithinRange(0.6)).isTrue();
+        assertThat(RiskLevel.MEDIUM.isWithinRange(0.61)).isFalse();
 
-        assertThat(RiskLevel.HIGH.isWithinRange(0.4)).isTrue();
         assertThat(RiskLevel.HIGH.isWithinRange(0.6)).isTrue();
+        assertThat(RiskLevel.HIGH.isWithinRange(0.8)).isTrue();
 
-        assertThat(RiskLevel.CRITICAL.isWithinRange(0.6)).isTrue();
+        assertThat(RiskLevel.CRITICAL.isWithinRange(0.8)).isTrue();
         assertThat(RiskLevel.CRITICAL.isWithinRange(1.0)).isTrue();
     }
 }

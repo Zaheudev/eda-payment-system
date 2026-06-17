@@ -1,6 +1,6 @@
 package com.zaheudev.routing.config;
 
-import com.zaheudev.routing.entity.RoutingCost;
+import com.zaheudev.routing.entity.RoutingCostEntity;
 import com.zaheudev.routing.repository.RoutingCostRepository;
 import com.zaheudev.shared.avro.PaymentMethodEnum;
 import jakarta.annotation.PostConstruct;
@@ -48,8 +48,8 @@ public class RoutingCostInitializer {
         log.info("Routing cost table seeded with {} rows", repository.count());
     }
 
-    private static RoutingCost rc(Long id, PaymentMethodEnum method, double fixed, double pct, double authRate, boolean token) {
-        RoutingCost c = new RoutingCost();
+    private static RoutingCostEntity rc(Long id, PaymentMethodEnum method, double fixed, double pct, double authRate, boolean token) {
+        RoutingCostEntity c = new RoutingCostEntity();
         c.setId(id);
         c.setPaymentMethod(method);
         c.setFixedFee(BigDecimal.valueOf(fixed));

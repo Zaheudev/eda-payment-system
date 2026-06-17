@@ -6,11 +6,13 @@ import com.zaheudev.integration.metrics.ReportWriter;
 import com.zaheudev.integration.risk.DeterministicRiskService;
 import org.junit.jupiter.api.*;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class D_LooseCouplingIT extends BaseIT {
@@ -19,7 +21,7 @@ public class D_LooseCouplingIT extends BaseIT {
     static void tearDown() { stopSystem(); }
 
     private static final String SCENARIO = "D - Loose Coupling (Emulator Down)";
-    private static final List<String> paymentIds = new CopyOnWriteArrayList<>();
+    private final List<String> paymentIds = new ArrayList<>();
 
     @Test
     @Order(1)
@@ -46,27 +48,32 @@ public class D_LooseCouplingIT extends BaseIT {
         assertThat(services.isEmulatorAlive()).isTrue();
         m.addNote("Emulator started; backlog will drain from Kafka");
 
-        log.info("Waiting for emulator to process backlog...");
-        sleep(15000);
+        log.info("Waiting for emulator to process backlog ({} payments)...", paymentIds.size());
+        await("all payments AUTHORIZED after emulator recovery")
+                .atMost(Duration.ofSeconds(60))
+                .pollInterval(Duration.ofSeconds(2))
+                .untilAsserted(() -> {
+                    long authorized = 0;
+                    for (var pid : paymentIds) {
+                        try {
+                            var resp = getJson("/api/v1/payments/" + pid);
+                            String status = A_HappyPathLifecycleIT.extractField(resp.body(), "paymentStatus");
+                            if ("AUTHORIZED".equals(status)) authorized++;
+                        } catch (Exception ignored) {}
+                    }
+                    assertThat(authorized).isEqualTo(paymentIds.size());
+                });
 
-        long authorized = 0;
         var end = Instant.now();
         for (var pid : paymentIds) {
-            try {
-                var resp = getJson("/api/v1/payments/" + pid);
-                String status = A_HappyPathLifecycleIT.extractField(resp.body(), "paymentStatus");
-                if ("AUTHORIZED".equals(status)) authorized++;
-                eventRecorder.latencyBetween(pid, "payment-requests", "authorization-completed")
-                        .ifPresent(m::addEndToEndLatency);
-            } catch (Exception ignored) {}
+            eventRecorder.latencyBetween(pid, "payment-requests", "authorization-completed")
+                    .ifPresent(m::addEndToEndLatency);
         }
 
         m.setTotalDurationMs(end.toEpochMilli() - start.toEpochMilli());
-        m.addNote("Authorized: " + authorized + " / " + paymentIds.size());
+        m.addNote("Authorized: " + paymentIds.size() + " / " + paymentIds.size());
         m.addNote("Key EDA property: gateway available even when downstream emulator is down");
         m.setStatus("PASSED");
-
-        assertThat(authorized).isEqualTo(paymentIds.size());
 
         new ReportWriter(metrics).write();
     }

@@ -1,7 +1,7 @@
 package com.zaheudev.routing.kafka.consumer;
 
 import com.zaheudev.routing.dto.RoutingResult;
-import com.zaheudev.routing.entity.RoutingDecision;
+import com.zaheudev.routing.entity.RoutingDecisionEntity;
 import com.zaheudev.routing.kafka.producer.RoutingEventProducer;
 import com.zaheudev.routing.repository.RoutingDecisionRepository;
 import com.zaheudev.routing.service.RoutingService;
@@ -46,15 +46,15 @@ public class RiskAssessedConsumer {
                 ack.acknowledge();
                 return;
             }
-            RoutingDecision routingDecision = RoutingDecision.builder()
+            RoutingDecisionEntity routingDecisionEntity = RoutingDecisionEntity.builder()
                     .paymentId(paymentId)
                     .selectedPaymentMethod(result.getSelectedPaymentMethod())
                     .calculatedFee(result.getCalculatedFee())
                     .useToken(result.getUseToken())
                     .availableNetworks(String.valueOf(availableNetworks))
                     .createdAt(LocalDateTime.now()).build();
-            routingDecisionRepository.save(routingDecision);
-            log.info("Routing decision saved in db: {}", routingDecision);
+            routingDecisionRepository.save(routingDecisionEntity);
+            log.info("Routing decision saved in db: {}", routingDecisionEntity);
 
             RoutedCompletedEvent routedCompletedEvent = RoutedCompletedEvent.newBuilder()
                     .setPaymentId(paymentId)

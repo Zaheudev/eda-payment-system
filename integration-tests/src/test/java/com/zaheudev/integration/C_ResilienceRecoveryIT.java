@@ -5,11 +5,13 @@ import com.zaheudev.integration.metrics.ReportWriter;
 import com.zaheudev.integration.risk.DeterministicRiskService;
 import org.junit.jupiter.api.*;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class C_ResilienceRecoveryIT extends BaseIT {
@@ -18,7 +20,7 @@ public class C_ResilienceRecoveryIT extends BaseIT {
     static void tearDown() { stopSystem(); }
 
     private static final String SCENARIO = "C - Resilience & Recovery";
-    private static final List<String> paymentIds = new CopyOnWriteArrayList<>();
+    private final List<String> paymentIds = new ArrayList<>();
 
     @Test
     @Order(1)
@@ -61,35 +63,41 @@ public class C_ResilienceRecoveryIT extends BaseIT {
         assertThat(services.isRoutingAlive()).isTrue();
         log.info("Routing service RESTARTED at {}", restartTime);
 
-        log.info("Waiting for backlog to drain...");
-        sleep(15000);
+        log.info("Waiting for backlog to drain ({} payments)...", paymentIds.size());
+        await("all payments AUTHORIZED after routing recovery")
+                .atMost(Duration.ofSeconds(60))
+                .pollInterval(Duration.ofSeconds(2))
+                .untilAsserted(() -> {
+                    long authorized = 0;
+                    for (var pid : paymentIds) {
+                        try {
+                            var resp = getJson("/api/v1/payments/" + pid);
+                            String status = A_HappyPathLifecycleIT.extractField(resp.body(), "paymentStatus");
+                            if ("AUTHORIZED".equals(status)) authorized++;
+                        } catch (Exception ignored) {}
+                    }
+                    assertThat(authorized).isEqualTo(paymentIds.size());
+                });
 
-        long authorized = 0;
         var recoveryEnd = Instant.now();
+        long recoveryMs = recoveryEnd.toEpochMilli() - restartTime.toEpochMilli();
+
         for (var pid : paymentIds) {
-            try {
-                var resp = getJson("/api/v1/payments/" + pid);
-                String status = A_HappyPathLifecycleIT.extractField(resp.body(), "paymentStatus");
-                if ("AUTHORIZED".equals(status)) authorized++;
-                eventRecorder.latencyBetween(pid, "payment-requests", "authorization-completed")
-                        .ifPresent(m::addEndToEndLatency);
-            } catch (Exception ignored) {}
+            eventRecorder.latencyBetween(pid, "payment-requests", "authorization-completed")
+                    .ifPresent(m::addEndToEndLatency);
         }
 
-        long recoveryMs = recoveryEnd.toEpochMilli() - restartTime.toEpochMilli();
         m.setRecoveryTimeMs(recoveryMs);
         m.incrementProcessed();
-        for (int i = 0; i < (paymentIds.size() - authorized); i++) m.incrementError();
         m.setTotalDurationMs(Instant.now().toEpochMilli() - suiteStart.toEpochMilli());
-        m.addNote("Routing killed for ~4s then restarted. Submitted: " + paymentIds.size()
-                + ", Authorized: " + authorized);
+        m.addNote("Routing killed for ~4s then restarted. Submitted: " + paymentIds.size());
         m.addNote("Recovery time (restart-to-all-authorized): " + recoveryMs + " ms");
         m.addNote("Key EDA property: producers and consumers are temporally decoupled via Kafka");
         m.setStatus("PASSED");
 
-        assertThat(authorized).isEqualTo(paymentIds.size());
-        log.info("Resilience test: {} submitted / {} authorized. Recovery: {} ms. ZERO LOSS.",
-                paymentIds.size(), authorized, recoveryMs);
+        assertThat(true).isTrue(); // assertion already satisfied in the await block
+        log.info("Resilience test: {} submitted / all authorized. Recovery: {} ms. ZERO LOSS.",
+                paymentIds.size(), recoveryMs);
 
         new ReportWriter(metrics).write();
     }

@@ -13,7 +13,6 @@ import org.springframework.core.env.MapPropertySource;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class ServiceManager {
 
@@ -104,7 +103,7 @@ public class ServiceManager {
 
     public void startRouting() {
         log.info("Restarting routing context...");
-        routingCtx = boot(RoutingServiceApplication.class, svcProps("routing-group-it-" + UUID.randomUUID()));
+        routingCtx = boot(RoutingServiceApplication.class, svcProps("routing-group-it"));
     }
 
     public void stopEmulator() {
@@ -114,7 +113,7 @@ public class ServiceManager {
 
     public void startEmulator() {
         log.info("Restarting emulator context...");
-        Map<String, Object> emulatorProps = svcProps("emulator-group-it-" + UUID.randomUUID());
+        Map<String, Object> emulatorProps = svcProps("emulator-group-it");
         emulatorProps.put("cne.latency.min-ms", "10");
         emulatorProps.put("cne.latency.max-ms", "100");
         emulatorProps.put("cne.authorization-failure-percent", "0");

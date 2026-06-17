@@ -31,7 +31,8 @@ public class CardTokenService {
         this.generator = generator;
     }
 
-    public TokenizeResponse tokenize(TokenizeRequest cardDetails) throws Exception {
+    public TokenizeResponse tokenize(TokenizeRequest cardDetails) throws Exception { // throws Exception kept for encryptPAN
+        validateCardInput(cardDetails);
         String tokenRef = "TKN-" + UUID.randomUUID().toString();
         String tokenValue = generator.generatePAN(16);
         String encryptedPan = generator.encryptPAN(cardDetails.getCardNumber().toString(),getSecretKey());
@@ -68,6 +69,19 @@ public class CardTokenService {
                 .status(tokenEntity.getStatus())
                 .build();
 
+    }
+
+    public void validateCardInput(TokenizeRequest cardDetails) {
+        if (cardDetails.getCardNumber() == null) {
+            throw new IllegalArgumentException("Card number is required");
+        }
+        int len = cardDetails.getCardNumber().length();
+        if (len != 15 && len != 16) {
+            throw new IllegalArgumentException("Card number must be 15 or 16 digits");
+        }
+        if (cardDetails.getCvv() == null || (cardDetails.getCvv().length() != 3 && cardDetails.getCvv().length() != 4)) {
+            throw new IllegalArgumentException("CVV must be 3 or 4 digits");
+        }
     }
 
     public DetokenizeResponse detokenize(String tokenRef) throws Exception{
