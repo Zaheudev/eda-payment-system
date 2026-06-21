@@ -2,6 +2,8 @@ package com.zaheudev.vaadin.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
+
 public record PaymentResponse(
         String paymentId,
         String paymentStatus,
@@ -10,6 +12,7 @@ public record PaymentResponse(
         String processorTransactionId,
         String captureId,
         @JsonProperty("amount") Amount amount,
+        @JsonProperty("refundedAmount") BigDecimal refundedAmount,
         String createdAt,
         String message
 ) {

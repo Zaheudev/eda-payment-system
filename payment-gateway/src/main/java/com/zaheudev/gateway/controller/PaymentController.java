@@ -4,8 +4,6 @@ import com.zaheudev.gateway.dto.CreatePaymentRequest;
 import com.zaheudev.gateway.dto.PaymentResponse;
 import com.zaheudev.gateway.dto.RefundRequest;
 import com.zaheudev.gateway.exception.PaymentFailedException;
-import com.zaheudev.gateway.model.Amount;
-import com.zaheudev.gateway.model.Payment;
 import com.zaheudev.gateway.service.PaymentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

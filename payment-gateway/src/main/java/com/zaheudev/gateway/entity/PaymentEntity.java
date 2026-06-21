@@ -59,6 +59,7 @@ public class PaymentEntity {
                         .amount(this.amount.multiply(BigDecimal.valueOf(100)).longValue())
                         .currency(this.currency)
                         .build())
+                .refundedAmount(this.refundedAmount)
                 .createdAt(this.createdAt)
                 .paymentStatus(this.status)
                 .message(this.errorMessage != null ? this.errorMessage : message)

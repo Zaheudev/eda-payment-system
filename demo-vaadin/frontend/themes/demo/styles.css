@@ -301,6 +301,14 @@ a {
     background: var(--surface-hover);
 }
 
+vaadin-button.btn-primary,
+vaadin-button.btn-secondary {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    font-weight: 500;
+}
+
 vaadin-button.btn-primary {
     background: var(--primary);
     color: #fff;
@@ -309,6 +317,7 @@ vaadin-button.btn-primary {
 vaadin-button.btn-secondary {
     background: var(--surface-hover);
     color: var(--text);
+    border-color: var(--border);
 }
 
 vaadin-grid {
@@ -324,6 +333,8 @@ vaadin-tabs {
 
 vaadin-tab {
     color: var(--text-muted);
+    padding: 8px 16px;
+    margin: 0 2px;
 }
 
 vaadin-tab[selected] {

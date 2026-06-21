@@ -6,6 +6,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,15 @@ import java.util.Map;
 public class PaymentClient {
 
     private final RestClient restClient;
+    private final RestClient routingClient;
 
     public PaymentClient(@Value("${payment.gateway.url}") String gatewayUrl) {
         this.restClient = RestClient.builder()
                 .baseUrl(gatewayUrl)
+                .build();
+
+        this.routingClient = RestClient.builder().
+                baseUrl("http://localhost:8081")
                 .build();
     }
 
@@ -62,5 +68,12 @@ public class PaymentClient {
                 .uri("/api/v1/payments/{paymentId}", paymentId)
                 .retrieve()
                 .body(PaymentResponse.class);
+    }
+
+    public BigDecimal[] fetchFeeCosts(){
+        return routingClient.get()
+                .uri("/api/v1/routing-costs")
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
     }
 }

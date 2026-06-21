@@ -5,12 +5,14 @@ import com.zaheudev.vaadin.client.PaymentClient;
 import com.zaheudev.vaadin.component.LiveTracker;
 import com.zaheudev.vaadin.component.PaymentFormComponent;
 import com.zaheudev.vaadin.component.PaymentsGrid;
+import com.zaheudev.vaadin.component.TotalFees;
 import com.zaheudev.vaadin.service.EventBroadcaster;
 import com.zaheudev.vaadin.service.PaymentEventReplayService;
 
 public class PaymentsView extends VerticalLayout {
 
     private final LiveTracker tracker;
+    private final TotalFees totalFees;
 
     public PaymentsView(PaymentClient paymentClient, EventBroadcaster broadcaster,
                         PaymentEventReplayService replayService) {
@@ -21,6 +23,7 @@ public class PaymentsView extends VerticalLayout {
         PaymentFormComponent form = new PaymentFormComponent(paymentClient);
         PaymentsGrid grid = new PaymentsGrid(paymentClient);
         tracker = new LiveTracker(paymentClient, broadcaster, replayService);
+        totalFees = new TotalFees(paymentClient);
 
         form.setOnSuccess(grid::refresh);
         form.setOnTrack(tracker::startTracking);
@@ -38,7 +41,7 @@ public class PaymentsView extends VerticalLayout {
         topRow.getStyle().set("gap", "16px");
 
         topRow.add(form, grid);
-
+        topRow.add(totalFees);
         add(topRow, tracker);
     }
 

@@ -6,10 +6,12 @@ import com.zaheudev.shared.avro.PaymentMethodEnum;
 import com.zaheudev.shared.avro.RiskAssessedEvent;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.tree.Tree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 
 @Slf4j
@@ -17,6 +19,9 @@ import java.util.*;
 public class RoutingService {
     @Autowired
     private RoutingCostRepository routingCostRepository;
+
+    @Getter
+    private BigDecimal[] totalCosts = {BigDecimal.valueOf(0), BigDecimal.valueOf(0)};
 
     public RoutingResult calculateOptimalRouting(RiskAssessedEvent event){
         BigDecimal value = BigDecimal.valueOf(event.getAmount().getValue()).divide(BigDecimal.valueOf(100));
@@ -51,6 +56,7 @@ public class RoutingService {
             return RoutingResult.noValidOptions(value, event.getAmount().getCurrency().toString());
         }
         log.info("Optimal option: {}", options.first());
+        addTotalCost(options);
         return RoutingResult.builder()
                 .selectedPaymentMethod(options.first().getNetwork())
                 .calculatedFee(options.first().cost)
@@ -107,6 +113,16 @@ public class RoutingService {
         }
         return event.getCardRecord().getTokenValue() != null &&
                 event.getCardRecord().getTokenStatus().toString().equals("ACTIVE");
+    }
+
+    private void addTotalCost(TreeSet<OptimalNetwork> options){
+        Iterator iterator = options.iterator();
+        for(int i=0; i<2; i++){
+            if(iterator.hasNext()){
+                OptimalNetwork network = (OptimalNetwork) iterator.next();
+                totalCosts[i] = totalCosts[i].add(network.getCost());
+            }
+        }
     }
 
     @Data @AllArgsConstructor @NoArgsConstructor

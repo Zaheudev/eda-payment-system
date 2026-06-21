@@ -82,36 +82,6 @@ services:
     profiles:
       - chaos
 
-  # --- EDA Demo: BFF (Backend for Frontend) ---
-  demo-bff:
-    build: ./demo-bff
-    container_name: payment-demo-bff
-    ports:
-      - "8090:8090"
-    environment:
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      SPRING_KAFKA_PROPERTIES_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      TOXIPROXY_HOST: toxiproxy
-      TOXIPROXY_PORT: 8474
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - kafka
-      - schema-registry
-    profiles:
-      - demo
-
-  # --- EDA Demo: UI (React + Vite, production build served by nginx) ---
-  demo-ui:
-    build: ./demo-ui
-    container_name: payment-demo-ui
-    ports:
-      - "8091:80"
-    depends_on:
-      - demo-bff
-    profiles:
-      - demo
-
   # --- Chaos: Pumba kills risk-fraud randomly ---
   pumba-riskfraud:
     image: gaiaadm/pumba:latest

@@ -5,6 +5,7 @@ import com.zaheudev.gateway.model.Payment;
 import com.zaheudev.shared.dto.PaymentStatus;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data @NoArgsConstructor @AllArgsConstructor
@@ -17,6 +18,7 @@ public class PaymentResponse {
     private String processorTransactionId;
     private String captureId;
     private Amount amount;
+    private BigDecimal refundedAmount;
     private LocalDateTime createdAt;
     private String message;
 

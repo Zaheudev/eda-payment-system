@@ -46,6 +46,7 @@ public class LiveTracker extends VerticalLayout {
     private final TextField searchInput = new TextField();
     private final Button trackBtn = new Button("Track");
     private final Button stopBtn = new Button("Stop Tracking");
+    private final TextField refundAmountField = new TextField("Refund amount");
 
     private final Div trackerContent = new Div();
 
@@ -59,6 +60,9 @@ public class LiveTracker extends VerticalLayout {
     private PaymentResponse paymentData;
     private boolean showRaw;
     private String errorMessage;
+    private String actionError;
+    private long refundedAmountCents;
+    private String refundedCurrency;
 
     private final ScheduledExecutorService ticker = Executors.newSingleThreadScheduledExecutor(r -> {
         Thread t = new Thread(r, "tracker-tick");
@@ -90,6 +94,11 @@ public class LiveTracker extends VerticalLayout {
         stopBtn.addClassName("btn-secondary");
         stopBtn.getStyle().set("font-size", "12px");
         stopBtn.setVisible(false);
+
+        refundAmountField.setPlaceholder("0.00");
+        refundAmountField.setWidth("120px");
+        refundAmountField.getStyle().set("font-size", "12px");
+        refundAmountField.setVisible(false);
 
         trackBtn.addClickListener(e -> {
             String val = searchInput.getValue().trim();
@@ -157,6 +166,9 @@ public class LiveTracker extends VerticalLayout {
         paymentData = null;
         showRaw = false;
         errorMessage = null;
+        actionError = null;
+        refundedAmountCents = 0;
+        refundedCurrency = null;
         stopBtn.setVisible(false);
     }
 
@@ -168,6 +180,10 @@ public class LiveTracker extends VerticalLayout {
 
         String state = eventToState(event);
         if (state == null) return false;
+
+        if ("refund-completed".equals(event.getTopic())) {
+            captureRefundedAmount(asMap(event.getPayload()));
+        }
 
         reachedStates.add(state);
         timeline.add(new TimelineNode(state, event.getTimestamp(), shortSummary(event)));
@@ -253,6 +269,17 @@ public class LiveTracker extends VerticalLayout {
     private boolean bool(Map<String, Object> m, String key) {
         Object v = m.get(key);
         return v instanceof Boolean b ? b : false;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void captureRefundedAmount(Map<String, Object> p) {
+        Object ra = p.get("refundedAmount");
+        if (ra instanceof Map<?, ?> m) {
+            Object v = m.get("value");
+            Object c = m.get("currency");
+            if (v instanceof Number n) refundedAmountCents = n.longValue();
+            if (c != null) refundedCurrency = String.valueOf(c);
+        }
     }
 
     private int stateIndex(String state) {
@@ -406,9 +433,21 @@ public class LiveTracker extends VerticalLayout {
                 ? String.format("%.2f %s", amt.amount() / 100.0, amt.currency())
                 : "-";
 
+        String currency = amt != null ? amt.currency() : "";
+        String refundedAmountStr;
+        if (refundedAmountCents > 0) {
+            String refCurrency = refundedCurrency != null ? refundedCurrency : currency;
+            refundedAmountStr = String.format("%.2f %s", refundedAmountCents / 100.0, refCurrency);
+        } else if (paymentData.refundedAmount() != null && paymentData.refundedAmount().doubleValue() > 0) {
+            refundedAmountStr = String.format("%.2f %s", paymentData.refundedAmount().doubleValue(), currency);
+        } else {
+            refundedAmountStr = "-";
+        }
+
         String[][] rows = {
                 {"Payment ID", paymentData.paymentId()},
                 {"Amount", amountStr},
+                {"Refunded amount", refundedAmountStr},
                 {"Status", paymentData.paymentStatus()},
                 {"RRN", nvl(paymentData.rrn())},
                 {"Auth Code", nvl(paymentData.authCode())},
@@ -461,37 +500,121 @@ public class LiveTracker extends VerticalLayout {
         refundAct.setEnabled(canRefund);
         refundAct.addClickListener(e -> doRefund());
 
-        actions.add(captureAct, voidAct, refundAct);
+        double capturedUnits = paymentData != null && paymentData.amount() != null
+                ? paymentData.amount().amount() / 100.0 : 0;
+        refundAmountField.setLabel("Refund amount (" + (paymentData != null && paymentData.amount() != null
+                ? paymentData.amount().currency() : "") + ")");
+        String defaultVal = String.format("%.2f", capturedUnits);
+        if (refundAmountField.getValue() == null || refundAmountField.getValue().isBlank()) {
+            refundAmountField.setValue(defaultVal);
+        } else {
+            try {
+                double cur = Double.parseDouble(refundAmountField.getValue().trim());
+                if (cur > capturedUnits || cur <= 0) refundAmountField.setValue(defaultVal);
+            } catch (NumberFormatException ex) {
+                refundAmountField.setValue(defaultVal);
+            }
+        }
+        refundAmountField.setEnabled(canRefund);
+        refundAmountField.setVisible(canRefund);
+
+        actions.add(captureAct, voidAct, refundAmountField, refundAct);
+
+        if (actionError != null) {
+            Paragraph err = new Paragraph(actionError);
+            err.getStyle().set("color", "var(--danger)").set("font-size", "12px").set("margin-top", "8px");
+            actions.add(err);
+        }
         return actions;
     }
 
     private void doCapture() {
         if (paymentId == null) return;
+        actionError = null;
         try {
             paymentClient.capture(paymentId);
-        } catch (Exception ignored) {
+            refreshPaymentData();
+            scheduleStateRefresh();
+        } catch (Exception e) {
+            actionError = "Capture failed: " + rootMessage(e);
         }
+        renderTracker();
     }
 
     private void doVoid() {
         if (paymentId == null) return;
+        actionError = null;
         try {
             paymentClient.voidPayment(paymentId);
-        } catch (Exception ignored) {
+            refreshPaymentData();
+            scheduleStateRefresh();
+        } catch (Exception e) {
+            actionError = "Void failed: " + rootMessage(e);
         }
+        renderTracker();
     }
 
     private void doRefund() {
         if (paymentId == null) return;
+        actionError = null;
+        double amt;
         try {
-            double amtVal = paymentData != null && paymentData.amount() != null
-                    ? paymentData.amount().amount() / 100.0 : 0;
+            amt = Double.parseDouble(refundAmountField.getValue().trim());
+        } catch (Exception ex) {
+            actionError = "Enter a valid refund amount";
+            renderTracker();
+            return;
+        }
+        if (amt <= 0) {
+            actionError = "Enter a refund amount greater than 0";
+            renderTracker();
+            return;
+        }
+        double capturedUnits = paymentData != null && paymentData.amount() != null
+                ? paymentData.amount().amount() / 100.0 : 0;
+        if (amt > capturedUnits) {
+            actionError = "Refund amount exceeds captured amount (" + String.format("%.2f", capturedUnits) + ")";
+            renderTracker();
+            return;
+        }
+        try {
             Map<String, Object> req = new LinkedHashMap<>();
-            req.put("amount", (int) amtVal);
-            req.put("currency", "USD");
+            req.put("amount", amt);
+            req.put("currency", paymentData != null && paymentData.amount() != null
+                    ? paymentData.amount().currency() : "USD");
             paymentClient.refund(paymentId, req);
+            refreshPaymentData();
+            scheduleStateRefresh();
+        } catch (Exception e) {
+            actionError = "Refund failed: " + rootMessage(e);
+        }
+        renderTracker();
+    }
+
+    private void scheduleStateRefresh() {
+        String pid = this.paymentId;
+        long[] delays = { 600, 1800, 3500 };
+        for (long d : delays) {
+            ticker.schedule(() -> getUI().ifPresent(ui -> ui.access(() -> {
+                if (pid == null || !pid.equals(this.paymentId)) return;
+                refreshPaymentData();
+                renderTracker();
+            })), d, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    private void refreshPaymentData() {
+        try {
+            PaymentResponse data = paymentClient.fetchPayment(paymentId);
+            if (data != null) this.paymentData = data;
         } catch (Exception ignored) {
         }
+    }
+
+    private static String rootMessage(Exception e) {
+        Throwable c = e;
+        while (c.getCause() != null) c = c.getCause();
+        return c.getMessage();
     }
 
     private Div buildRawEvents() {
