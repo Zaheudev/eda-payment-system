@@ -16,7 +16,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
   private static final long serialVersionUID = -4672000304075743757L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PaymentRequestedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\",\"doc\":\"UUID-ul unic al tranzacției\"},{\"name\":\"amount\",\"type\":{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]},\"doc\":\"Amount object with currency and value\"},{\"name\":\"merchantRef\",\"type\":[\"null\",\"string\"],\"doc\":\"Merchant reference\",\"default\":null},{\"name\":\"cardRecord\",\"type\":{\"type\":\"record\",\"name\":\"CardRecord\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"tokenValue\",\"type\":[\"null\",\"string\"],\"doc\":\"This is the network token value\",\"default\":null},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"},{\"name\":\"primaryNetwork\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}],\"default\":null},{\"name\":\"cardType\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"tokenStatus\",\"type\":[\"null\",\"string\"],\"default\":null}]},\"doc\":\"This is the token for the card details\"},{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"Unix timestamp la momentul inițierii\"},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentStatus\",\"symbols\":[\"PENDING\",\"VALIDATED\",\"REJECTED\",\"COMPLETED\"]}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PaymentRequestedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"paymentId\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]}},{\"name\":\"merchantRef\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"cardRecord\",\"type\":{\"type\":\"record\",\"name\":\"CardRecord\",\"fields\":[{\"name\":\"tokenRef\",\"type\":\"string\",\"doc\":\"This is the token for the card details\"},{\"name\":\"tokenValue\",\"type\":[\"null\",\"string\"],\"doc\":\"This is the network token value\",\"default\":null},{\"name\":\"bin\",\"type\":\"string\",\"doc\":\"The first 6 digits of the card number\"},{\"name\":\"lastFour\",\"type\":\"string\"},{\"name\":\"primaryNetwork\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"PaymentMethodEnum\",\"symbols\":[\"VISA\",\"MASTERCARD\",\"AMEX\",\"DISCOVER\",\"ACCEL\",\"STAR\",\"NYCE\",\"PULSE\",\"MAESTRO\"]}],\"default\":null},{\"name\":\"cardType\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"tokenStatus\",\"type\":[\"null\",\"string\"],\"default\":null}]}},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentStatus\",\"symbols\":[\"PENDING\",\"VALIDATED\",\"REJECTED\",\"COMPLETED\"]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -72,15 +72,10 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
     return DECODER.decode(b);
   }
 
-  /** UUID-ul unic al tranzacției */
   private java.lang.CharSequence paymentId;
-  /** Amount object with currency and value */
   private com.zaheudev.shared.avro.Amount amount;
-  /** Merchant reference */
   private java.lang.CharSequence merchantRef;
-  /** This is the token for the card details */
   private com.zaheudev.shared.avro.CardRecord cardRecord;
-  /** Unix timestamp la momentul inițierii */
   private long timestamp;
   private com.zaheudev.shared.avro.PaymentStatus status;
 
@@ -93,11 +88,11 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * All-args constructor.
-   * @param paymentId UUID-ul unic al tranzacției
-   * @param amount Amount object with currency and value
-   * @param merchantRef Merchant reference
-   * @param cardRecord This is the token for the card details
-   * @param timestamp Unix timestamp la momentul inițierii
+   * @param paymentId The new value for paymentId
+   * @param amount The new value for amount
+   * @param merchantRef The new value for merchantRef
+   * @param cardRecord The new value for cardRecord
+   * @param timestamp The new value for timestamp
    * @param status The new value for status
    */
   public PaymentRequestedEvent(java.lang.CharSequence paymentId, com.zaheudev.shared.avro.Amount amount, java.lang.CharSequence merchantRef, com.zaheudev.shared.avro.CardRecord cardRecord, java.lang.Long timestamp, com.zaheudev.shared.avro.PaymentStatus status) {
@@ -146,7 +141,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * Gets the value of the 'paymentId' field.
-   * @return UUID-ul unic al tranzacției
+   * @return The value of the 'paymentId' field.
    */
   public java.lang.CharSequence getPaymentId() {
     return paymentId;
@@ -155,7 +150,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * Sets the value of the 'paymentId' field.
-   * UUID-ul unic al tranzacției
    * @param value the value to set.
    */
   public void setPaymentId(java.lang.CharSequence value) {
@@ -164,7 +158,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * Gets the value of the 'amount' field.
-   * @return Amount object with currency and value
+   * @return The value of the 'amount' field.
    */
   public com.zaheudev.shared.avro.Amount getAmount() {
     return amount;
@@ -173,7 +167,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * Sets the value of the 'amount' field.
-   * Amount object with currency and value
    * @param value the value to set.
    */
   public void setAmount(com.zaheudev.shared.avro.Amount value) {
@@ -182,7 +175,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * Gets the value of the 'merchantRef' field.
-   * @return Merchant reference
+   * @return The value of the 'merchantRef' field.
    */
   public java.lang.CharSequence getMerchantRef() {
     return merchantRef;
@@ -191,7 +184,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * Sets the value of the 'merchantRef' field.
-   * Merchant reference
    * @param value the value to set.
    */
   public void setMerchantRef(java.lang.CharSequence value) {
@@ -200,7 +192,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * Gets the value of the 'cardRecord' field.
-   * @return This is the token for the card details
+   * @return The value of the 'cardRecord' field.
    */
   public com.zaheudev.shared.avro.CardRecord getCardRecord() {
     return cardRecord;
@@ -209,7 +201,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * Sets the value of the 'cardRecord' field.
-   * This is the token for the card details
    * @param value the value to set.
    */
   public void setCardRecord(com.zaheudev.shared.avro.CardRecord value) {
@@ -218,7 +209,7 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * Gets the value of the 'timestamp' field.
-   * @return Unix timestamp la momentul inițierii
+   * @return The value of the 'timestamp' field.
    */
   public long getTimestamp() {
     return timestamp;
@@ -227,7 +218,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
   /**
    * Sets the value of the 'timestamp' field.
-   * Unix timestamp la momentul inițierii
    * @param value the value to set.
    */
   public void setTimestamp(long value) {
@@ -292,17 +282,12 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<PaymentRequestedEvent>
     implements org.apache.avro.data.RecordBuilder<PaymentRequestedEvent> {
 
-    /** UUID-ul unic al tranzacției */
     private java.lang.CharSequence paymentId;
-    /** Amount object with currency and value */
     private com.zaheudev.shared.avro.Amount amount;
     private com.zaheudev.shared.avro.Amount.Builder amountBuilder;
-    /** Merchant reference */
     private java.lang.CharSequence merchantRef;
-    /** This is the token for the card details */
     private com.zaheudev.shared.avro.CardRecord cardRecord;
     private com.zaheudev.shared.avro.CardRecord.Builder cardRecordBuilder;
-    /** Unix timestamp la momentul inițierii */
     private long timestamp;
     private com.zaheudev.shared.avro.PaymentStatus status;
 
@@ -385,7 +370,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Gets the value of the 'paymentId' field.
-      * UUID-ul unic al tranzacției
       * @return The value.
       */
     public java.lang.CharSequence getPaymentId() {
@@ -395,7 +379,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Sets the value of the 'paymentId' field.
-      * UUID-ul unic al tranzacției
       * @param value The value of 'paymentId'.
       * @return This builder.
       */
@@ -408,7 +391,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Checks whether the 'paymentId' field has been set.
-      * UUID-ul unic al tranzacției
       * @return True if the 'paymentId' field has been set, false otherwise.
       */
     public boolean hasPaymentId() {
@@ -418,7 +400,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Clears the value of the 'paymentId' field.
-      * UUID-ul unic al tranzacției
       * @return This builder.
       */
     public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearPaymentId() {
@@ -429,7 +410,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Gets the value of the 'amount' field.
-      * Amount object with currency and value
       * @return The value.
       */
     public com.zaheudev.shared.avro.Amount getAmount() {
@@ -439,7 +419,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Sets the value of the 'amount' field.
-      * Amount object with currency and value
       * @param value The value of 'amount'.
       * @return This builder.
       */
@@ -453,7 +432,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Checks whether the 'amount' field has been set.
-      * Amount object with currency and value
       * @return True if the 'amount' field has been set, false otherwise.
       */
     public boolean hasAmount() {
@@ -462,7 +440,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
      * Gets the Builder instance for the 'amount' field and creates one if it doesn't exist yet.
-     * Amount object with currency and value
      * @return This builder.
      */
     public com.zaheudev.shared.avro.Amount.Builder getAmountBuilder() {
@@ -478,7 +455,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
      * Sets the Builder instance for the 'amount' field
-     * Amount object with currency and value
      * @param value The builder instance that must be set.
      * @return This builder.
      */
@@ -491,7 +467,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
      * Checks whether the 'amount' field has an active Builder instance
-     * Amount object with currency and value
      * @return True if the 'amount' field has an active Builder instance
      */
     public boolean hasAmountBuilder() {
@@ -500,7 +475,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Clears the value of the 'amount' field.
-      * Amount object with currency and value
       * @return This builder.
       */
     public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearAmount() {
@@ -512,7 +486,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Gets the value of the 'merchantRef' field.
-      * Merchant reference
       * @return The value.
       */
     public java.lang.CharSequence getMerchantRef() {
@@ -522,7 +495,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Sets the value of the 'merchantRef' field.
-      * Merchant reference
       * @param value The value of 'merchantRef'.
       * @return This builder.
       */
@@ -535,7 +507,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Checks whether the 'merchantRef' field has been set.
-      * Merchant reference
       * @return True if the 'merchantRef' field has been set, false otherwise.
       */
     public boolean hasMerchantRef() {
@@ -545,7 +516,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Clears the value of the 'merchantRef' field.
-      * Merchant reference
       * @return This builder.
       */
     public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearMerchantRef() {
@@ -556,7 +526,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Gets the value of the 'cardRecord' field.
-      * This is the token for the card details
       * @return The value.
       */
     public com.zaheudev.shared.avro.CardRecord getCardRecord() {
@@ -566,7 +535,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Sets the value of the 'cardRecord' field.
-      * This is the token for the card details
       * @param value The value of 'cardRecord'.
       * @return This builder.
       */
@@ -580,7 +548,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Checks whether the 'cardRecord' field has been set.
-      * This is the token for the card details
       * @return True if the 'cardRecord' field has been set, false otherwise.
       */
     public boolean hasCardRecord() {
@@ -589,7 +556,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
      * Gets the Builder instance for the 'cardRecord' field and creates one if it doesn't exist yet.
-     * This is the token for the card details
      * @return This builder.
      */
     public com.zaheudev.shared.avro.CardRecord.Builder getCardRecordBuilder() {
@@ -605,7 +571,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
      * Sets the Builder instance for the 'cardRecord' field
-     * This is the token for the card details
      * @param value The builder instance that must be set.
      * @return This builder.
      */
@@ -618,7 +583,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
      * Checks whether the 'cardRecord' field has an active Builder instance
-     * This is the token for the card details
      * @return True if the 'cardRecord' field has an active Builder instance
      */
     public boolean hasCardRecordBuilder() {
@@ -627,7 +591,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Clears the value of the 'cardRecord' field.
-      * This is the token for the card details
       * @return This builder.
       */
     public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearCardRecord() {
@@ -639,7 +602,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Gets the value of the 'timestamp' field.
-      * Unix timestamp la momentul inițierii
       * @return The value.
       */
     public long getTimestamp() {
@@ -649,7 +611,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Sets the value of the 'timestamp' field.
-      * Unix timestamp la momentul inițierii
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
@@ -662,7 +623,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Checks whether the 'timestamp' field has been set.
-      * Unix timestamp la momentul inițierii
       * @return True if the 'timestamp' field has been set, false otherwise.
       */
     public boolean hasTimestamp() {
@@ -672,7 +632,6 @@ public class PaymentRequestedEvent extends org.apache.avro.specific.SpecificReco
 
     /**
       * Clears the value of the 'timestamp' field.
-      * Unix timestamp la momentul inițierii
       * @return This builder.
       */
     public com.zaheudev.shared.avro.PaymentRequestedEvent.Builder clearTimestamp() {

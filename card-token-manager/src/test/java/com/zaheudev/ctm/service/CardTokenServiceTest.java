@@ -102,9 +102,9 @@ class CardTokenServiceTest {
     }
 
     @Test
-    void tokenizeShouldSetDebitFor453Bin() throws Exception {
+    void tokenizeShouldSetDebitWhenBinEndsWithOne() throws Exception {
         TokenizeRequest request = TokenizeRequest.builder()
-                .cardNumber("4530001111111111").cvv("123")
+                .cardNumber("4000011111111111").cvv("123")
                 .expiryMonth("12").expiryYear("2027").cardHolderName("John Doe").build();
 
         TokenizeResponse response = cardTokenService.tokenize(request);
@@ -113,20 +113,9 @@ class CardTokenServiceTest {
     }
 
     @Test
-    void tokenizeShouldSetDebitFor520Bin() throws Exception {
+    void tokenizeShouldSetCreditWhenBinDoesNotEndWithOne() throws Exception {
         TokenizeRequest request = TokenizeRequest.builder()
-                .cardNumber("5200001111111111").cvv("123")
-                .expiryMonth("12").expiryYear("2027").cardHolderName("John Doe").build();
-
-        TokenizeResponse response = cardTokenService.tokenize(request);
-
-        assertThat(response.getCardType()).isEqualTo("DEBIT");
-    }
-
-    @Test
-    void tokenizeShouldSetCreditForOtherBins() throws Exception {
-        TokenizeRequest request = TokenizeRequest.builder()
-                .cardNumber("4111111111111111").cvv("123")
+                .cardNumber("4000021111111111").cvv("123")
                 .expiryMonth("12").expiryYear("2027").cardHolderName("John Doe").build();
 
         TokenizeResponse response = cardTokenService.tokenize(request);

@@ -137,11 +137,10 @@ The `card-token-manager` determines the card network and type automatically from
 
 ### Card Type (determined by BIN — first 6 digits)
 
-| Type | BIN prefix | Example card number |
-|------|-----------|---------------------|
-| DEBIT | `453xxx` | `4530001111111111` |
-| DEBIT | `520xxx` | `5200001111111111` |
-| CREDIT | anything else | `4111111111111111` |
+| Type | BIN prefix    | Example card number |
+|------|---------------|---------------------|
+| DEBIT | `xxx1`        | `4530012222222222`  |
+| CREDIT | anything else | `5555529999999999`  |
 
 > ⚠️ In a real system this would come from a BIN database. This is a simplified demo rule.
 

@@ -35,16 +35,17 @@ public class CardTokenService {
         String tokenRef = "TKN-" + UUID.randomUUID().toString();
         String tokenValue = generator.generatePAN(16);
         String encryptedPan = generator.encryptPAN(cardDetails.getCardNumber().toString(),getSecretKey());
+        String bin = cardDetails.getCardNumber().substring(0, 6);
         log.info("Encrypted PAN: {} with tokenRef: {}", encryptedPan, tokenRef);
 
         CardTokenEntity tokenEntity = CardTokenEntity.builder()
                 .tokenRef(tokenRef)
                 .tokenValue(tokenValue)
                 .encryptedPan(encryptedPan)
-                .bin(cardDetails.getCardNumber().substring(0, 6))
+                .bin(bin)
                 .lastFour(cardDetails.getCardNumber().substring(cardDetails.getCardNumber().length() - 4))
-                .cardNetwork(determinePrimaryNetwork(cardDetails.getCardNumber())) // This should be determined by the card number pattern
-                .cardType(determineCardType(cardDetails.getCardNumber())) // This should also be determined by the card number pattern
+                .cardNetwork(determinePrimaryNetwork(bin))
+                .cardType(determineCardType(bin))
                 .expiryMonth(cardDetails.getExpiryMonth())
                 .expiryYear(cardDetails.getExpiryYear())
                 .cardholderName(cardDetails.getCardHolderName())
@@ -124,24 +125,23 @@ public class CardTokenService {
         return entity.getStatus();
     }
 
-    private PaymentMethodEnum determinePrimaryNetwork(String number) {
-        if (number.startsWith("4")) {
+    private PaymentMethodEnum determinePrimaryNetwork(String bin) {
+        if (bin.startsWith("4")) {
             return PaymentMethodEnum.VISA;
-        } else if (number.matches("^5[1-5].*")) {
+        } else if (bin.matches("^5[1-5].*")) {
             return PaymentMethodEnum.MASTERCARD;
-        } else if (number.startsWith("34") || number.startsWith("37")) {
+        } else if (bin.startsWith("34") || bin.startsWith("37")) {
             return PaymentMethodEnum.AMEX;
-        } else if (number.startsWith("6")) {
+        } else if (bin.startsWith("6")) {
             return PaymentMethodEnum.DISCOVER;
         }
         return PaymentMethodEnum.VISA;
     }
 
-    private String determineCardType(String number) {
+    private String determineCardType(String bin) {
         // in reality, this would come from a BIN database, but i am still figuring it out
-        // for demo purposes: assume BINs 453xxx and 520xxx are debit
-
-        return number.startsWith("453") || number.startsWith("520") ? "DEBIT" : "CREDIT";
+        // for demo purposes: assume BIN xxx1 (if it ends with 1)
+        return bin.endsWith("1") ? "DEBIT" : "CREDIT";
     }
 
     private SecretKey getSecretKey(){

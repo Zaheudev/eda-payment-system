@@ -33,7 +33,7 @@ public class LiveTracker extends VerticalLayout {
             "CREATED", "RISK_ASSESSED", "ROUTING_COMPLETED", "AUTHORIZED",
             "CAPTURED", "VOID", "REFUNDED", "PARTIALLY_REFUNDED"
     );
-    private static final Set<String> TERMINAL = Set.of("REJECTED", "FAILED", "VOID", "REFUNDED", "PARTIALLY_REFUNDED");
+    private static final Set<String> TERMINAL = Set.of("REJECTED", "FAILED", "VOID", "REFUNDED");
     private static final List<String> ALL_NODES = List.of(
             "CREATED", "RISK_ASSESSED", "ROUTING_COMPLETED", "AUTHORIZED",
             "CAPTURED", "VOID", "REFUNDED", "PARTIALLY_REFUNDED", "REJECTED", "FAILED"
@@ -63,6 +63,8 @@ public class LiveTracker extends VerticalLayout {
     private String actionError;
     private long refundedAmountCents;
     private String refundedCurrency;
+    private final java.util.concurrent.atomic.AtomicBoolean refreshPending =
+            new java.util.concurrent.atomic.AtomicBoolean(false);
 
     private final ScheduledExecutorService ticker = Executors.newSingleThreadScheduledExecutor(r -> {
         Thread t = new Thread(r, "tracker-tick");
@@ -214,6 +216,7 @@ public class LiveTracker extends VerticalLayout {
             }
             renderTracker();
         }));
+        scheduleStateRefresh();
     }
 
     private String eventToState(EventEnvelope e) {
@@ -350,9 +353,11 @@ public class LiveTracker extends VerticalLayout {
         left.add(pidSpan);
 
         if (paymentData != null) {
-            Span statusBadge = new Span(paymentData.paymentStatus());
+            String status = !timeline.isEmpty() ? timeline.get(timeline.size() - 1).state()
+                    : paymentData.paymentStatus();
+            Span statusBadge = new Span(status);
             statusBadge.addClassName("badge");
-            statusBadge.addClassName(statusClass(paymentData.paymentStatus()));
+            statusBadge.addClassName(statusClass(status));
             left.add(statusBadge);
         }
 
@@ -434,15 +439,13 @@ public class LiveTracker extends VerticalLayout {
                 : "-";
 
         String currency = amt != null ? amt.currency() : "";
-        String refundedAmountStr;
-        if (refundedAmountCents > 0) {
-            String refCurrency = refundedCurrency != null ? refundedCurrency : currency;
-            refundedAmountStr = String.format("%.2f %s", refundedAmountCents / 100.0, refCurrency);
-        } else if (paymentData.refundedAmount() != null && paymentData.refundedAmount().doubleValue() > 0) {
-            refundedAmountStr = String.format("%.2f %s", paymentData.refundedAmount().doubleValue(), currency);
-        } else {
-            refundedAmountStr = "-";
-        }
+        long eventCents = refundedAmountCents;
+        long snapCents = paymentData.refundedAmount() != null
+                ? paymentData.refundedAmount().multiply(java.math.BigDecimal.valueOf(100)).longValue() : 0;
+        long refundedCents = Math.max(eventCents, snapCents);
+        String refundedAmountStr = refundedCents > 0
+                ? String.format("%.2f %s", refundedCents / 100.0, currency)
+                : "-";
 
         String[][] rows = {
                 {"Payment ID", paymentData.paymentId()},
@@ -592,6 +595,7 @@ public class LiveTracker extends VerticalLayout {
     }
 
     private void scheduleStateRefresh() {
+        if (!refreshPending.compareAndSet(false, true)) return;
         String pid = this.paymentId;
         long[] delays = { 600, 1800, 3500 };
         for (long d : delays) {
@@ -601,6 +605,7 @@ public class LiveTracker extends VerticalLayout {
                 renderTracker();
             })), d, TimeUnit.MILLISECONDS);
         }
+        ticker.schedule(() -> refreshPending.set(false), 3600, TimeUnit.MILLISECONDS);
     }
 
     private void refreshPaymentData() {

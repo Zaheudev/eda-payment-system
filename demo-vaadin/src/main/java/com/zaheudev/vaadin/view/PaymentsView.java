@@ -41,8 +41,7 @@ public class PaymentsView extends VerticalLayout {
         topRow.getStyle().set("gap", "16px");
 
         topRow.add(form, grid);
-        topRow.add(totalFees);
-        add(topRow, tracker);
+        add(topRow, totalFees, tracker);
     }
 
     public void startTracking(String paymentId) {
