@@ -146,7 +146,7 @@ public class EmulatedCardProcessor{
                     .setPaymentId(paymentId)
                     .setRefundId(UUID.randomUUID().toString().substring(TRANSACTION_ID_LENGTH))
                     .setErrorMessage("Refund failed due to issuer error. Please try again later.")
-                    .setTimeStamp(System.currentTimeMillis())
+                    .setTimestamp(System.currentTimeMillis())
                     .build();
         }
 
@@ -159,9 +159,7 @@ public class EmulatedCardProcessor{
                         .setValue(refundAmountTotal.multiply(BigDecimal.valueOf(100)).longValue())
                         .setCurrency(currency)
                         .build())
-                .setCreatedAt(LocalDate.now().toString())
-                .setUpdatedAt(LocalDate.now().toString())
-                .setTimeStamp(System.currentTimeMillis())
+                .setTimestamp(System.currentTimeMillis())
                 .setRefundRrn(generateRRN())
                 .setRefundAuthCode(String.format("%06d", RANDOM.nextInt(1000000)))
                 .build();
@@ -178,9 +176,7 @@ public class EmulatedCardProcessor{
                     .setErrorMessage("Only authorized transactions can be voided")
                     .setPaymentId(paymentId)
                     .setProcessortransactionId(entity.getProcessorTransactionId())
-                    .setTimeStamp(System.currentTimeMillis())
-                    .setCreatedAt(LocalDate.now().toString())
-                    .setUpdatedAt(LocalDate.now().toString())
+                    .setTimestamp(System.currentTimeMillis())
                     .build();
         }
         boolean accepted = RANDOM.nextInt(100) > 5; // 5% chance of failure
@@ -191,9 +187,7 @@ public class EmulatedCardProcessor{
                 .setStatus(accepted ? "VOID" : "FAILED")
                 .setPaymentId(paymentId)
                 .setProcessortransactionId(entity.getProcessorTransactionId())
-                .setTimeStamp(System.currentTimeMillis())
-                .setCreatedAt(LocalDate.now().toString())
-                .setUpdatedAt(LocalDate.now().toString())
+                .setTimestamp(System.currentTimeMillis())
                 .build();
     }
 

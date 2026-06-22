@@ -49,17 +49,7 @@
       "default": null
     },
     {
-      "name": "createdAt",
-      "type": ["null","string"],
-      "default": null
-    },
-    {
-      "name": "updatedAt",
-      "type": ["null","string"],
-      "default": null
-    },
-    {
-      "name": "timeStamp",
+      "name": "timestamp",
       "type": ["null","long"],
       "default": null
     }

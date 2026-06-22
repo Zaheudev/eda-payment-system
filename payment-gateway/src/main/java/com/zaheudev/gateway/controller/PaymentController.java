@@ -4,7 +4,7 @@ import com.zaheudev.gateway.dto.CreatePaymentRequest;
 import com.zaheudev.gateway.dto.PaymentResponse;
 import com.zaheudev.gateway.dto.RefundRequest;
 import com.zaheudev.gateway.exception.PaymentFailedException;
-import com.zaheudev.gateway.service.PaymentServiceImpl;
+import com.zaheudev.gateway.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 public class PaymentController {
     @Autowired
-    PaymentServiceImpl paymentService;
+    PaymentService paymentService;
 
         @PostMapping("/api/v1/payments")
     public ResponseEntity<PaymentResponse> createPayment(@RequestBody CreatePaymentRequest request){

@@ -3,39 +3,12 @@
   "name": "PaymentRequestedEvent",
   "namespace": "com.zaheudev.shared.avro",
   "fields": [
-    {
-      "name": "paymentId",
-      "type": "string",
-      "doc": "UUID-ul unic al tranzacției"
-    },
-    {
-      "name": "amount",
-      "type": "com.zaheudev.shared.avro.Amount",
-      "doc": "Amount object with currency and value"
-    },
-    {
-      "name": "merchantRef",
-      "type": ["null","string"],
-      "default": null,
-      "doc": "Merchant reference"
-    },
-    {
-      "name": "cardRecord",
-      "type": "com.zaheudev.shared.avro.CardRecord",
-      "doc": "This is the token for the card details"
-    },
-    {
-      "name": "timestamp",
-      "type": "long",
-      "doc": "Unix timestamp la momentul inițierii"
-    },
-    {
-      "name": "status",
-      "type": {
-        "type": "enum",
-        "name": "PaymentStatus",
-        "symbols": ["PENDING", "VALIDATED", "REJECTED", "COMPLETED"]
-      }
-    }
+    {"name": "paymentId","type": "string"},
+    {"name": "amount","type": "com.zaheudev.shared.avro.Amount"},
+    {"name": "merchantRef", "type": ["null","string"], "default": null},
+    {"name": "cardRecord", "type": "com.zaheudev.shared.avro.CardRecord" },
+    {"name": "timestamp", "type": "long"},
+    {"name": "status", "type": {"type": "enum", "name": "PaymentStatus",
+      "symbols": ["PENDING", "VALIDATED", "REJECTED", "COMPLETED"]}}
   ]
 }

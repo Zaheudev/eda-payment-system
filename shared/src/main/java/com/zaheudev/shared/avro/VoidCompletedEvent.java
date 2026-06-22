@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6888972442866041170L;
+  private static final long serialVersionUID = 6603253089066092435L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"VoidCompletedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"success\",\"type\":[\"null\",\"boolean\"],\"default\":false},{\"name\":\"status\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"paymentId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"processortransactionId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"errorMessage\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"createdAt\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"timeStamp\",\"type\":[\"null\",\"long\"],\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"VoidCompletedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"success\",\"type\":[\"null\",\"boolean\"],\"default\":false},{\"name\":\"status\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"paymentId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"processortransactionId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"errorMessage\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"timestamp\",\"type\":[\"null\",\"long\"],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -77,9 +77,7 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
   private java.lang.CharSequence paymentId;
   private java.lang.CharSequence processortransactionId;
   private java.lang.CharSequence errorMessage;
-  private java.lang.CharSequence createdAt;
-  private java.lang.CharSequence updatedAt;
-  private java.lang.Long timeStamp;
+  private java.lang.Long timestamp;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -95,19 +93,15 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
    * @param paymentId The new value for paymentId
    * @param processortransactionId The new value for processortransactionId
    * @param errorMessage The new value for errorMessage
-   * @param createdAt The new value for createdAt
-   * @param updatedAt The new value for updatedAt
-   * @param timeStamp The new value for timeStamp
+   * @param timestamp The new value for timestamp
    */
-  public VoidCompletedEvent(java.lang.Boolean success, java.lang.CharSequence status, java.lang.CharSequence paymentId, java.lang.CharSequence processortransactionId, java.lang.CharSequence errorMessage, java.lang.CharSequence createdAt, java.lang.CharSequence updatedAt, java.lang.Long timeStamp) {
+  public VoidCompletedEvent(java.lang.Boolean success, java.lang.CharSequence status, java.lang.CharSequence paymentId, java.lang.CharSequence processortransactionId, java.lang.CharSequence errorMessage, java.lang.Long timestamp) {
     this.success = success;
     this.status = status;
     this.paymentId = paymentId;
     this.processortransactionId = processortransactionId;
     this.errorMessage = errorMessage;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.timeStamp = timeStamp;
+    this.timestamp = timestamp;
   }
 
   @Override
@@ -125,9 +119,7 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
     case 2: return paymentId;
     case 3: return processortransactionId;
     case 4: return errorMessage;
-    case 5: return createdAt;
-    case 6: return updatedAt;
-    case 7: return timeStamp;
+    case 5: return timestamp;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -142,9 +134,7 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
     case 2: paymentId = (java.lang.CharSequence)value$; break;
     case 3: processortransactionId = (java.lang.CharSequence)value$; break;
     case 4: errorMessage = (java.lang.CharSequence)value$; break;
-    case 5: createdAt = (java.lang.CharSequence)value$; break;
-    case 6: updatedAt = (java.lang.CharSequence)value$; break;
-    case 7: timeStamp = (java.lang.Long)value$; break;
+    case 5: timestamp = (java.lang.Long)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -235,54 +225,20 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
   }
 
   /**
-   * Gets the value of the 'createdAt' field.
-   * @return The value of the 'createdAt' field.
+   * Gets the value of the 'timestamp' field.
+   * @return The value of the 'timestamp' field.
    */
-  public java.lang.CharSequence getCreatedAt() {
-    return createdAt;
+  public java.lang.Long getTimestamp() {
+    return timestamp;
   }
 
 
   /**
-   * Sets the value of the 'createdAt' field.
+   * Sets the value of the 'timestamp' field.
    * @param value the value to set.
    */
-  public void setCreatedAt(java.lang.CharSequence value) {
-    this.createdAt = value;
-  }
-
-  /**
-   * Gets the value of the 'updatedAt' field.
-   * @return The value of the 'updatedAt' field.
-   */
-  public java.lang.CharSequence getUpdatedAt() {
-    return updatedAt;
-  }
-
-
-  /**
-   * Sets the value of the 'updatedAt' field.
-   * @param value the value to set.
-   */
-  public void setUpdatedAt(java.lang.CharSequence value) {
-    this.updatedAt = value;
-  }
-
-  /**
-   * Gets the value of the 'timeStamp' field.
-   * @return The value of the 'timeStamp' field.
-   */
-  public java.lang.Long getTimeStamp() {
-    return timeStamp;
-  }
-
-
-  /**
-   * Sets the value of the 'timeStamp' field.
-   * @param value the value to set.
-   */
-  public void setTimeStamp(java.lang.Long value) {
-    this.timeStamp = value;
+  public void setTimestamp(java.lang.Long value) {
+    this.timestamp = value;
   }
 
   /**
@@ -331,9 +287,7 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
     private java.lang.CharSequence paymentId;
     private java.lang.CharSequence processortransactionId;
     private java.lang.CharSequence errorMessage;
-    private java.lang.CharSequence createdAt;
-    private java.lang.CharSequence updatedAt;
-    private java.lang.Long timeStamp;
+    private java.lang.Long timestamp;
 
     /** Creates a new Builder */
     private Builder() {
@@ -366,17 +320,9 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
         this.errorMessage = data().deepCopy(fields()[4].schema(), other.errorMessage);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.createdAt)) {
-        this.createdAt = data().deepCopy(fields()[5].schema(), other.createdAt);
+      if (isValidValue(fields()[5], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[5].schema(), other.timestamp);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
-      }
-      if (isValidValue(fields()[6], other.updatedAt)) {
-        this.updatedAt = data().deepCopy(fields()[6].schema(), other.updatedAt);
-        fieldSetFlags()[6] = other.fieldSetFlags()[6];
-      }
-      if (isValidValue(fields()[7], other.timeStamp)) {
-        this.timeStamp = data().deepCopy(fields()[7].schema(), other.timeStamp);
-        fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
     }
 
@@ -406,17 +352,9 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
         this.errorMessage = data().deepCopy(fields()[4].schema(), other.errorMessage);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.createdAt)) {
-        this.createdAt = data().deepCopy(fields()[5].schema(), other.createdAt);
+      if (isValidValue(fields()[5], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[5].schema(), other.timestamp);
         fieldSetFlags()[5] = true;
-      }
-      if (isValidValue(fields()[6], other.updatedAt)) {
-        this.updatedAt = data().deepCopy(fields()[6].schema(), other.updatedAt);
-        fieldSetFlags()[6] = true;
-      }
-      if (isValidValue(fields()[7], other.timeStamp)) {
-        this.timeStamp = data().deepCopy(fields()[7].schema(), other.timeStamp);
-        fieldSetFlags()[7] = true;
       }
     }
 
@@ -621,122 +559,42 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
     }
 
     /**
-      * Gets the value of the 'createdAt' field.
+      * Gets the value of the 'timestamp' field.
       * @return The value.
       */
-    public java.lang.CharSequence getCreatedAt() {
-      return createdAt;
+    public java.lang.Long getTimestamp() {
+      return timestamp;
     }
 
 
     /**
-      * Sets the value of the 'createdAt' field.
-      * @param value The value of 'createdAt'.
+      * Sets the value of the 'timestamp' field.
+      * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.VoidCompletedEvent.Builder setCreatedAt(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.VoidCompletedEvent.Builder setTimestamp(java.lang.Long value) {
       validate(fields()[5], value);
-      this.createdAt = value;
+      this.timestamp = value;
       fieldSetFlags()[5] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'createdAt' field has been set.
-      * @return True if the 'createdAt' field has been set, false otherwise.
+      * Checks whether the 'timestamp' field has been set.
+      * @return True if the 'timestamp' field has been set, false otherwise.
       */
-    public boolean hasCreatedAt() {
+    public boolean hasTimestamp() {
       return fieldSetFlags()[5];
     }
 
 
     /**
-      * Clears the value of the 'createdAt' field.
+      * Clears the value of the 'timestamp' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.VoidCompletedEvent.Builder clearCreatedAt() {
-      createdAt = null;
+    public com.zaheudev.shared.avro.VoidCompletedEvent.Builder clearTimestamp() {
+      timestamp = null;
       fieldSetFlags()[5] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'updatedAt' field.
-      * @return The value.
-      */
-    public java.lang.CharSequence getUpdatedAt() {
-      return updatedAt;
-    }
-
-
-    /**
-      * Sets the value of the 'updatedAt' field.
-      * @param value The value of 'updatedAt'.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.VoidCompletedEvent.Builder setUpdatedAt(java.lang.CharSequence value) {
-      validate(fields()[6], value);
-      this.updatedAt = value;
-      fieldSetFlags()[6] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'updatedAt' field has been set.
-      * @return True if the 'updatedAt' field has been set, false otherwise.
-      */
-    public boolean hasUpdatedAt() {
-      return fieldSetFlags()[6];
-    }
-
-
-    /**
-      * Clears the value of the 'updatedAt' field.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.VoidCompletedEvent.Builder clearUpdatedAt() {
-      updatedAt = null;
-      fieldSetFlags()[6] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'timeStamp' field.
-      * @return The value.
-      */
-    public java.lang.Long getTimeStamp() {
-      return timeStamp;
-    }
-
-
-    /**
-      * Sets the value of the 'timeStamp' field.
-      * @param value The value of 'timeStamp'.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.VoidCompletedEvent.Builder setTimeStamp(java.lang.Long value) {
-      validate(fields()[7], value);
-      this.timeStamp = value;
-      fieldSetFlags()[7] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'timeStamp' field has been set.
-      * @return True if the 'timeStamp' field has been set, false otherwise.
-      */
-    public boolean hasTimeStamp() {
-      return fieldSetFlags()[7];
-    }
-
-
-    /**
-      * Clears the value of the 'timeStamp' field.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.VoidCompletedEvent.Builder clearTimeStamp() {
-      timeStamp = null;
-      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -750,9 +608,7 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
         record.paymentId = fieldSetFlags()[2] ? this.paymentId : (java.lang.CharSequence) defaultValue(fields()[2]);
         record.processortransactionId = fieldSetFlags()[3] ? this.processortransactionId : (java.lang.CharSequence) defaultValue(fields()[3]);
         record.errorMessage = fieldSetFlags()[4] ? this.errorMessage : (java.lang.CharSequence) defaultValue(fields()[4]);
-        record.createdAt = fieldSetFlags()[5] ? this.createdAt : (java.lang.CharSequence) defaultValue(fields()[5]);
-        record.updatedAt = fieldSetFlags()[6] ? this.updatedAt : (java.lang.CharSequence) defaultValue(fields()[6]);
-        record.timeStamp = fieldSetFlags()[7] ? this.timeStamp : (java.lang.Long) defaultValue(fields()[7]);
+        record.timestamp = fieldSetFlags()[5] ? this.timestamp : (java.lang.Long) defaultValue(fields()[5]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -825,28 +681,12 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
       out.writeString(this.errorMessage);
     }
 
-    if (this.createdAt == null) {
+    if (this.timestamp == null) {
       out.writeIndex(0);
       out.writeNull();
     } else {
       out.writeIndex(1);
-      out.writeString(this.createdAt);
-    }
-
-    if (this.updatedAt == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.updatedAt);
-    }
-
-    if (this.timeStamp == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.timeStamp);
+      out.writeLong(this.timestamp);
     }
 
   }
@@ -893,27 +733,13 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
 
       if (in.readIndex() != 1) {
         in.readNull();
-        this.createdAt = null;
+        this.timestamp = null;
       } else {
-        this.createdAt = in.readString(this.createdAt instanceof Utf8 ? (Utf8)this.createdAt : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.updatedAt = null;
-      } else {
-        this.updatedAt = in.readString(this.updatedAt instanceof Utf8 ? (Utf8)this.updatedAt : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.timeStamp = null;
-      } else {
-        this.timeStamp = in.readLong();
+        this.timestamp = in.readLong();
       }
 
     } else {
-      for (int i = 0; i < 8; i++) {
+      for (int i = 0; i < 6; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           if (in.readIndex() != 1) {
@@ -963,27 +789,9 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
         case 5:
           if (in.readIndex() != 1) {
             in.readNull();
-            this.createdAt = null;
+            this.timestamp = null;
           } else {
-            this.createdAt = in.readString(this.createdAt instanceof Utf8 ? (Utf8)this.createdAt : null);
-          }
-          break;
-
-        case 6:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.updatedAt = null;
-          } else {
-            this.updatedAt = in.readString(this.updatedAt instanceof Utf8 ? (Utf8)this.updatedAt : null);
-          }
-          break;
-
-        case 7:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.timeStamp = null;
-          } else {
-            this.timeStamp = in.readLong();
+            this.timestamp = in.readLong();
           }
           break;
 
@@ -1002,9 +810,7 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
     result = 31 * result + (paymentId == null ? 0 : paymentId.hashCode());
     result = 31 * result + (processortransactionId == null ? 0 : processortransactionId.hashCode());
     result = 31 * result + (errorMessage == null ? 0 : errorMessage.hashCode());
-    result = 31 * result + (createdAt == null ? 0 : createdAt.hashCode());
-    result = 31 * result + (updatedAt == null ? 0 : updatedAt.hashCode());
-    result = 31 * result + (timeStamp == null ? 0 : timeStamp.hashCode());
+    result = 31 * result + (timestamp == null ? 0 : timestamp.hashCode());
     return result;
   }
 
@@ -1032,13 +838,7 @@ public class VoidCompletedEvent extends org.apache.avro.specific.SpecificRecordB
     if (Utf8.compareSequences(this.errorMessage, other.errorMessage) != 0) {
       return false;
     }
-    if (Utf8.compareSequences(this.createdAt, other.createdAt) != 0) {
-      return false;
-    }
-    if (Utf8.compareSequences(this.updatedAt, other.updatedAt) != 0) {
-      return false;
-    }
-    if (!java.util.Objects.equals(this.timeStamp, other.timeStamp)) {
+    if (!java.util.Objects.equals(this.timestamp, other.timestamp)) {
       return false;
     }
     return true;

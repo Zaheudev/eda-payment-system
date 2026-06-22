@@ -13,10 +13,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 3465254608663459529L;
+  private static final long serialVersionUID = 3254216563945446459L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RefundCompletedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"success\",\"type\":[\"null\",\"boolean\"],\"default\":false},{\"name\":\"status\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"paymentId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"originalProcessorTransactionId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"errorMessage\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"refundRrn\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"refundAuthCode\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"refundId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"refundedAmount\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]}],\"default\":null},{\"name\":\"createdAt\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"updatedAt\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"timeStamp\",\"type\":[\"null\",\"long\"],\"default\":null}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RefundCompletedEvent\",\"namespace\":\"com.zaheudev.shared.avro\",\"fields\":[{\"name\":\"success\",\"type\":[\"null\",\"boolean\"],\"default\":false},{\"name\":\"status\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"paymentId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"originalProcessorTransactionId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"errorMessage\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"refundRrn\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"refundAuthCode\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"refundId\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"refundedAmount\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Amount\",\"fields\":[{\"name\":\"value\",\"type\":\"long\",\"doc\":\"Suma tranzacției exprimată în cea mai mică unitate monetară (de exemplu, bani pentru RON, cenți pentru EUR/USD)\"},{\"name\":\"currency\",\"type\":\"string\",\"doc\":\"Moneda (RON, EUR, USD)\"}]}],\"default\":null},{\"name\":\"timestamp\",\"type\":[\"null\",\"long\"],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -81,9 +81,7 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
   private java.lang.CharSequence refundAuthCode;
   private java.lang.CharSequence refundId;
   private com.zaheudev.shared.avro.Amount refundedAmount;
-  private java.lang.CharSequence createdAt;
-  private java.lang.CharSequence updatedAt;
-  private java.lang.Long timeStamp;
+  private java.lang.Long timestamp;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -103,11 +101,9 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
    * @param refundAuthCode The new value for refundAuthCode
    * @param refundId The new value for refundId
    * @param refundedAmount The new value for refundedAmount
-   * @param createdAt The new value for createdAt
-   * @param updatedAt The new value for updatedAt
-   * @param timeStamp The new value for timeStamp
+   * @param timestamp The new value for timestamp
    */
-  public RefundCompletedEvent(java.lang.Boolean success, java.lang.CharSequence status, java.lang.CharSequence paymentId, java.lang.CharSequence originalProcessorTransactionId, java.lang.CharSequence errorMessage, java.lang.CharSequence refundRrn, java.lang.CharSequence refundAuthCode, java.lang.CharSequence refundId, com.zaheudev.shared.avro.Amount refundedAmount, java.lang.CharSequence createdAt, java.lang.CharSequence updatedAt, java.lang.Long timeStamp) {
+  public RefundCompletedEvent(java.lang.Boolean success, java.lang.CharSequence status, java.lang.CharSequence paymentId, java.lang.CharSequence originalProcessorTransactionId, java.lang.CharSequence errorMessage, java.lang.CharSequence refundRrn, java.lang.CharSequence refundAuthCode, java.lang.CharSequence refundId, com.zaheudev.shared.avro.Amount refundedAmount, java.lang.Long timestamp) {
     this.success = success;
     this.status = status;
     this.paymentId = paymentId;
@@ -117,9 +113,7 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
     this.refundAuthCode = refundAuthCode;
     this.refundId = refundId;
     this.refundedAmount = refundedAmount;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.timeStamp = timeStamp;
+    this.timestamp = timestamp;
   }
 
   @Override
@@ -141,9 +135,7 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
     case 6: return refundAuthCode;
     case 7: return refundId;
     case 8: return refundedAmount;
-    case 9: return createdAt;
-    case 10: return updatedAt;
-    case 11: return timeStamp;
+    case 9: return timestamp;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -162,9 +154,7 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
     case 6: refundAuthCode = (java.lang.CharSequence)value$; break;
     case 7: refundId = (java.lang.CharSequence)value$; break;
     case 8: refundedAmount = (com.zaheudev.shared.avro.Amount)value$; break;
-    case 9: createdAt = (java.lang.CharSequence)value$; break;
-    case 10: updatedAt = (java.lang.CharSequence)value$; break;
-    case 11: timeStamp = (java.lang.Long)value$; break;
+    case 9: timestamp = (java.lang.Long)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -323,54 +313,20 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
   }
 
   /**
-   * Gets the value of the 'createdAt' field.
-   * @return The value of the 'createdAt' field.
+   * Gets the value of the 'timestamp' field.
+   * @return The value of the 'timestamp' field.
    */
-  public java.lang.CharSequence getCreatedAt() {
-    return createdAt;
+  public java.lang.Long getTimestamp() {
+    return timestamp;
   }
 
 
   /**
-   * Sets the value of the 'createdAt' field.
+   * Sets the value of the 'timestamp' field.
    * @param value the value to set.
    */
-  public void setCreatedAt(java.lang.CharSequence value) {
-    this.createdAt = value;
-  }
-
-  /**
-   * Gets the value of the 'updatedAt' field.
-   * @return The value of the 'updatedAt' field.
-   */
-  public java.lang.CharSequence getUpdatedAt() {
-    return updatedAt;
-  }
-
-
-  /**
-   * Sets the value of the 'updatedAt' field.
-   * @param value the value to set.
-   */
-  public void setUpdatedAt(java.lang.CharSequence value) {
-    this.updatedAt = value;
-  }
-
-  /**
-   * Gets the value of the 'timeStamp' field.
-   * @return The value of the 'timeStamp' field.
-   */
-  public java.lang.Long getTimeStamp() {
-    return timeStamp;
-  }
-
-
-  /**
-   * Sets the value of the 'timeStamp' field.
-   * @param value the value to set.
-   */
-  public void setTimeStamp(java.lang.Long value) {
-    this.timeStamp = value;
+  public void setTimestamp(java.lang.Long value) {
+    this.timestamp = value;
   }
 
   /**
@@ -424,9 +380,7 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
     private java.lang.CharSequence refundId;
     private com.zaheudev.shared.avro.Amount refundedAmount;
     private com.zaheudev.shared.avro.Amount.Builder refundedAmountBuilder;
-    private java.lang.CharSequence createdAt;
-    private java.lang.CharSequence updatedAt;
-    private java.lang.Long timeStamp;
+    private java.lang.Long timestamp;
 
     /** Creates a new Builder */
     private Builder() {
@@ -478,17 +432,9 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
       if (other.hasRefundedAmountBuilder()) {
         this.refundedAmountBuilder = com.zaheudev.shared.avro.Amount.newBuilder(other.getRefundedAmountBuilder());
       }
-      if (isValidValue(fields()[9], other.createdAt)) {
-        this.createdAt = data().deepCopy(fields()[9].schema(), other.createdAt);
+      if (isValidValue(fields()[9], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[9].schema(), other.timestamp);
         fieldSetFlags()[9] = other.fieldSetFlags()[9];
-      }
-      if (isValidValue(fields()[10], other.updatedAt)) {
-        this.updatedAt = data().deepCopy(fields()[10].schema(), other.updatedAt);
-        fieldSetFlags()[10] = other.fieldSetFlags()[10];
-      }
-      if (isValidValue(fields()[11], other.timeStamp)) {
-        this.timeStamp = data().deepCopy(fields()[11].schema(), other.timeStamp);
-        fieldSetFlags()[11] = other.fieldSetFlags()[11];
       }
     }
 
@@ -535,17 +481,9 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
         fieldSetFlags()[8] = true;
       }
       this.refundedAmountBuilder = null;
-      if (isValidValue(fields()[9], other.createdAt)) {
-        this.createdAt = data().deepCopy(fields()[9].schema(), other.createdAt);
+      if (isValidValue(fields()[9], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[9].schema(), other.timestamp);
         fieldSetFlags()[9] = true;
-      }
-      if (isValidValue(fields()[10], other.updatedAt)) {
-        this.updatedAt = data().deepCopy(fields()[10].schema(), other.updatedAt);
-        fieldSetFlags()[10] = true;
-      }
-      if (isValidValue(fields()[11], other.timeStamp)) {
-        this.timeStamp = data().deepCopy(fields()[11].schema(), other.timeStamp);
-        fieldSetFlags()[11] = true;
       }
     }
 
@@ -946,122 +884,42 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
     }
 
     /**
-      * Gets the value of the 'createdAt' field.
+      * Gets the value of the 'timestamp' field.
       * @return The value.
       */
-    public java.lang.CharSequence getCreatedAt() {
-      return createdAt;
+    public java.lang.Long getTimestamp() {
+      return timestamp;
     }
 
 
     /**
-      * Sets the value of the 'createdAt' field.
-      * @param value The value of 'createdAt'.
+      * Sets the value of the 'timestamp' field.
+      * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RefundCompletedEvent.Builder setCreatedAt(java.lang.CharSequence value) {
+    public com.zaheudev.shared.avro.RefundCompletedEvent.Builder setTimestamp(java.lang.Long value) {
       validate(fields()[9], value);
-      this.createdAt = value;
+      this.timestamp = value;
       fieldSetFlags()[9] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'createdAt' field has been set.
-      * @return True if the 'createdAt' field has been set, false otherwise.
+      * Checks whether the 'timestamp' field has been set.
+      * @return True if the 'timestamp' field has been set, false otherwise.
       */
-    public boolean hasCreatedAt() {
+    public boolean hasTimestamp() {
       return fieldSetFlags()[9];
     }
 
 
     /**
-      * Clears the value of the 'createdAt' field.
+      * Clears the value of the 'timestamp' field.
       * @return This builder.
       */
-    public com.zaheudev.shared.avro.RefundCompletedEvent.Builder clearCreatedAt() {
-      createdAt = null;
+    public com.zaheudev.shared.avro.RefundCompletedEvent.Builder clearTimestamp() {
+      timestamp = null;
       fieldSetFlags()[9] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'updatedAt' field.
-      * @return The value.
-      */
-    public java.lang.CharSequence getUpdatedAt() {
-      return updatedAt;
-    }
-
-
-    /**
-      * Sets the value of the 'updatedAt' field.
-      * @param value The value of 'updatedAt'.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.RefundCompletedEvent.Builder setUpdatedAt(java.lang.CharSequence value) {
-      validate(fields()[10], value);
-      this.updatedAt = value;
-      fieldSetFlags()[10] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'updatedAt' field has been set.
-      * @return True if the 'updatedAt' field has been set, false otherwise.
-      */
-    public boolean hasUpdatedAt() {
-      return fieldSetFlags()[10];
-    }
-
-
-    /**
-      * Clears the value of the 'updatedAt' field.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.RefundCompletedEvent.Builder clearUpdatedAt() {
-      updatedAt = null;
-      fieldSetFlags()[10] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'timeStamp' field.
-      * @return The value.
-      */
-    public java.lang.Long getTimeStamp() {
-      return timeStamp;
-    }
-
-
-    /**
-      * Sets the value of the 'timeStamp' field.
-      * @param value The value of 'timeStamp'.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.RefundCompletedEvent.Builder setTimeStamp(java.lang.Long value) {
-      validate(fields()[11], value);
-      this.timeStamp = value;
-      fieldSetFlags()[11] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'timeStamp' field has been set.
-      * @return True if the 'timeStamp' field has been set, false otherwise.
-      */
-    public boolean hasTimeStamp() {
-      return fieldSetFlags()[11];
-    }
-
-
-    /**
-      * Clears the value of the 'timeStamp' field.
-      * @return This builder.
-      */
-    public com.zaheudev.shared.avro.RefundCompletedEvent.Builder clearTimeStamp() {
-      timeStamp = null;
-      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -1088,9 +946,7 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
         } else {
           record.refundedAmount = fieldSetFlags()[8] ? this.refundedAmount : (com.zaheudev.shared.avro.Amount) defaultValue(fields()[8]);
         }
-        record.createdAt = fieldSetFlags()[9] ? this.createdAt : (java.lang.CharSequence) defaultValue(fields()[9]);
-        record.updatedAt = fieldSetFlags()[10] ? this.updatedAt : (java.lang.CharSequence) defaultValue(fields()[10]);
-        record.timeStamp = fieldSetFlags()[11] ? this.timeStamp : (java.lang.Long) defaultValue(fields()[11]);
+        record.timestamp = fieldSetFlags()[9] ? this.timestamp : (java.lang.Long) defaultValue(fields()[9]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -1195,28 +1051,12 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
       this.refundedAmount.customEncode(out);
     }
 
-    if (this.createdAt == null) {
+    if (this.timestamp == null) {
       out.writeIndex(0);
       out.writeNull();
     } else {
       out.writeIndex(1);
-      out.writeString(this.createdAt);
-    }
-
-    if (this.updatedAt == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.updatedAt);
-    }
-
-    if (this.timeStamp == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeLong(this.timeStamp);
+      out.writeLong(this.timestamp);
     }
 
   }
@@ -1294,27 +1134,13 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
 
       if (in.readIndex() != 1) {
         in.readNull();
-        this.createdAt = null;
+        this.timestamp = null;
       } else {
-        this.createdAt = in.readString(this.createdAt instanceof Utf8 ? (Utf8)this.createdAt : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.updatedAt = null;
-      } else {
-        this.updatedAt = in.readString(this.updatedAt instanceof Utf8 ? (Utf8)this.updatedAt : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.timeStamp = null;
-      } else {
-        this.timeStamp = in.readLong();
+        this.timestamp = in.readLong();
       }
 
     } else {
-      for (int i = 0; i < 12; i++) {
+      for (int i = 0; i < 10; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           if (in.readIndex() != 1) {
@@ -1403,27 +1229,9 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
         case 9:
           if (in.readIndex() != 1) {
             in.readNull();
-            this.createdAt = null;
+            this.timestamp = null;
           } else {
-            this.createdAt = in.readString(this.createdAt instanceof Utf8 ? (Utf8)this.createdAt : null);
-          }
-          break;
-
-        case 10:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.updatedAt = null;
-          } else {
-            this.updatedAt = in.readString(this.updatedAt instanceof Utf8 ? (Utf8)this.updatedAt : null);
-          }
-          break;
-
-        case 11:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.timeStamp = null;
-          } else {
-            this.timeStamp = in.readLong();
+            this.timestamp = in.readLong();
           }
           break;
 
@@ -1446,9 +1254,7 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
     result = 31 * result + (refundAuthCode == null ? 0 : refundAuthCode.hashCode());
     result = 31 * result + (refundId == null ? 0 : refundId.hashCode());
     result = 31 * result + (refundedAmount == null ? 0 : refundedAmount.hashCode());
-    result = 31 * result + (createdAt == null ? 0 : createdAt.hashCode());
-    result = 31 * result + (updatedAt == null ? 0 : updatedAt.hashCode());
-    result = 31 * result + (timeStamp == null ? 0 : timeStamp.hashCode());
+    result = 31 * result + (timestamp == null ? 0 : timestamp.hashCode());
     return result;
   }
 
@@ -1488,13 +1294,7 @@ public class RefundCompletedEvent extends org.apache.avro.specific.SpecificRecor
     if (!java.util.Objects.equals(this.refundedAmount, other.refundedAmount)) {
       return false;
     }
-    if (Utf8.compareSequences(this.createdAt, other.createdAt) != 0) {
-      return false;
-    }
-    if (Utf8.compareSequences(this.updatedAt, other.updatedAt) != 0) {
-      return false;
-    }
-    if (!java.util.Objects.equals(this.timeStamp, other.timeStamp)) {
+    if (!java.util.Objects.equals(this.timestamp, other.timestamp)) {
       return false;
     }
     return true;

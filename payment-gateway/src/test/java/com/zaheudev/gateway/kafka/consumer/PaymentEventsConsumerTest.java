@@ -2,7 +2,7 @@ package com.zaheudev.gateway.kafka.consumer;
 
 import com.zaheudev.gateway.entity.PaymentEntity;
 import com.zaheudev.gateway.repository.PaymentRepository;
-import com.zaheudev.gateway.service.PaymentServiceImpl;
+import com.zaheudev.gateway.service.PaymentService;
 import com.zaheudev.shared.avro.*;
 import com.zaheudev.shared.dto.PaymentStatus;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -28,7 +28,7 @@ class PaymentEventsConsumerTest {
     private PaymentRepository paymentRepository;
 
     @Mock
-    private PaymentServiceImpl paymentService;
+    private PaymentService paymentService;
 
     @Mock
     private Acknowledgment ack;

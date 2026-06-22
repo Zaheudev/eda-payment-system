@@ -1,6 +1,6 @@
 package com.zaheudev.gateway.kafka.consumer;
 
-import com.zaheudev.gateway.service.PaymentServiceImpl;
+import com.zaheudev.gateway.service.PaymentService;
 import com.zaheudev.shared.avro.*;
 import com.zaheudev.gateway.entity.PaymentEntity;
 import com.zaheudev.gateway.exception.PaymentFailedException;
@@ -22,7 +22,7 @@ public class PaymentEventsConsumer {
     private PaymentRepository paymentRepository;
 
     @Autowired
-    private PaymentServiceImpl paymentService;
+    private PaymentService paymentService;
 
     @KafkaListener(topics = "authorization-completed")
     public void consumeAuthorizationCompleted(ConsumerRecord<String, AuthorizationCompletedEvent> record, Acknowledgment ack) {

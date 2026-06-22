@@ -5,8 +5,7 @@ import com.zaheudev.gateway.dto.PaymentResponse;
 import com.zaheudev.gateway.dto.RefundRequest;
 import com.zaheudev.gateway.entity.PaymentEntity;
 import com.zaheudev.gateway.exception.PaymentFailedException;
-import com.zaheudev.gateway.service.PaymentServiceImpl;
-import com.zaheudev.shared.dto.PaymentStatus;
+import com.zaheudev.gateway.service.PaymentService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +23,7 @@ import static org.mockito.Mockito.when;
 class PaymentControllerTest {
 
     @Mock
-    private PaymentServiceImpl paymentService;
+    private PaymentService paymentService;
 
     @InjectMocks
     private PaymentController controller;

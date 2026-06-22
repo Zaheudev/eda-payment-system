@@ -44,7 +44,7 @@ class PaymentServiceImplTest {
     private TokenizerClient tokenizerClient;
 
     @InjectMocks
-    private PaymentServiceImpl paymentService;
+    private PaymentService paymentService;
 
     private CardDetails cardDetails;
     private TokenizeResponse tokenizeResponse;

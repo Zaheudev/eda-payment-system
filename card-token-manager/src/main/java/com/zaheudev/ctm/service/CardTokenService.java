@@ -3,7 +3,6 @@ package com.zaheudev.ctm.service;
 import com.zaheudev.shared.dto.*;
 import com.zaheudev.ctm.entity.CardTokenEntity;
 import com.zaheudev.ctm.repository.CardTokenRepository;
-import com.zaheudev.shared.avro.CardDetails;
 import com.zaheudev.shared.avro.PaymentMethodEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
