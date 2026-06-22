@@ -10,6 +10,7 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.zaheudev.vaadin.client.PaymentClient;
 import com.zaheudev.vaadin.model.PaymentResponse;
+import com.zaheudev.vaadin.util.CardGenerator;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,6 +26,10 @@ public class PaymentFormComponent extends VerticalLayout {
     private final TextField cvv = new TextField("CVV");
     private final TextField expiry = new TextField("Expiry (MM/YYYY)");
     private final TextField cardholder = new TextField("Cardholder");
+
+    private final Select<String> genNetwork = new Select<>();
+    private final Select<String> genCardType = new Select<>();
+    private final Button genBtn = new Button("Generate Card");
 
     private final Button createBtn = new Button("Create Payment");
     private final Button captureBtn = new Button("Capture");
@@ -61,6 +66,17 @@ public class PaymentFormComponent extends VerticalLayout {
         expiry.setValue("12/2027");
         cardholder.setValue("John Doe");
 
+        genNetwork.setLabel("Network");
+        genNetwork.setItems("VISA", "MASTERCARD", "AMEX", "DISCOVER");
+        genNetwork.setValue("VISA");
+
+        genCardType.setLabel("Card Type");
+        genCardType.setItems("CREDIT", "DEBIT");
+        genCardType.setValue("CREDIT");
+
+        genBtn.addClassName("btn-secondary");
+        genBtn.getStyle().set("font-size", "12px");
+
         merchantRef.getStyle().set("--vaadin-field-default-width", "100%");
         amount.getStyle().set("--vaadin-field-default-width", "100%");
         currency.getStyle().set("--vaadin-field-default-width", "100%");
@@ -75,6 +91,11 @@ public class PaymentFormComponent extends VerticalLayout {
         title.addClassName("card-title");
         title.setText("Create Payment");
 
+        genNetwork.setWidthFull();
+        genNetwork.setMinWidth("200px");
+        genCardType.setWidthFull();
+        genCardType.setMinWidth("180px");
+
         HorizontalLayout row1 = new HorizontalLayout(merchantRef, amount, currency);
         row1.addClassName("form-row");
         row1.setWidthFull();
@@ -83,10 +104,20 @@ public class PaymentFormComponent extends VerticalLayout {
         row2.addClassName("form-row");
         row2.setWidthFull();
 
+        Div genTitle = new Div();
+        genTitle.addClassName("card-title");
+        genTitle.setText("Generate Card");
+        genTitle.getStyle().set("margin-top", "12px");
+
+        HorizontalLayout genRow = new HorizontalLayout(genNetwork, genCardType, genBtn);
+        genRow.addClassName("form-row");
+        genRow.setWidthFull();
+        genRow.setAlignItems(Alignment.END);
+
         message.getStyle().set("font-size", "12px").set("color", "var(--text-muted)");
         lastPidDisplay.getStyle().set("font-size", "12px").set("font-family", "var(--mono)");
 
-        add(title, row1, row2, createButtons(), message, lastPidDisplay);
+        add(title, row1, genTitle, genRow, row2, createButtons(), message, lastPidDisplay);
         setPadding(false);
         setSpacing(false);
     }
@@ -112,6 +143,19 @@ public class PaymentFormComponent extends VerticalLayout {
         captureBtn.addClickListener(e -> handleCapture());
         voidBtn.addClickListener(e -> handleVoid());
         refundBtn.addClickListener(e -> handleRefund());
+
+        genBtn.addClickListener(e -> handleGenerate());
+    }
+
+    private void handleGenerate() {
+        String network = genNetwork.getValue();
+        String cardType = genCardType.getValue();
+        cardNumber.setValue(CardGenerator.generatePAN(network, cardType));
+        cvv.setValue(CardGenerator.generateCvv());
+        expiry.setValue(CardGenerator.generateExpiry());
+        cardholder.setValue(CardGenerator.generateCardholder());
+        merchantRef.setValue(CardGenerator.generateMerchantRef());
+        message.setText("Generated " + network + " " + cardType + " card");
     }
 
     private void handleCreate() {
