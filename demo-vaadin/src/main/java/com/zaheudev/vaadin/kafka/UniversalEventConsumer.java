@@ -2,6 +2,7 @@ package com.zaheudev.vaadin.kafka;
 
 import com.zaheudev.vaadin.model.EventEnvelope;
 import com.zaheudev.vaadin.service.EventBroadcaster;
+import com.zaheudev.vaadin.service.MetricsService;
 import com.zaheudev.vaadin.service.SagaProjectionService;
 import com.zaheudev.vaadin.util.AvroToMap;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +19,13 @@ public class UniversalEventConsumer {
 
     private final EventBroadcaster broadcaster;
     private final SagaProjectionService saga;
+    private final MetricsService metrics;
 
-    public UniversalEventConsumer(EventBroadcaster broadcaster, SagaProjectionService saga) {
+    public UniversalEventConsumer(EventBroadcaster broadcaster, SagaProjectionService saga,
+                                   MetricsService metrics) {
         this.broadcaster = broadcaster;
         this.saga = saga;
+        this.metrics = metrics;
     }
 
     @KafkaListener(topics = {
@@ -48,6 +52,7 @@ public class UniversalEventConsumer {
 
         broadcaster.publish(envelope);
         saga.onEvent(paymentId, eventType);
+        metrics.onEvent(envelope);
     }
 
     private String extractEventType(Object value) {

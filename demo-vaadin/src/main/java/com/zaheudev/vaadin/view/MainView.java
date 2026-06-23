@@ -9,6 +9,7 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.Route;
 import com.zaheudev.vaadin.client.PaymentClient;
 import com.zaheudev.vaadin.service.EventBroadcaster;
+import com.zaheudev.vaadin.service.MetricsService;
 import com.zaheudev.vaadin.service.PaymentEventReplayService;
 import com.zaheudev.vaadin.service.SagaProjectionService;
 
@@ -19,15 +20,18 @@ public class MainView extends VerticalLayout {
     private final EventBroadcaster broadcaster;
     private final SagaProjectionService sagaService;
     private final PaymentEventReplayService replayService;
+    private final MetricsService metricsService;
 
     private final Div contentArea = new Div();
 
     public MainView(PaymentClient paymentClient, EventBroadcaster broadcaster,
-                    SagaProjectionService sagaService, PaymentEventReplayService replayService) {
+                    SagaProjectionService sagaService, PaymentEventReplayService replayService,
+                    MetricsService metricsService) {
         this.paymentClient = paymentClient;
         this.broadcaster = broadcaster;
         this.sagaService = sagaService;
         this.replayService = replayService;
+        this.metricsService = metricsService;
 
         setSizeFull();
         setPadding(false);
@@ -70,9 +74,9 @@ public class MainView extends VerticalLayout {
 
     private void switchTab(int index) {
         Component view = switch (index) {
-            case 0 -> new PaymentsView(paymentClient, broadcaster, replayService);
+            case 0 -> new PaymentsView(paymentClient, broadcaster, replayService, metricsService);
             case 1 -> new SagaView(sagaService);
-            default -> new PaymentsView(paymentClient, broadcaster, replayService);
+            default -> new PaymentsView(paymentClient, broadcaster, replayService, metricsService);
         };
         contentArea.removeAll();
         contentArea.add(view);

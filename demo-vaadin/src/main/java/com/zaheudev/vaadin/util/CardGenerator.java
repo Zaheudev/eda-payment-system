@@ -9,11 +9,11 @@ public final class CardGenerator {
     private static final SecureRandom RNG = new SecureRandom();
 
     private static final List<String> FIRST_NAMES = List.of(
-            "John", "Jane", "Robert", "Emily", "Michael", "Sarah", "David", "Laura",
-            "Chris", "Anna", "Daniel", "Maria", "James", "Elena", "Alex", "Sofia");
+            "Andrei", "Alexandru", "Ionut", "Mihai", "Andrei", "Radu", "Vlad", "Cristian",
+            "Ioana", "Andreea", "Maria", "Elena", "Alexandra", "Ana", "Daniela", "Roxana");
     private static final List<String> LAST_NAMES = List.of(
-            "Smith", "Doe", "Brown", "Wilson", "Taylor", "Davis", "Clark", "Hall",
-            "Young", "King", "Wright", "Lopez", "Hill", "Green", "Adams", "Baker");
+            "Popescu", "Ionescu", "Popa", "Georgescu", "Stan", "Dumitrescu", "Radu", "Tabacu",
+            "Mihai", "Stancu", "Vasile", "Dobre", "Marin", "Albu", "Gheorghe", "Nica");
 
     private CardGenerator() {}
 
