@@ -315,13 +315,24 @@ public class LiveTracker extends VerticalLayout {
         Div header = buildHeader();
         content.add(header);
 
-        Div timelineDiv = buildTimeline();
-        timelineDiv.getStyle().set("margin-top", "12px");
-        content.add(timelineDiv);
+        Div columns = new Div();
+        columns.addClassName("tracker-columns");
+        columns.getStyle().set("margin-top", "12px");
+
+        Div timelineCol = new Div();
+        timelineCol.addClassName("tracker-col-timeline");
+        timelineCol.add(buildTimeline());
+        columns.add(timelineCol);
 
         if (paymentData != null) {
-            content.add(buildPaymentDetails());
+            Div detailsCol = new Div();
+            detailsCol.addClassName("tracker-col-details");
+            Div details = buildPaymentDetails();
+            details.getStyle().remove("margin-top");
+            detailsCol.add(details);
+            columns.add(detailsCol);
         }
+        content.add(columns);
 
         if (timeline.isEmpty()) {
             Paragraph p = new Paragraph("Waiting for events. The detail grid shows snapshot data; the timeline populates as events arrive.");

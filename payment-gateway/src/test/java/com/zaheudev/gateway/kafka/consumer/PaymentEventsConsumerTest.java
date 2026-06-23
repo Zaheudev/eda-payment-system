@@ -130,7 +130,7 @@ class PaymentEventsConsumerTest {
                 .setSuccess(true)
                 .setStatus("REFUNDED")
                 .setRefundedAmount(Amount.newBuilder().setValue(5000L).setCurrency("USD").build())
-                .setTimeStamp(System.currentTimeMillis())
+                .setTimestamp(System.currentTimeMillis())
                 .build();
         ConsumerRecord<String, RefundCompletedEvent> record = new ConsumerRecord<>("topic", 0, 0, "PMT001", event);
 
@@ -163,7 +163,7 @@ class PaymentEventsConsumerTest {
         VoidCompletedEvent event = VoidCompletedEvent.newBuilder()
                 .setPaymentId("PMT001")
                 .setSuccess(true)
-                .setTimeStamp(System.currentTimeMillis())
+                .setTimestamp(System.currentTimeMillis())
                 .build();
         ConsumerRecord<String, VoidCompletedEvent> record = new ConsumerRecord<>("topic", 0, 0, "PMT001", event);
 

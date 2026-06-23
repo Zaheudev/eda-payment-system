@@ -2,6 +2,7 @@ package com.zaheudev.vaadin.view;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.zaheudev.vaadin.client.PaymentClient;
+import com.zaheudev.vaadin.component.BatchGeneratorComponent;
 import com.zaheudev.vaadin.component.LiveTracker;
 import com.zaheudev.vaadin.component.MetricsCard;
 import com.zaheudev.vaadin.component.PaymentFormComponent;
@@ -28,10 +29,13 @@ public class PaymentsView extends VerticalLayout {
         tracker = new LiveTracker(paymentClient, broadcaster, replayService);
         totalFees = new TotalFees(paymentClient);
         metricsCard = new MetricsCard(metricsService);
+        BatchGeneratorComponent batchGen = new BatchGeneratorComponent(paymentClient);
 
         form.setOnSuccess(grid::refresh);
         form.setOnTrack(tracker::startTracking);
         grid.setOnSelectPayment(tracker::startTracking);
+        batchGen.setOnBatchComplete(grid::refresh);
+        batchGen.setOnFirstPayment(tracker::startTracking);
 
         tracker.setOnStop(() -> {});
 
@@ -45,7 +49,7 @@ public class PaymentsView extends VerticalLayout {
         topRow.getStyle().set("gap", "16px");
 
         topRow.add(form, grid);
-        add(topRow, totalFees, metricsCard, tracker);
+        add(topRow, batchGen, totalFees, metricsCard, tracker);
     }
 
     public void startTracking(String paymentId) {

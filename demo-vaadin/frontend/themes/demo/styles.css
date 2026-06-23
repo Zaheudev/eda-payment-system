@@ -114,6 +114,22 @@ a {
     font-weight: 500;
 }
 
+.tracker-columns {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.tracker-col-timeline {
+    flex: 0 0 auto;
+}
+
+.tracker-col-details {
+    flex: 1 1 320px;
+    min-width: 280px;
+}
+
 .timeline {
     display: flex;
     flex-direction: column;
@@ -437,4 +453,11 @@ vaadin-tab[selected] {
     font-size: 11px;
     color: var(--text);
     flex-shrink: 0;
+}
+
+.batch-progress {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }

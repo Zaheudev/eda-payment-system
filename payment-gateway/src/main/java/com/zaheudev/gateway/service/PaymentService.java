@@ -69,6 +69,7 @@ public class PaymentService {
                         .setCardType(tokenResponse.getCardType())
                         .setTokenStatus(tokenResponse.getStatus().name())
                         .build())
+                .setStatus(com.zaheudev.shared.avro.PaymentStatus.PENDING)
                 .build();
 
         producer.publishPaymentRequestedEvent(paymentRequestedEvent);
