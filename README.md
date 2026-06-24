@@ -21,6 +21,9 @@ Simulates a real card network (e.g., Visa/Mastercard). Processes authorization, 
 ### `card-token-manager` — Port `8084`
 Handles card tokenization and detokenization. Stores encrypted card data and returns tokens used by the rest of the system to avoid handling raw card numbers.
 
+### `demo-vaadin` — Port `8095`
+A web interface built with Vaadin Flow that visualizes the system in real time. It consumes all Kafka topics (read-only, it does not process payments) and pushes events to the browser via Vaadin server-push. It lets you create and track payments, view live saga states, inspect raw events, see live metrics (throughput, success rate, per-stage latency, network distribution), generate batches of payments for load demos, and compare optimal vs suboptimal routing costs.
+
 ### `shared`
 A library module with shared Avro schemas and DTOs used across all services. Not a runnable application.
 
@@ -149,6 +152,36 @@ The `card-token-manager` determines the card network and type automatically from
 | Goal | Card number to use |
 |------|--------------------|
 | Visa Credit
+
+---
+
+## User Interface (Vaadin)
+
+A web dashboard (`demo-vaadin`) for creating payments and watching the event flow in real time.
+
+### Prerequisites
+- Infrastructure running (Kafka, Schema Registry, PostgreSQL).
+- At least `payment-gateway` running; start the other services too to see the full flow.
+
+### Start the interface
+
+```bash
+./mvnw -pl demo-vaadin spring-boot:run -am
+```
+
+Then open the dashboard in your browser:
+
+```
+http://localhost:8095
+```
+
+> The interface connects to Kafka on `localhost:29092`, Schema Registry on `localhost:8082`, and the gateway on `localhost:8080`. It only reads events, so it can be started or stopped anytime without affecting payment processing.
+
+### What you can do
+- **Payments tab:** create a payment (with a built-in test-card generator), track it live through its states, run a **batch generator** to push many payments at once, and watch cumulative **routing fees** (optimal vs suboptimal).
+- **Saga States tab:** see the current state and history of every transaction.
+- **Live metrics:** throughput per minute, success vs rejection rate, per-stage latency (avg/min/max/p95), and network distribution.
+- **Raw events:** a local, read-only view of the Kafka event log filtered for a single payment.
 
 ---
 
