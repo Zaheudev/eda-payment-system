@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 public class RoutingEventProducer {
     private final String TOPIC_NAME = "routing-completed";
 
-    private final KafkaTemplate<String, RoutedCompletedEvent> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public RoutingEventProducer(KafkaTemplate<String, RoutedCompletedEvent> kafkaTemplate) {
+    public RoutingEventProducer(KafkaTemplate<String, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

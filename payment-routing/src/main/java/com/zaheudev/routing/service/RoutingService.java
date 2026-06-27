@@ -29,10 +29,7 @@ public class RoutingService {
         log.info("Calculating optimal routing for event: {}", event);
         Set<PaymentMethodEnum> availableNetworks = determineAvailableNetworks(event);
         log.info("Available networks: {}", availableNetworks);
-        // in this map we store the total cost for every available network
-        // we use TreeSet to insert them decreasing by the cost
-        // For now a good approach is to use a TreeMap, but in future I will implement risk and other criteria to comporator which best is TreeSet
-        // for long term TreeSet is the best and implementing.
+
         TreeSet<OptimalNetwork> options = new TreeSet<>(new Comparator<OptimalNetwork>() {
             @Override
             public int compare(OptimalNetwork o1, OptimalNetwork o2) {
@@ -45,9 +42,6 @@ public class RoutingService {
         for(PaymentMethodEnum network : availableNetworks){
             routingCostRepository.findByPaymentMethodAndIsTokenIn(network, tokenOptions).forEach(cost -> {
                 BigDecimal calculatedFee = cost.calculateTotalCost(value);
-                log.info("Calculated fee for {}: {}", network, calculatedFee);
-                log.info("Value: " + value);
-                log.info("variables: " + cost);
                 options.add(new OptimalNetwork(network, calculatedFee, cost.getIsToken()));
             });
         }

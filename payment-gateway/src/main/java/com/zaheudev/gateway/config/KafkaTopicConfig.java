@@ -62,4 +62,59 @@ public class KafkaTopicConfig {
     public NewTopic voidCompleted() {
         return TopicBuilder.name("void-completed").partitions(3).replicas(1).build();
     }
+
+    @Bean
+    public NewTopic paymentRequestsDlt() {
+        return TopicBuilder.name("payment-requests.DLT").partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    public NewTopic riskAssessedDlt() {
+        return TopicBuilder.name("risk-assessed.DLT").partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    public NewTopic paymentRejectedDlt() {
+        return TopicBuilder.name("payment-rejected.DLT").partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    public NewTopic routingCompletedDlt() {
+        return TopicBuilder.name("routing-completed.DLT").partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    public NewTopic authorizationCompletedDlt() {
+        return TopicBuilder.name("authorization-completed.DLT").partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    public NewTopic captureRequestsDlt() {
+        return TopicBuilder.name("capture-requests.DLT").partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    public NewTopic captureCompletedDlt() {
+        return TopicBuilder.name("capture-completed.DLT").partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    public NewTopic refundRequestsDlt() {
+        return TopicBuilder.name("refund-requests.DLT").partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    public NewTopic refundCompletedDlt() {
+        return TopicBuilder.name("refund-completed.DLT").partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    public NewTopic voidRequestsDlt() {
+        return TopicBuilder.name("void-requests.DLT").partitions(3).replicas(1).build();
+    }
+
+    @Bean
+    public NewTopic voidCompletedDlt() {
+        return TopicBuilder.name("void-completed.DLT").partitions(3).replicas(1).build();
+    }
 }

@@ -191,7 +191,6 @@ public class EmulatorProcessorConsumer {
         log.info("Received void requested event for payment id: {}", record.key());
         String paymentId = record.key();
         VoidCompletedEvent event = cardProcessor.voidTransaction(paymentId);
-        ack.acknowledge();
         kafkaProducer.publishVoidCompletedEvent(event);
         ack.acknowledge();
         log.info("Published to kafka void completed event: {}", event);

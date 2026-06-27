@@ -147,14 +147,6 @@ The `card-token-manager` determines the card network and type automatically from
 
 > ⚠️ In a real system this would come from a BIN database. This is a simplified demo rule.
 
-### Examples
-
-| Goal | Card number to use |
-|------|--------------------|
-| Visa Credit
-
----
-
 ## User Interface (Vaadin)
 
 A web dashboard (`demo-vaadin`) for creating payments and watching the event flow in real time.
